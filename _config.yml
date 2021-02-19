@@ -56,9 +56,9 @@ search                   : true # true, false (default)
 search_full_content      : true # true, false (default)
 search_provider          : algolia # lunr (default), algolia, google
 algolia:
-  application_id         : RHVIRLPYX4 # YOUR_APPLICATION_ID
-  index_name             : donghyeok-dev # YOUR_INDEX_NAME
-  search_only_api_key    : 96a03dc116f355e5310be4c366e4233c # YOUR_SEARCH_ONLY_API_KEY
+  application_id         : RHVIRLPYX4
+  index_name             : donghyeok-dev
+  search_only_api_key    : 96a03dc116f355e5310be4c366e4233c
   powered_by             : # true (default), false
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
@@ -102,7 +102,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
+      url: "mailto:donghyeok.jh@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
@@ -114,7 +114,7 @@ author:
       # url: "https://facebook.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
+      url: "https://github.com/donghyeok-dev/donghyeok-dev.github.io"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
