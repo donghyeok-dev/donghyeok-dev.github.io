@@ -1,5 +1,5 @@
 ---
-title:  "스프링 프레임워크5"
+title:  "스프링 프레임워크-기본"
 
 categories: 
   - spring
