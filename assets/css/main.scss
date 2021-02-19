@@ -6,3 +6,16 @@
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+.archive__item-title a{
+	text-decoration: none !important;
+}
+
+.archive__item-excerpt {
+	font-size: 0.75em !important;
+}
+
+.archive__item {
+	border-bottom: solid 1px #235e70;
+	padding-bottom: 20px !important;
+}
