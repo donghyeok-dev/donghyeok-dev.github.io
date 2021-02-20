@@ -3,13 +3,13 @@ layout: customPost
 title:  "스프링 프레임워크-기본편"
 categories: 
   - Spring
-  - Java
+  - Framework
   
 toc: true
 toc_label: "List"
 toc_sticky: true 
 ---
-## 1. 스프링 프레임워크(Spring Framework)1
+## 1. 스프링 프레임워크(Spring Framework)
 
 - 자바 엔터프라이즈 개발을 편하게 해주는 오픈소스 경량급 애플리케이션 프레임워크.
 
