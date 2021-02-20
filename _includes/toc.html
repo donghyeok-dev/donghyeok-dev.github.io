@@ -1,4 +1,7 @@
+
+
 {% capture tocWorkspace %}
+
     {% comment %}
         Copyright (c) 2017 Vladimir "allejo" Jimenez
 
@@ -52,7 +55,6 @@
             An ordered or unordered list representing the table of contents of a markdown block. This snippet will only
             generate the table of contents and will NOT output the markdown given to it
     {% endcomment %}
-
     {% capture newline %}
     {% endcapture %}
     {% assign newline = newline | rstrip %} <!-- Remove the extra spacing but preserve the newline -->
@@ -66,7 +68,6 @@
     {% if include.skipNoIDs %}
         {% capture deprecation_warnings %}{{ deprecation_warnings }}<!-- jekyll-toc :: "skipNoIDs" has been deprecated, use "skip_no_ids" instead -->{{ newline }}{% endcapture %}
     {% endif %}
-
     {% capture jekyll_toc %}{% endcapture %}
     {% assign orderedList = include.ordered | default: false %}
     {% assign baseURL = include.base_url | default: include.baseurl | default: '' %}
@@ -74,7 +75,6 @@
     {% assign minHeader = include.h_min | default: 1 %}
     {% assign maxHeader = include.h_max | default: 6 %}
     {% assign nodes = include.html | strip | split: '<h' %}
-
     {% assign firstHeader = true %}
     {% assign currLevel = 0 %}
     {% assign lastLevel = 0 %}

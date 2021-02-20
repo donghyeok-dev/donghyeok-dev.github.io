@@ -29,13 +29,20 @@
       </div>
     {% endif %}
 
+	
     <div id="footer" class="page__footer">
       <footer>
         {% include footer/custom.html %}
         {% include_cached footer.html %}
       </footer>
     </div>
-
+	
+    
+	<a class="top_move_button" href="#" style="display: none;">
+		<span style="font-size: 35px;" title="Top"><i class="fas fa-chevron-up"></i></span>
+	</a>
+	
+	
     {% include scripts.html %}
 
   </body>

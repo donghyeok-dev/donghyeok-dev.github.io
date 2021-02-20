@@ -1,0 +1,15 @@
+---
+layout: single
+---
+
+<div class="page__inner-wrap">
+<section class="page__content" itemprop="text">
+	  <aside class="sidebar__right sticky">
+		<nav class="toc">
+		  <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Category List</h4></header>
+		  {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+		</nav>
+	  </aside>
+      {{ content }}
+</section>
+</div>

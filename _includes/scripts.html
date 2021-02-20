@@ -26,3 +26,20 @@
     <script src="{{ script | relative_url }}"></script>
   {% endfor %}
 {% endif %}
+
+<script>
+	$(window).scroll(function() {
+		if ($(this).scrollTop() > 400) {
+			$('.top_move_button').fadeIn();
+		} else {
+			$('.top_move_button').fadeOut();
+		}
+	});
+
+	$(".top_move_button").click(function() {
+		$('html, body').animate({
+			scrollTop : 0
+		}, 400);
+		return false;
+	});
+</script>

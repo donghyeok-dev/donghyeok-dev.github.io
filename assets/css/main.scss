@@ -15,7 +15,32 @@
 	font-size: 0.75em !important;
 }
 
-.archive__item {
-	border-bottom: solid 1px #235e70;
+.list__item {
+	#border-bottom: solid 1px #235e70;
+}
+
+.entries-list .list__item{
 	padding-bottom: 20px !important;
+}
+
+.page__content p {
+	font-size: 0.75em !important;
+}
+
+.list_bottom_line {
+  width: 100%;
+  border-bottom: 1px solid #235e70;
+  transform: scaleY(0.2);
+}
+
+.top_move_button {
+	position: fixed;
+	right: 2%;
+	bottom: 50px;
+	display: none;
+	z-index: 999;
+}
+
+.categories_subtitle {
+
 }
