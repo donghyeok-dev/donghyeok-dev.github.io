@@ -362,23 +362,31 @@ Cmder 하단에서 +버튼 옆에 클릭 > Setup tasks 클릭
 
 WSL2::bash
 
--icon "%USERPROFILE%\AppData\Local\lxss\bash.ico"
+ /icon "%CMDER_ROOT%\icons\cmder.ico"
 
-set PATH="%ConEmuBaseDirShort%\wsl";%PATH% & wsl -d ubuntu
+%windir%\system32\bash.exe ~ -c zsh -cur_console:p
 
-![image-20210222121210739](/assets/images/posts/image-20210222121210739.png)
+![image-20210223065610829](/assets/images/posts/image-20210223065610829.png)
 
 설정한 powerlevel10k  테마가 windows terminal에서는 잘보이는데 cdmer에서는 깨져보인다 그래서 다른 테마로 교체함.
 
 ![image-20210222121419137](/assets/images/posts/image-20210222121419137.png)
 
+zsh 설정 편집하기
+
 vim ~/.zshrc
 
-ZSH_THME에 powerlevel10k 를 주석하고 agnoster로 변경한다. 그리고 마지막 줄에 p10k.zsh 라인을 주석처리 하고 저장한다. source ~/.zshrc 명령어 실행.
+DEFAULT_USER="$(whoami)" 라인 추가
 
-![image-20210222123520239](/assets/images/posts/image-20210222123520239.png)
+ZSH_THME에 powerlevel10k 를 주석하고 agnoster로 변경한다. 
 
-저장 후 ln -s [git root 경로] /home/계정/단축경로로 변경하고 cd ~ 명령어를 치면 /home/계정 경로에서 이동이 가능하다. 
+그리고 마지막 줄에 p10k.zsh 라인을 주석처리 하고 저장한다. 
+
+source ~/.zshrc 명령어 실행.
+
+![image-20210223070444419](/assets/images/posts/image-20210223070444419.png)
+
+저장 후 ln -s [git root 경로] /home/계정/단축경로로 변경하고 사용하면 좋다.
 
 ![image-20210222123842697](/assets/images/posts/image-20210222123842697.png)
 
