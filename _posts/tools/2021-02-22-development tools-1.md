@@ -328,10 +328,6 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ## 6. wsl cmder 연동
 
-지금부터는 [WSL 설정](/tools/wsl/zsh/WSL/){:target="_blank"} 이 되어 있어야 정상적으로 작동할 수 있습니다.
-
-
-
 VSCode 기본 터미널 Cmdr로 설정하기  Settings에서 아래와 같이 검색하고 Edit settings.json을 클릭.
 
 ![image-20210222061631389](/assets/images/posts/image-20210222061631389.png)
