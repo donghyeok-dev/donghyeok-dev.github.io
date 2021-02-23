@@ -23,10 +23,24 @@
 	padding-bottom: 20px !important;
 }
 
+.page__content ul li p:nth-child(1){
+	font-weight: bold;
+	font-size: 1em;
+	
+}
+
 .page__content p {
 	font-size: 0.75em;
 }
 
+p>code, a>code, li>code, figcaption>code, td>code {
+	margin: 0px 2px;
+    color: rgb(255, 255, 255);
+    padding: 3px 6px;
+    font-size: 0.9em;
+    border-radius: 0.3rem;
+    background-color: rgb(0, 181, 173);
+}
 
 .list_bottom_line {
   width: 100%;
