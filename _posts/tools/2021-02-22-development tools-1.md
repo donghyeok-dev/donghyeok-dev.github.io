@@ -61,9 +61,9 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	설치한 Windows terminal을 관리자 권한으로 실행하고 아래 명령어들을 실행합니다.
 
-​	dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+​	`dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart`
 
-​	dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+​	`dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart`
 
 ​	(참고: [https://docs.microsoft.com/ko-kr/windows/wsl/install-win10](https://docs.microsoft.com/ko-kr/windows/wsl/install-win10){:target="_blank"})
 
@@ -79,7 +79,9 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	![image-20210222040939605](/assets/images/posts/image-20210222040939605.png)
 
-​	다시 Windows Terminal에서 wsl -l 명령어를 실행하면 Ubuntu가 설치된 걸 확인할 수 있습니다.
+​	여기까지 진행하셨다면 컴퓨터를 재부팅 해줍니다.
+
+​	 Windows Terminal을 다시 열어서  wsl -l 명령어를 실행하면 Ubuntu가 설치된 걸 확인할 수 있습	니다.
 
 ​	![image-20210222041201408](/assets/images/posts/image-20210222041201408.png)
 
@@ -162,7 +164,7 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ## 5. ZSH 및 oh-my-zsh 설치
 
-​		Windows terminal(Ubuntu 터미널)에서 apt install zsh 명령어를 실행합니다.
+​		Windows terminal(Ubuntu 터미널)을 실행합니다.
 
 ​		Ubuntu터미널 선택은 터미널 상단 + 버튼 옆에 V 버튼을 누르면 터미널 종류를 설정할 수 있고, 
 
@@ -180,13 +182,17 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​		![image-20210222043339129](/assets/images/posts/image-20210222043339129.png)
 
+​		
+
+​		`sudo apt install zsh` 명령어를 실행합니다.
+
 ​		![image-20210222043817552](/assets/images/posts/image-20210222043817552.png)
 
-
+​		
 
 ​		[https://ohmyz.sh/#install]( https://ohmyz.sh/#install){:target="_blank"} oh-my-zsh 설치 가이드 대로 다음 명령어를 실행합니다.
 
-​		$ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+​		`sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` 명령어를 실행합니다.
 
 ​		![image-20210222044404272](/assets/images/posts/image-20210222044404272.png)
 
