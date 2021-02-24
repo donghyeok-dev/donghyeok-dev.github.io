@@ -322,7 +322,7 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	![image-20210222055630154](/assets/images/posts/image-20210222055630154.png)
 
-​	"terminal.integrated.shell.windows": "C:\\Windows\\System32\\wsl.exe" 값으로 변경.
+​	"terminal.integrated.shell.windows": "`C:\\Windows\\System32\\wsl.exe`" 값으로 변경.
 
 ​	상단 메뉴 View > Terminal을 클릭하면 아래와 같이 적용된게 보입니다.
 
@@ -334,25 +334,11 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ## 6. wsl cmder 연동
 
-VSCode 기본 터미널 Cmdr로 설정하기  Settings에서 아래와 같이 검색하고 Edit settings.json을 클릭.
+VSCode 기본 터미널 Cmdr로 설정하려면  Settings에서 아래와 같이 검색하고 Edit settings.json을 클릭.
 
 ![image-20210222061631389](/assets/images/posts/image-20210222061631389.png)
 
-아래와 같이 편집
-
-"terminal.integrated.env.windows": {
-
-​    "CMDER_ROOT": "C:\\Users\\mosic\\OneDrive\\바탕 화면\\개발\\cmder"
-
-  },
-
-  "terminal.integrated.shellArgs.windows": [
-
-​    "/k",
-
-​    "%CMDER_ROOT%\\vendor\\bin\\vscode_init.cmd"
-
-  ],
+아래 그림과 같이 CMDER_ROOT값을 수정하고 terminal.integrated.shellArgs.windows 항목을 추가합니다.
 
 ![image-20210222062336485](/assets/images/posts/image-20210222062336485.png)
 
@@ -403,6 +389,10 @@ Cmder Setting에서 font나 color를 원하는 색으로 변경 가능하고 sta
 마지막으로 cmder하고 VSCode 연동 확인.
 
 ![image-20210222124504099](/assets/images/posts/image-20210222124504099.png)
+
+폰트가 마음에 들지 않다면 아래 git에 방문하여 zip 파일을  푼다음 원하시는 폰트를 더블클릭으로 설치해서 사용하셔도 됩니다.
+
+https://github.com/powerline/fonts
 
 ## 7. Sourcetree 설치
 
