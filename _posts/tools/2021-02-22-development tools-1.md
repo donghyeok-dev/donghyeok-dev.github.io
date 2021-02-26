@@ -316,13 +316,22 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 
 
-​	visual studio code를 사용할 경우 아래 설정을 해줍니다..
+​	visual studio code를 사용할 경우 아래 설정을 해줍니다.
 
-​	Settings에서  를 검색하여 Terminal > Integrated > Shell: Windows의 Edit in settings.json을 클릭.
+​	Settings에서  우측 상단에 아이콘을 클릭하여 Settings.json파일이 편집합니다.
 
-​	![image-20210222055630154](/assets/images/posts/image-20210222055630154.png)
+​	![image-20210226111630406](/assets/images/posts/image-20210226111630406.png)
 
-​	"terminal.integrated.shell.windows": "`C:\\Windows\\System32\\wsl.exe`" 값으로 변경.
+​	아래 내용을 붙여 넣고 저장합니다.
+
+```
+{
+    "workbench.colorTheme": "Material Theme",
+    "workbench.iconTheme": "material-icon-theme",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\wsl.exe"
+}
+```
 
 ​	상단 메뉴 View > Terminal을 클릭하면 아래와 같이 적용된게 보입니다.
 
@@ -333,14 +342,6 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 
 ## 6. wsl cmder 연동
-
-VSCode 기본 터미널 Cmdr로 설정하려면  Settings에서 아래와 같이 검색하고 Edit settings.json을 클릭.
-
-![image-20210222061631389](/assets/images/posts/image-20210222061631389.png)
-
-아래 그림과 같이 CMDER_ROOT값을 수정하고 terminal.integrated.shellArgs.windows 항목을 추가합니다.
-
-![image-20210222062336485](/assets/images/posts/image-20210222062336485.png)
 
 Cmder 하단에서 +버튼 옆에 클릭 > Setup tasks 클릭.
 
@@ -383,61 +384,7 @@ export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 ZSH_THEME="agnoster"
 #ZSH_THEME="powerlevel10k/powerlevel10k"
 
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+#...
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -448,22 +395,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# ...
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -492,9 +424,13 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-기타로 powerline font도 선택적으로 사용해보세요.
+기타 참고사항 입니다.
 
-https://github.com/powerline/fonts
+[visual studio code에 설정한 터미널을 cmder로 변경 방법](https://code.visualstudio.com/docs/editor/integrated-terminal#_can-i-use-cmders-shell-with-the-terminal-on-windows){:target="_blank"}
+
+ (저는 위 방법으로 VSCode에 cmder 터미널을 적용해본 결과 기본 cmder 형태로 보여서 원복 했습니다.)
+
+[powerline font 적용](https://github.com/powerline/fonts){:target="_blank"}
 
 
 
