@@ -492,12 +492,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-아래 xml을 로컬에 저장하신 다음 import해서 사용하셔도 됩니다.
-
- [cmder settings.xml 설정 파일 전체 보기](/assets/uploadFile/cmder settings.xml){:target="_blank"}
-
-
-
 기타로 powerline font도 선택적으로 사용해보세요.
 
 https://github.com/powerline/fonts
