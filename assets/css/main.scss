@@ -23,17 +23,21 @@
 	padding-bottom: 20px !important;
 }
 
+.page__content {
+	font-size: 0.8em;
+}
+
 .page__content ul li span.sub-title{
 	font-weight: bold;
 	font-size: 1em;
 }
 
 .page__content p, .page__content li, .page__content dl {
-	font-size: 0.75em;
+	font-size: 1em;
 }
 
-.page__content p {
-	font-size: 0.75em;
+.page__content li p {
+	font-size: 1em;
 }
 
 p>code, a>code, li>code, figcaption>code, td>code {
