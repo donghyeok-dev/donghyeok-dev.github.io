@@ -353,7 +353,7 @@ WSL2::bash
 
  /icon "%CMDER_ROOT%\icons\cmder.ico"
 
-%windir%\system32\bash.exe ~ -c zsh -cur_console:p
+%windir%\system32\bash.exe ~ -c zsh -cur_console:<span style="color:red">p5</span>
 
 ![image-20210223065610829](/assets/images/posts/image-20210223065610829.png)
 
