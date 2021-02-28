@@ -42,11 +42,11 @@ categories:
 
 - Jaspersoft Sutdio 설치 및 jrxml만들기
 
-  https://community.jaspersoft.com/project/jaspersoft-studio 에서 다운로드 받아서 설치하거나 이클립스 경우 플러그인으로 설치 가능합니다. 
+  jaspersoft 홈페이지에서 다운로드 받아서 설치하거나 이클립스 경우 플러그인으로 설치 가능합니다. 
 
-  jaspersoft 홈페이지에서 studio를 다운로드 받습니다. (회원가입이 필요함)
+  [jaspersoft 홈페이지에서 studio를 다운로드 (회원가입이 필요함)](https://community.jaspersoft.com/project/jaspersoft-studio/releases){:target="_blank"}
 
-  https://community.jaspersoft.com/project/jaspersoft-studio/releases
+  
 
   ![image-20210227002430657](/assets/images/posts/image-20210227002430657.png)
 
@@ -118,7 +118,9 @@ categories:
 
 ![image-20210227222735623](/assets/images/posts/image-20210227222735623.png)
 
-Page Header 영역의 StaticText는 Label개념으로 Text Field는 Input으로 생각합니다.
+Page Header 영역에 StaticText,  Text Field 각각 한개씩 올려 놓습니다.
+
+(StaticText는 Label개념으로 Text Field는 Input으로 생각합니다.)
 
 ![image-20210227223147030](/assets/images/posts/image-20210227223147030.png)
 
@@ -133,6 +135,8 @@ Palette에서 Table을 Detail 영역으로 드래그&드롭 하면 wizard 창이
 ![image-20210228014158677](/assets/images/posts/image-20210228014158677.png)
 
 Next하면 상세한 옵션들을 선택할 수 있지만 저는 xml로 Setting할 예정이라 여기서 finish합니다.
+
+(사실 화면에 그릴 필요도 없지만,  wizard로 table 생성하는 것이 편리하기 때문에 그런 방법이 있다라고 알려 드리기 위해 작성했습니다.)
 
 ![image-20210228014459290](/assets/images/posts/image-20210228014459290.png)
 

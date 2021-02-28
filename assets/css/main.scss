@@ -7,38 +7,74 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
+
+
+////////////////////////////////////
+$sans-serif: 'Noto Sans KR';
+$monospace: 'Ubuntu Mono';
+$type-size-4-5: 1.12em !default; // Ubuntu Mono is a bit small
+
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans+KR|Ubuntu+Mono);
+
+html {
+  font-size: 12px; // change to whatever
+  
+  @include breakpoint($medium) {
+    font-size: 14px; // change to whatever
+  }
+
+  @include breakpoint($large) {
+    font-size: 16px; // change to whatever
+  }
+
+  @include breakpoint($x-large) {
+    font-size: 18px; // change to whatever
+  }
+}
+
+.highlight {
+  font-family: $monospace;
+  font-size: $type-size-4-5;
+}
+
+////////////////////////////////////
+
+.page__content .archive__item-title {
+	margin-top: 2em;
+}
+
 .archive__item-title a{
 	text-decoration: none !important;
 }
 
 .archive__item-excerpt {
-	font-size: 0.75em !important;
+	font-size: 0.85em !important;
 }
 
-.list__item {
-	#border-bottom: solid 1px #235e70;
-}
+// .list__item {
+// 	border-bottom: solid 1px #235e70;
+// }
 
 .entries-list .list__item{
 	padding-bottom: 20px !important;
 }
 
-.page__content {
-	font-size: 0.8em;
-}
+// .page__content {
+// 	font-size: 0.8em;
+// }
 
-.page__content ul li span.sub-title{
-	font-weight: bold;
-	font-size: 1em;
-}
+// .page__content ul li span.sub-title{
+// 	font-weight: bold;
+// 	font-size: 1em;
+// }
 
-.page__content p, .page__content li, .page__content dl {
-	font-size: 1em;
-}
+// .page__content p, .page__content li, .page__content dl {
+// 	font-size: 1em;
+// }
 
-.page__content li p {
-	font-size: 1em;
-}
+// .page__content li p {
+// 	font-size: 1em;
+// }
 
 p>code, a>code, li>code, figcaption>code, td>code {
 	margin: 0px 2px;
@@ -61,8 +97,4 @@ p>code, a>code, li>code, figcaption>code, td>code {
 	bottom: 50px;
 	display: none;
 	z-index: 999;
-}
-
-.categories_subtitle {
-
 }
