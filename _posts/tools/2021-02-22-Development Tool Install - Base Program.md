@@ -1,12 +1,12 @@
 ---
 layout: customPost
-title:  "개발환경구축 - 1"
+title:  "Development Tool Install - Base Program"
 categories: 
   - Tools
   - Others
 
 toc: true
-toc_label: "개발환경구축 - 1"
+toc_label: "Base Program"
 toc_sticky: true
 ---
 Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows terminal,  cmder, Sourcetree를 설치합니다.
