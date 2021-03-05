@@ -37,6 +37,10 @@ Prettier은 javascript, html 등의 코드를 사용자가 정한 작성 규칙�
 
   ![image-20210304151148416](/assets/images/posts/image-20210304151148416.png)
 
+  prettier Sile Quote 체크 설정.
+
+  ![image-20210305110457627](/assets/images/posts/image-20210305110457627.png)
+
   이렇게  Settings에서 검색하여 설정하는 방법도 있지만 Settings.json에서 한번에 설정할 수도 있습니다.
 
   ![image-20210304151326566](/assets/images/posts/image-20210304151326566.png)
@@ -59,7 +63,11 @@ Prettier은 javascript, html 등의 코드를 사용자가 정한 작성 규칙�
       "[javascript]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
       },
-      "prettier.tabWidth": 2
+      "prettier.tabWidth": 2,
+      "prettier.singleQuote": true,
+      "eslint.workingDirectories": [
+          { "mode": "auto" }
+      ]
   }
   ```
 
@@ -92,6 +100,12 @@ Prettier은 javascript, html 등의 코드를 사용자가 정한 작성 규칙�
   Javascript(.js) After
 
   ![image-20210304152734608](/assets/images/posts/image-20210304152734608.png)
+
+
+
+- Visual Studio Code 내의 Tab Size 조절
+
+  ![image-20210305131451173](/assets/images/posts/image-20210305131451173.png)
 
 
 
@@ -221,45 +235,31 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
   $eslint --init
   ✔ How would you like to use ESLint? · style     
   ✔ What type of modules does your project use? · esm
-  ✔ Which framework does your project use? · react
+  ✔ Which framework does your project use? · none
   ✔ Does your project use TypeScript? ·  Yes
   ✔ Where does your code run? · browser
   ✔ How would you like to define a style for your project? · guide
   ✔ Which style guide do you want to follow? · airbnb
   ✔ What format do you want your config file to be in? · JSON
-  Checking peerDependencies of eslint-config-airbnb@latest
+  Checking peerDependencies of eslint-config-airbnb-base@latest
   The config that you've selected requires the following dependencies:
   
-  eslint-plugin-react@^7.21.5 @typescript-eslint/eslint-plugin@latest eslint-config-airbnb@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.22.1 eslint-plugin-jsx-a11y@^6.4.1 eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0 @typescript-eslint/parser@latest
-  ✔ Would you like to install them now with npm? · Yes
-  Installing eslint-plugin-react@^7.21.5, @typescript-eslint/eslint-plugin@latest, eslint-config-airbnb@latest, eslint@^5.16.0 || ^6.8.0 || ^7.2.0, eslint-plugin-import@^2.22.1, eslint-plugin-jsx-a11y@^6.4.1, eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0, @typescript-eslint/parser@latest
-  
-  > core-js-pure@3.9.1 postinstall /mnt/c/Users/webme/mygit/sample/node_modules/core-js-pure
-  > node -e "try{require('./postinstall')}catch(e){}"
-  
-  Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
-  
-  The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
-  > https://opencollective.com/core-js 
-  > https://www.patreon.com/zloirock 
-  
-  Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
-  
-  npm WARN tsutils@3.20.0 requires a peer of typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta but none is installed. You must install peer dependencies yourself.
+  @typescript-eslint/eslint-plugin@latest eslint-config-airbnb-base@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.22.1 @typescript-eslint/parser@latest
+  ✔ Would you like to install them now with npm? · No / Yes
+  Installing @typescript-eslint/eslint-plugin@latest, eslint-config-airbnb-base@latest, eslint@^5.16.0 || ^6.8.0 || ^7.2.0, eslint-plugin-import@^2.22.1, @typescript-eslint/parser@latest     
+  npm WARN eslint-config-airbnb@18.2.1 requires a peer of eslint-plugin-react@^7.21.5 but none is installed. You must install peer dependencies yourself.
+  npm WARN eslint-config-airbnb@18.2.1 requires a peer of eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0 but none is installed. You must install peer dependencies yourself.
   npm WARN sample@1.0.0 No description
   npm WARN sample@1.0.0 No repository field.
   
-  + eslint@7.21.0
-  + eslint-plugin-jsx-a11y@6.4.1
   + eslint-plugin-import@2.22.1
-  + eslint-plugin-react-hooks@4.2.0
-  + eslint-config-airbnb@18.2.1
-  + eslint-plugin-react@7.22.0
+  + eslint@7.21.0
+  + eslint-config-airbnb-base@14.2.1
   + @typescript-eslint/eslint-plugin@4.16.1
   + @typescript-eslint/parser@4.16.1
-  added 135 packages from 95 contributors, updated 2 packages and audited 248 packages in 43.821s
+  removed 13 packages, updated 5 packages and audited 237 packages in 11.722s
   
-  43 packages are looking for funding
+  25 packages are looking for funding
     run `npm fund` for details
   
   found 0 vulnerabilities
@@ -271,7 +271,64 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
 
   ![image-20210304174248033](/assets/images/posts/image-20210304174248033.png)
 
+  
+
+  .eslintrc.json  파일에서  extends 부분 수정
+
+  ```
+  {
+      "env": {
+          "browser": true,
+          "es2021": true
+      },
+      "extends": [
+          "eslint:recommended"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+          "ecmaVersion": 12,
+          "sourceType": "module"
+      },
+      "plugins": [
+          "@typescript-eslint"
+      ],
+      "rules": {
+      }
+  }
+  ```
+
   .eslintrc.json파일은 eslint 설정 정보가 들어 있으며 자세한 내용은 [https://eslint.org/docs/user-guide/configuring/](https://eslint.org/docs/user-guide/configuring/){:target="_blank"}에서 확인 바랍니다.
+
+  
+
+  package.json 파일에서 scripts 부분 수정.
+
+  ```
+  {
+    "name": "sample",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "lint": "eslint ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "@typescript-eslint/eslint-plugin": "^4.16.1",
+      "@typescript-eslint/parser": "^4.16.1",
+      "eslint": "^7.21.0",
+      "eslint-config-airbnb": "^18.2.1",
+      "eslint-config-airbnb-base": "^14.2.1",
+      "eslint-plugin-import": "^2.22.1",
+      "eslint-plugin-jsx-a11y": "^6.4.1"
+    },
+    "dependencies": {
+      "typescript": "^4.2.3"
+    }
+  }
+  ```
 
   
 
@@ -286,6 +343,109 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
   Allow Everywhere를 선택합니다.
 
   ![image-20210304175628491](/assets/images/posts/image-20210304175628491.png)
+  
+  이제 오류를 발생 시키고 terminal에서 npm run lint -s를 실행 해봅니다.
+  
+  ![image-20210305113315687](/assets/images/posts/image-20210305113315687.png)
+  
+  오류를 수정하고 다시 실행 한 화면 입니다.
+  
+  ![image-20210305113510911](/assets/images/posts/image-20210305113510911.png)
+  
+  
+
+## 3. Blacket Pair Colorizer
+
+괄호에 color를 넣어주어 가독성을 높여 줍니다.
+
+- install
+
+  ![image-20210305121223479](/assets/images/posts/image-20210305121223479.png)
+
+- Usage
+
+  설치 하면 자동 적용 됩니다.
+
+  ![image-20210305121451122](/assets/images/posts/image-20210305121451122.png)
 
 
 
+## 4. indent-rainbow
+
+코드에서 들여쓰기 된 부분을 컬러로 표시 해줍니다.
+
+- install
+
+  ![image-20210305122756208](/assets/images/posts/image-20210305122756208.png)
+
+- Usage
+
+  설치 하면 자동 적용 됩니다.
+
+  ![image-20210305123352346](/assets/images/posts/image-20210305123352346.png)
+
+
+
+## 5. Auto Rename Tag
+
+html tag를 자동으로 수정해줍니다.  예를들어 < h1 > Test < /h1> 에서  앞에 < div >만 변경 해줘도 뒤에 < /div >로 자동으로 수정됩니다. 
+
+- install
+
+  ![image-20210305125553398](/assets/images/posts/image-20210305125553398.png)
+
+- Usage
+
+  ![image-20210305125735753](/assets/images/posts/image-20210305125735753.png)
+
+  ![image-20210305125902239](/assets/images/posts/image-20210305125902239.png)
+
+
+
+##  6. CSS Peek
+
+html에서 css를 검색할 수 있게 해줍니다.
+
+- install
+
+  ![image-20210305133747125](/assets/images/posts/image-20210305133747125.png)
+
+- Usage
+
+  html 파일 내에서 class을 Ctrl+마우스 클릭
+
+## 7. HTML CSS  Support
+
+html에서 css class명을 자동완성 기능을 지원해줍니다.
+
+- install
+
+  ![image-20210305134056027](/assets/images/posts/image-20210305134056027.png)
+
+- Usage
+
+  타이핑 하면 자동완성 기능이 지원됩니다.
+
+  ![image-20210305134135532](/assets/images/posts/image-20210305134135532.png)
+
+
+
+## 8. Live Server
+
+html 파일을 저장함과 동시에 html 화면이 실시간으로 보여지는 기능입니다.
+
+- install
+
+  ![image-20210305134414914](/assets/images/posts/image-20210305134414914.png)
+
+- Usage
+
+  Ctrl + Shift + p 를 눌러 live라고 검색하면 Live Server: Open with Live Server가 나오는데 
+
+  그걸 선택하면 새로운 브라우저 창이 하나 뜹니다. (단축키 Alt+O)
+
+  그리고 html 파일을 수정하고 저장하면 그 브라우저에 실시간으로 보여집니다.
+
+  ![image-20210305134839091](/assets/images/posts/image-20210305134839091.png)
+
+  ![image-20210305134716798](/assets/images/posts/image-20210305134716798.png)
