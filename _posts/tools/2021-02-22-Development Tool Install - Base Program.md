@@ -341,6 +341,45 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 
 
+brew설치 & gistory 설치
+
+cd ~
+
+code ~/.zshrc
+
+두번째 라인 주석 해제
+
+*# If you come from bash you might have to change your $PATH.*
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+저장하고 적용.
+
+source ~/.zshrc
+
+
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.zprofile
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+brew install python3
+
+pip3 install gistory 
+
+cd git홈/.git/
+
+gistory
+
+Bottle v0.13-dev server starting up (using WSGIRefServer())...
+Listening on http://0.0.0.0:8805/
+Hit Ctrl-C to quit.
+
+브라우저 열고 http://localhost:8805/ 접속
+
+
+
 ## 6. wsl cmder 연동
 
 Cmder 하단에서 +버튼 옆에 클릭 > Setup tasks 클릭.
