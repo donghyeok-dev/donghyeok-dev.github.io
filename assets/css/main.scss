@@ -7,18 +7,16 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
-
-
 ////////////////////////////////////
-$sans-serif: 'Noto Sans KR';
-$monospace: 'Ubuntu Mono';
+$sans-serif: "Noto Sans KR";
+$monospace: "Ubuntu Mono";
 $type-size-4-5: 1.12em !default; // Ubuntu Mono is a bit small
 
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans+KR|Ubuntu+Mono);
 
 html {
   font-size: 12px; // change to whatever
-  
+
   @include breakpoint($medium) {
     font-size: 14px; // change to whatever
   }
@@ -40,23 +38,23 @@ html {
 ////////////////////////////////////
 
 .page__content .archive__item-title {
-	margin-top: 2em;
+  margin-top: 2em;
 }
 
-.archive__item-title a{
-	text-decoration: none !important;
+.archive__item-title a {
+  text-decoration: none !important;
 }
 
 .archive__item-excerpt {
-	font-size: 0.85em !important;
+  font-size: 0.85em !important;
 }
 
 // .list__item {
 // 	border-bottom: solid 1px #235e70;
 // }
 
-.entries-list .list__item{
-	padding-bottom: 20px !important;
+.entries-list .list__item {
+  padding-bottom: 20px !important;
 }
 
 // .page__content {
@@ -76,13 +74,17 @@ html {
 // 	font-size: 1em;
 // }
 
-p>code, a>code, li>code, figcaption>code, td>code {
-	margin: 0px 2px;
-    color: rgb(255, 255, 255);
-    padding: 3px 6px;
-    font-size: 0.9em;
-    border-radius: 0.3rem;
-    background-color: rgb(0, 181, 173);
+p > code,
+a > code,
+li > code,
+figcaption > code,
+td > code {
+  margin: 0px 2px;
+  color: rgb(255, 255, 255);
+  padding: 3px 6px;
+  font-size: 0.9em;
+  border-radius: 0.3rem;
+  background-color: rgb(0, 117, 111);
 }
 
 .list_bottom_line {
@@ -92,9 +94,9 @@ p>code, a>code, li>code, figcaption>code, td>code {
 }
 
 .top_move_button {
-	position: fixed;
-	right: 2%;
-	bottom: 50px;
-	display: none;
-	z-index: 999;
+  position: fixed;
+  right: 2%;
+  bottom: 50px;
+  display: none;
+  z-index: 999;
 }
