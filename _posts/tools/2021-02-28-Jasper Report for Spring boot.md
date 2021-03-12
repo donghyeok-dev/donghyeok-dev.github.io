@@ -48,65 +48,65 @@ categories:
 
   
 
-  ![image-20210227002430657](/assets/images/posts/image-20210227002430657.png)
+  ![image-20210227002430657](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227002430657.png)
 
   
 
   windows_x86_64.exe를 다운 받아서 설치 합니다.
 
-  ![image-20210227004228839](/assets/images/posts/image-20210227004228839.png)
+  ![image-20210227004228839](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227004228839.png)
 
   Agree -> next -> finish하면 설치가 완료되면서 Jaspersoft studio가 실행 됩니다.
 
-  ![image-20210227004439054](/assets/images/posts/image-20210227004439054.png)
+  ![image-20210227004439054](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227004439054.png)
 
   
 
   실행 첫 화면에 Get Stated를 클릭합니다. (Learn More을 눌러서 내용을 살펴 보는것도 좋습니다.)
 
-  ![image-20210227004555686](/assets/images/posts/image-20210227004555686.png)
+  ![image-20210227004555686](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227004555686.png)
 
   
 
   메인 화면이 보입니다.
 
-  ![image-20210227004624453](/assets/images/posts/image-20210227004624453.png)
+  ![image-20210227004624453](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227004624453.png)
 
   
 
   일단 뭐라도 만들어보죠 New -Jasper Report를 선택하고 Next.
 
-  ![image-20210227010134330](/assets/images/posts/image-20210227010134330.png)
+  ![image-20210227010134330](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227010134330.png)
 
   기본적으로 템플릿을 제공해주는데요. 원하는 템플릿을 선택하고 Next 합니다. (여기서는 Blank A4를 선택)
 
-![image-20210227100435836](/assets/images/posts/image-20210227100435836.png)
+![image-20210227100435836](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227100435836.png)
 
 ​		Jrxml 파일명을 적고 Next
 
-​		![image-20210227130331204](/assets/images/posts/image-20210227130331204.png)
+​		![image-20210227130331204](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227130331204.png)
 
 ​		Report에서 사용할 데이터를 가져올 Data Adater를 선택합니다. 
 
 ​		Sample DB로 간단하게 테스트 해보실 수도 있습니다.
 
-​		![image-20210227101412019](/assets/images/posts/image-20210227101412019.png)
+​		![image-20210227101412019](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227101412019.png)
 
-![image-20210227095246096](/assets/images/posts/image-20210227095246096.png)
+![image-20210227095246096](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227095246096.png)
 
-​		![image-20210227103839590](/assets/images/posts/image-20210227103839590.png)
+​		![image-20210227103839590](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227103839590.png)
 
 ​		그외에 New를 눌러보면 다양한 타입의 Data Adater를 선택할 수 있습니다.
 
-​		![image-20210227095407329](/assets/images/posts/image-20210227095407329.png)
+​		![image-20210227095407329](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227095407329.png)
 
  		저는 Empty Record로 진행합니다.
 
-​		![image-20210227220354100](/assets/images/posts/image-20210227220354100.png)
+​		![image-20210227220354100](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227220354100.png)
 
 ​		간단한 리포트가 생성되었습니다.
 
-![image-20210227221346614](/assets/images/posts/image-20210227221346614.png)
+![image-20210227221346614](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227221346614.png)
 
 제목을 아래의 순서로 만듭니다.
 
@@ -116,37 +116,37 @@ categories:
 
 ③ 원하는 스타일을 지정한다.
 
-![image-20210227222735623](/assets/images/posts/image-20210227222735623.png)
+![image-20210227222735623](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227222735623.png)
 
 Page Header 영역에 StaticText,  Text Field 각각 한개씩 올려 놓습니다.
 
 (StaticText는 Label개념으로 Text Field는 Input으로 생각합니다.)
 
-![image-20210227223147030](/assets/images/posts/image-20210227223147030.png)
+![image-20210227223147030](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227223147030.png)
 
 StaticText는  총 사용자 수로, Text Field의 Expression은 $P{userTotalCount} 로 입력합니다.
 
 [Expression 상세보기](https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v60/expressions){:target="_blank"}
 
-![image-20210227225918045](/assets/images/posts/image-20210227225918045.png)
+![image-20210227225918045](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210227225918045.png)
 
 Palette에서 Table을 Detail 영역으로 드래그&드롭 하면 wizard 창이 열립니다.
 
-![image-20210228014158677](/assets/images/posts/image-20210228014158677.png)
+![image-20210228014158677](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228014158677.png)
 
 Next하면 상세한 옵션들을 선택할 수 있지만 저는 xml로 Setting할 예정이라 여기서 finish합니다.
 
 (사실 화면에 그릴 필요도 없지만,  wizard로 table 생성하는 것이 편리하기 때문에 그런 방법이 있다라고 알려 드리기 위해 작성했습니다.)
 
-![image-20210228014459290](/assets/images/posts/image-20210228014459290.png)
+![image-20210228014459290](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228014459290.png)
 
 그럼 Detail 영역에 테이블 하나가 생성됩니다. 
 
-![image-20210228014651897](/assets/images/posts/image-20210228014651897.png)
+![image-20210228014651897](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228014651897.png)
 
 화면 아래 Source탭을 클릭하여 아래 코드를 참고하여 edit하거나 Copy&Paste합니다.
 
-![image-20210228015528306](/assets/images/posts/image-20210228015528306.png)
+![image-20210228015528306](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228015528306.png)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -306,29 +306,29 @@ Next하면 상세한 옵션들을 선택할 수 있지만 저는 xml로 Setting�
 
 디자인 파일이 완성되었습니다. 만약 그림처럼  parameter오류가 나오더라도 무시 하시면 됩니다.
 
-![image-20210228015657188](/assets/images/posts/image-20210228015657188.png)
+![image-20210228015657188](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228015657188.png)
 
 이제 폰트 설정 정보만 export 한다음 spring project로 가져가면 됩니다.  프로젝트 Properties로 들어갑니다.
 
-![image-20210228015915879](/assets/images/posts/image-20210228015915879.png)
+![image-20210228015915879](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228015915879.png)
 
 report에서 사용할 폰트를 지정합니다.
 
-![image-20210228020156406](/assets/images/posts/image-20210228020156406.png)
+![image-20210228020156406](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228020156406.png)
 
-![image-20210228020213013](/assets/images/posts/image-20210228020213013.png)
+![image-20210228020213013](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228020213013.png)
 
 apply 한 다음 Export버튼을 누르고 jar파일을 저장합니다.
 
-![image-20210228020542110](/assets/images/posts/image-20210228020542110.png)
+![image-20210228020542110](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228020542110.png)
 
 압푹을 풀면 fonts 디렉토리와 jasperreports_extension.properties 파일이 있는데 spring 프로젝트의 resource 경로 아래로 옮겨주면 됩니다. fonts 폴더는 이름을 변경해도 되고  jasperreports_extension.properties 와 fonts/fontsfamilyxxxxx.xml 파일 내용 중  fonts경로만 변경 해주면 됩니다.
 
-![image-20210228020634296](/assets/images/posts/image-20210228020634296.png)
+![image-20210228020634296](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228020634296.png)
 
 Spring project는 Spring boot로 간단하게 구현하여 테스트 했습니다.
 
-![image-20210228021257386](/assets/images/posts/image-20210228021257386.png)
+![image-20210228021257386](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228021257386.png)
 
 Controller
 
@@ -453,4 +453,4 @@ test {
 
 ```
 
-![image-20210228022114924](/assets/images/posts/image-20210228022114924.png)
+![image-20210228022114924](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210228022114924.png)

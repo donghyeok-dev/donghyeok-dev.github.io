@@ -17,41 +17,41 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
   [https://chocolatey.org/install](https://chocolatey.org/install){:target="_blank"} 주소에서 아래 빨간색 체크 버튼을 클릭.
 
-  ![image-20210222030330752](/assets/images/posts/image-20210222030330752.png)
+  ![image-20210222030330752](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222030330752.png)
 
   작업 표시줄에서 Windows PowerShell을 관리자 권한으로 실행.
 
-  ![image-20210222030538890](/assets/images/posts/image-20210222030538890.png)
+  ![image-20210222030538890](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222030538890.png)
 
   chocolatey 사이트에서 복사한 텍스트를 붙여넣기를 하고 엔터를 하면 설치가 진행됩니다.
 
-  ![image-20210222030804050](/assets/images/posts/image-20210222030804050.png)
+  ![image-20210222030804050](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222030804050.png)
 
-  ![image-20210222030959833](/assets/images/posts/image-20210222030959833.png)
+  ![image-20210222030959833](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222030959833.png)
 
   설치가 다되었다면 Windows PowerShell을 관리자 권한으로 재실행합니다.
 
   choco를 입력하여 버전정보가 보인다면 정상 설치된 것입니다.
 
-  ![image-20210222031332145](/assets/images/posts/image-20210222031332145.png)
+  ![image-20210222031332145](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222031332145.png)
 
   [https://chocolatey.org/packages](https://chocolatey.org/packages){:target="_blank"} 에서 choco install python을 복사하여 PowerShell에서 실행.
 
-  ![image-20210222031644357](/assets/images/posts/image-20210222031644357.png)
+  ![image-20210222031644357](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222031644357.png)
 
-  ![image-20210222032626117](/assets/images/posts/image-20210222032626117.png)
+  ![image-20210222032626117](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222032626117.png)
 
-  ![image-20210222032807904](/assets/images/posts/image-20210222032807904.png)
+  ![image-20210222032807904](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222032807904.png)
 
   python 설치가 끝났다면 windows terminal을 설치합니다.
 
-  ![image-20210222033055323](/assets/images/posts/image-20210222033055323.png)
+  ![image-20210222033055323](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222033055323.png)
 
-  ![image-20210222033244120](/assets/images/posts/image-20210222033244120.png)
+  ![image-20210222033244120](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222033244120.png)
 
   Windows Terminal은 Microsoft Store에서도 설치가 가능합니다.
 
-  ![image-20210222035025641](/assets/images/posts/image-20210222035025641.png)
+  ![image-20210222035025641](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222035025641.png)
 
   
 
@@ -67,31 +67,31 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	(참고: [https://docs.microsoft.com/ko-kr/windows/wsl/install-win10](https://docs.microsoft.com/ko-kr/windows/wsl/install-win10){:target="_blank"})
 
-​	![image-20210222034735277](/assets/images/posts/image-20210222034735277.png)
+​	![image-20210222034735277](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222034735277.png)
 
 
 
 ​	여기까지 진행했다면 컴퓨터 재부팅을 해주고, Microsoft Store에서 unbuntu를 받아서 설치합니다.
 
-​	![image-20210222040449569](/assets/images/posts/image-20210222040449569.png)
+​	![image-20210222040449569](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222040449569.png)
 
 ​	설치가 다되면 계정을 만들면 됩니다.
 
-​	![image-20210222040939605](/assets/images/posts/image-20210222040939605.png)
+​	![image-20210222040939605](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222040939605.png)
 
 ​	여기까지 진행하셨다면 컴퓨터를 재부팅 해줍니다.
 
 ​	 Windows Terminal을 다시 열어서  wsl -l 명령어를 실행하면 Ubuntu가 설치된 걸 확인할 수 있습	니다.
 
-​	![image-20210222041201408](/assets/images/posts/image-20210222041201408.png)
+​	![image-20210222041201408](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222041201408.png)
 
 ​	 [https://docs.microsoft.com/ko-kr/windows/wsl/install-win10](https://docs.microsoft.com/ko-kr/windows/wsl/install-win10){:target="_blank"}에서  4단계와 5단계를 실행	합니다.
 
-​	![image-20210222041556700](/assets/images/posts/image-20210222041556700.png)
+​	![image-20210222041556700](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222041556700.png)
 
 ​	WSL 2 상세내용은  [https://docs.microsoft.com/ko-kr/windows/wsl/about](https://docs.microsoft.com/ko-kr/windows/wsl/about){:target="_blank"}에서 확인할 수 	있습니다.
 
-​	![image-20210222042145511](/assets/images/posts/image-20210222042145511.png)
+​	![image-20210222042145511](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222042145511.png)
 
 
 
@@ -99,23 +99,23 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 - 설치 주소: [https://cmder.net/](https://cmder.net/){:target="_blank"}
 
-  ![image-20210221232102781](/assets/images/posts/image-20210221232102781.png)
+  ![image-20210221232102781](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221232102781.png)
 
-  ![image-20210221232129812](/assets/images/posts/image-20210221232129812.png)
+  ![image-20210221232129812](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221232129812.png)
 
   다운받은 파일의 압축을 풀고 Cmder.exe를 실행합니다.
 
-  ![image-20210221233203747](/assets/images/posts/image-20210221233203747.png)
+  ![image-20210221233203747](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221233203747.png)
 
   Unblock and Continue를 클릭합니다.  최초에  한번만 실행되는 메시지입니다.
 
-  ![image-20210221233324586](/assets/images/posts/image-20210221233324586.png)
+  ![image-20210221233324586](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221233324586.png)
 
   실행이 되면 명령어로 테스트 해보자. Window10 부터 WSL(Windows Subsystem for Linux)가 
 
   포함되어서 Unix, Window 명령어 모두 사용가능합니다.
 
-  ![image-20210221233834706](/assets/images/posts/image-20210221233834706.png)
+  ![image-20210221233834706](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221233834706.png)
 
 
 
@@ -123,41 +123,41 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 - 설치 주소: [https://code.visualstudio.com/](https://code.visualstudio.com/){:target="_blank"}
 
-  ![image-20210222010832407](/assets/images/posts/image-20210222010832407.png)
+  ![image-20210222010832407](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222010832407.png)
 
-  ![image-20210222010853590](/assets/images/posts/image-20210222010853590.png)
+  ![image-20210222010853590](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222010853590.png)
 
-  ![image-20210222010910630](/assets/images/posts/image-20210222010910630.png)
+  ![image-20210222010910630](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222010910630.png)
 
-  ![image-20210222011043139](/assets/images/posts/image-20210222011043139.png)
+  ![image-20210222011043139](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222011043139.png)
 
-  ![image-20210222011102791](/assets/images/posts/image-20210222011102791.png)
+  ![image-20210222011102791](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222011102791.png)
 
-  ![image-20210222011218971](/assets/images/posts/image-20210222011218971.png)
+  ![image-20210222011218971](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222011218971.png)
 
-  ![image-20210222013158123](/assets/images/posts/image-20210222013158123.png)
+  ![image-20210222013158123](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222013158123.png)
 
 - Customizing VSCode
 
   좌측 메뉴에서 Extensions를 클릭합니다.
 
-  ![image-20210222013347005](/assets/images/posts/image-20210222013347005.png)
+  ![image-20210222013347005](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222013347005.png)
 
   material theme를 검색하여 install합니다.
 
-  ![image-20210222013736565](/assets/images/posts/image-20210222013736565.png)
+  ![image-20210222013736565](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222013736565.png)
 
   material icon을 검색하여 install합니다.
 
-  ![image-20210222014034720](/assets/images/posts/image-20210222014034720.png)
+  ![image-20210222014034720](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222014034720.png)
 
   설치가 끝나면 Material Icon Theme를 선택 해줍니다.
 
-  ![image-20210222014242666](/assets/images/posts/image-20210222014242666.png)
+  ![image-20210222014242666](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222014242666.png)
 
   File에서 New File(Ctrl+N)으로 여러 확장자 파일을 만들어 보면 각각 다른 아이콘이 적용된 걸 볼 수 있습니다.
 
-  ![image-20210222014608293](/assets/images/posts/image-20210222014608293.png)
+  ![image-20210222014608293](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222014608293.png)
 
   
 
@@ -170,23 +170,23 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​		설정에서 기본터미널 정보를 변경할 수 있습니다.
 
-​		![image-20210222042908603](/assets/images/posts/image-20210222042908603.png)
+​		![image-20210222042908603](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222042908603.png)
 
-​		![image-20210222042924505](/assets/images/posts/image-20210222042924505.png)
+​		![image-20210222042924505](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222042924505.png)
 
 ​		List에서 Ubuntu의 guid값을 복사하여
 
-​		![image-20210222043242539](/assets/images/posts/image-20210222043242539.png)
+​		![image-20210222043242539](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222043242539.png)
 
 ​		defaultProfile 부분에 붙여 넣으면 됩니다.
 
-​		![image-20210222043339129](/assets/images/posts/image-20210222043339129.png)
+​		![image-20210222043339129](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222043339129.png)
 
 ​		
 
 ​		`sudo apt install zsh` 명령어를 실행합니다.
 
-​		![image-20210222043817552](/assets/images/posts/image-20210222043817552.png)
+​		![image-20210222043817552](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222043817552.png)
 
 ​		
 
@@ -194,19 +194,19 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​		`sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` 명령어를 실행합니다.
 
-​		![image-20210222044404272](/assets/images/posts/image-20210222044404272.png)
+​		![image-20210222044404272](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222044404272.png)
 
 ​		터미널을 다시 열고 터미널에 code 명령어를 실행합니다. (for visual studio code)
 
-​		![image-20210222044646245](/assets/images/posts/image-20210222044646245.png)
+​		![image-20210222044646245](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222044646245.png)
 
 
 
 ​		터미널 테마 [ https://terminalsplash.com/]( https://terminalsplash.com/){:target="_blank"}에서 Monokai Night for Windows Terminal를 		검색해서 Code버튼을 누르면  코드 정보가 나오는데 그걸 복사하여 Setting파일에 적용합니다.
 
-​		![image-20210222051314076](/assets/images/posts/image-20210222051314076.png)
+​		![image-20210222051314076](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222051314076.png)
 
-​		![image-20210222051329628](/assets/images/posts/image-20210222051329628.png)
+​		![image-20210222051329628](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222051329628.png)
 
 
 
@@ -214,47 +214,47 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​		sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-		my-zsh/custom}/themes/powerlevel10k
 
-​		![image-20210222045600471](/assets/images/posts/image-20210222045600471.png)
+​		![image-20210222045600471](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222045600471.png)
 
 ​		code ~/.zshrc 를 입력하고 액세스 허용을 해줍니다.
 
-​		![image-20210222045838949](/assets/images/posts/image-20210222045838949.png)
+​		![image-20210222045838949](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222045838949.png)
 
 ​		설정파일에서 ZSH_TEHME를 powerlevel10k/powerlevel10k로 변경하고 저장한 다음 설정창을 닫고
 
 ​		터미널을 닫고 다시 열면 아래처럼 보입니다.
 
-​		![image-20210222050318750](/assets/images/posts/image-20210222050318750.png)
+​		![image-20210222050318750](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222050318750.png)
 
 ​		 [폰트설치](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k){:target="_blank"}에 접속하여 아래 MesloLGS 폰트 4개를 다운로드 받습니다.
 
 ​		다운받은 파일 각각 더블클릭하여 열고 왼쪽 상단에 설치 버튼을 클릭하여 설치합니다.
 
-​		![image-20210222052010117](/assets/images/posts/image-20210222052010117.png)
+​		![image-20210222052010117](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222052010117.png)
 
-​		![image-20210222052215140](/assets/images/posts/image-20210222052215140.png)
+​		![image-20210222052215140](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222052215140.png)
 
-​		![image-20210222052341979](/assets/images/posts/image-20210222052341979.png)
+​		![image-20210222052341979](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222052341979.png)
 
 
 
 ​		다시 settings.json파일에서 defaults에 설치한 "MesloLGS NF"를  fontface로 추가 해줍니다.
 
-​		![image-20210222052623580](/assets/images/posts/image-20210222052623580.png)
+​		![image-20210222052623580](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222052623580.png)
 
 
 
 ​		그리고 visual studio 우측 하단 설정 > settings에서 terminal intergrated font Fmily를 검색하고 "MesloLGS 		NF"를 입력합니다.
 
-​		![image-20210222053103795](/assets/images/posts/image-20210222053103795.png)
+​		![image-20210222053103795](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222053103795.png)
 
-​		![image-20210222052924598](/assets/images/posts/image-20210222052924598.png)
+​		![image-20210222052924598](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222052924598.png)
 
 
 
 ​	windows terminal을 열면 아까 깨져보이는 폰트가 정상적으로 보일것이다. 나머지는 그림따라 설정합니다.
 
-​	![image-20210222053403896](/assets/images/posts/image-20210222053403896.png)
+​	![image-20210222053403896](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222053403896.png)
 
 ​	y
 
@@ -266,53 +266,53 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	(1)Unicode.
 
-​	![image-20210222053627081](/assets/images/posts/image-20210222053627081.png)
+​	![image-20210222053627081](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222053627081.png)
 
 ​	(2) 24-hour format
 
-​	![image-20210222053710821](/assets/images/posts/image-20210222053710821.png)
+​	![image-20210222053710821](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222053710821.png)
 
 ​	(1) Angled
 
-​	![image-20210222053749434](/assets/images/posts/image-20210222053749434.png)
+​	![image-20210222053749434](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222053749434.png)
 
 ​	(1) Sharp
 
-​	![image-20210222054022915](/assets/images/posts/image-20210222054022915.png)
+​	![image-20210222054022915](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054022915.png)
 
 ​	(3) Sharp
 
-​	![image-20210222054054186](/assets/images/posts/image-20210222054054186.png)
+​	![image-20210222054054186](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054054186.png)
 
 ​	(1) One line
 
-​	![image-20210222054136618](/assets/images/posts/image-20210222054136618.png)
+​	![image-20210222054136618](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054136618.png)
 
 ​	(1) Compact
 
-​	![image-20210222054223428](/assets/images/posts/image-20210222054223428.png)
+​	![image-20210222054223428](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054223428.png)
 
 ​	(2) Many icons
 
-​	![image-20210222054348636](/assets/images/posts/image-20210222054348636.png)
+​	![image-20210222054348636](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054348636.png)
 
 ​	(1) Concise
 
-​	![image-20210222054502465](/assets/images/posts/image-20210222054502465.png)
+​	![image-20210222054502465](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054502465.png)
 
 ​	(n)No
 
-​	![image-20210222054602493](/assets/images/posts/image-20210222054602493.png)
+​	![image-20210222054602493](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054602493.png)
 
 ​	(3) Instant Prompt Mode를 시도해본 적이 없거나 경고를 본 적이 없거나 이 모든 것이 무엇을 의미하는지 모를 	경우 3번을 선택하세요.
 
-​	![image-20210222054700662](/assets/images/posts/image-20210222054700662.png)
+​	![image-20210222054700662](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054700662.png)
 
 ​	(y)Yes
 
-​	![image-20210222054820042](/assets/images/posts/image-20210222054820042.png)
+​	![image-20210222054820042](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054820042.png)
 
-​	![image-20210222054918611](/assets/images/posts/image-20210222054918611.png)
+​	![image-20210222054918611](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222054918611.png)
 
 
 
@@ -320,7 +320,7 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	Settings에서  우측 상단에 아이콘을 클릭하여 Settings.json파일이 편집합니다.
 
-​	![image-20210226111630406](/assets/images/posts/image-20210226111630406.png)
+​	![image-20210226111630406](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210226111630406.png)
 
 ​	아래 내용을 붙여 넣고 저장합니다.
 
@@ -335,7 +335,7 @@ Windows10 환경에서 WSL2, zsh , oh my zsh,  Visual Studio Code,  windows term
 
 ​	상단 메뉴 View > Terminal을 클릭하면 아래와 같이 적용된게 보입니다.
 
-​	![image-20210222060043289](/assets/images/posts/image-20210222060043289.png)
+​	![image-20210222060043289](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222060043289.png)
 
 ​	만약 powerlevel10k 환경 설정을 변경하고 싶다면 터미널에서 p10k configure 명령어를 실행하면 됩니다.
 
@@ -384,7 +384,7 @@ Hit Ctrl-C to quit.
 
 Cmder 하단에서 +버튼 옆에 클릭 > Setup tasks 클릭.
 
-![image-20210222063410318](/assets/images/posts/image-20210222063410318.png)
+![image-20210222063410318](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222063410318.png)
 
 +버튼을 누르고 순서대로 입력 후 save settings 클릭.
 
@@ -394,13 +394,13 @@ WSL2::bash
 
 %windir%\system32\bash.exe ~ -c zsh -cur_console:<span style="color:red">p5</span>
 
-![image-20210223065610829](/assets/images/posts/image-20210223065610829.png)
+![image-20210223065610829](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210223065610829.png)
 
 설정한 powerlevel10k  테마가 windows terminal에서는 잘보이는데 cdmer에서는 깨져보입니다.
 
 그래서 agnoster 테마로 교체했습니다.
 
-![image-20210222121419137](/assets/images/posts/image-20210222121419137.png)
+![image-20210222121419137](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210222121419137.png)
 
 zsh 설정 편집하기
 
@@ -453,13 +453,13 @@ source $ZSH/oh-my-zsh.sh
 
 설정 정보  및 최종 터미널 모습입니다.
 
-![image-20210225223429658](/assets/images/posts/image-20210225223429658.png)
+![image-20210225223429658](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210225223429658.png)
 
-![image-20210225223452019](/assets/images/posts/image-20210225223452019.png)
+![image-20210225223452019](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210225223452019.png)
 
-![image-20210225223520983](/assets/images/posts/image-20210225223520983.png)
+![image-20210225223520983](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210225223520983.png)
 
-![image-20210225223706609](/assets/images/posts/image-20210225223706609.png)
+![image-20210225223706609](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210225223706609.png)
 
 
 
@@ -477,64 +477,64 @@ source $ZSH/oh-my-zsh.sh
 
 [https://www.sourcetreeapp.com/](https://www.sourcetreeapp.com/){:target="_blank"}
 
-![image-20210221135047005](/assets/images/posts/image-20210221135047005.png)
+![image-20210221135047005](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135047005.png)
 
 - 용도에 따라 다르겠지만, Bitbucket을 선택.
 
-  ![image-20210221135556368](/assets/images/posts/image-20210221135556368.png)
+  ![image-20210221135556368](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135556368.png)
 
 - 기존 Bitbucket 사용자가 아니라면 회원가입.
 
-  ![image-20210221135401649](/assets/images/posts/image-20210221135401649.png)
+  ![image-20210221135401649](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135401649.png)
 
-  ![image-20210221135515153](/assets/images/posts/image-20210221135515153.png)
+  ![image-20210221135515153](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135515153.png)
 
-  ![image-20210221135751897](/assets/images/posts/image-20210221135751897.png)
+  ![image-20210221135751897](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135751897.png)
 
-  ![image-20210221135805609](/assets/images/posts/image-20210221135805609.png)
+  ![image-20210221135805609](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135805609.png)
 
 - 다음을 누르면 설치 옵션을 선택하는 화면이 나오는데 고급옵션에서 CRLF 설정.
 
-  ![image-20210221135934684](/assets/images/posts/image-20210221135934684.png)
+  ![image-20210221135934684](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221135934684.png)
 
 - 마무리 단계를 완료하면 설치가 완료.
 
-  ![image-20210221150226834](/assets/images/posts/image-20210221150226834.png)
+  ![image-20210221150226834](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221150226834.png)
 
   아니요 선택.
 
-  ![image-20210221150318803](/assets/images/posts/image-20210221150318803.png)
+  ![image-20210221150318803](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221150318803.png)
 
 - Sourcetree 메인 상단 메뉴에서 Local을 클릭하면 Local Repository를 볼 수 있습니다.
 
-  ![image-20210221151409552](/assets/images/posts/image-20210221151409552.png)
+  ![image-20210221151409552](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221151409552.png)
 
-  ![image-20210221151950541](/assets/images/posts/image-20210221151950541.png)
+  ![image-20210221151950541](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221151950541.png)
 
 - Sourcetree 테스트
 
   테스트용 git repository 하나를 생성.
 
-  ![image-20210221224113481](/assets/images/posts/image-20210221224113481.png)
+  ![image-20210221224113481](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221224113481.png)
 
   파일 탐색기 또는 터미널에서 테스트용 git repository에 a.txt파일를 생성하면 working directory에 a.txt가 보입니다.
 
-  ![image-20210221224607191](/assets/images/posts/image-20210221224607191.png)
+  ![image-20210221224607191](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221224607191.png)
 
-  ![image-20210221224643418](/assets/images/posts/image-20210221224643418.png)
+  ![image-20210221224643418](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221224643418.png)
 
   a.txt파일 옆에 + 버튼을 누르면 Staging Area로 파일이 이동.
 
-  ![image-20210221225051340](/assets/images/posts/image-20210221225051340.png)
+  ![image-20210221225051340](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221225051340.png)
 
   맨 아래 textarea 부분에 "first commit"라고 comment하고 commit을 하면 브랜치 master가 생성되면서 history에 기록이 보입니다.
 
-  ![image-20210221225253360](/assets/images/posts/image-20210221225253360.png)
+  ![image-20210221225253360](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221225253360.png)
 
   파일을 수정하고 Staging Area로 이동시킨다음 "second commit"을하면 아래 처럼 log가 보입니다.
 
-  ![image-20210221225428747](/assets/images/posts/image-20210221225428747.png)
+  ![image-20210221225428747](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221225428747.png)
 
-  ![image-20210221225509380](/assets/images/posts/image-20210221225509380.png)
+  ![image-20210221225509380](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210221225509380.png)
 
   

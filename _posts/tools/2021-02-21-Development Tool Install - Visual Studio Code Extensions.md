@@ -19,31 +19,31 @@ Prettier은 javascript, html 등의 코드를 사용자가 정한 작성 규칙�
 
   좌측 메뉴의 extensions 검색창에서 prettier을 검색하여 install합니다.
 
-  ![image-20210304144518368](/assets/images/posts/image-20210304144518368.png)
+  ![image-20210304144518368](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304144518368.png)
 
 - config
 
   Settings ( ctrl+, ) 를 열고 save 을 검색하여 Editor:Format On Save를 체크 합니다.
 
-  ![image-20210304150435928](/assets/images/posts/image-20210304150435928.png)
+  ![image-20210304150435928](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304150435928.png)
 
   prettier tab wdith는 tab키를 눌렀을때 몇칸을 이동시킬 지 설정하는 값이고, 기본값은 2로 되어 있습니다.
 
   보통 2로 설정하며  4로 설정하면  javascript 나 html는 코드가 길어 질 수록 가독성이 떨어집니다.
 
-  ![image-20210304150846706](/assets/images/posts/image-20210304150846706.png)
+  ![image-20210304150846706](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304150846706.png)
 
   prettier quote는 javascript의 ' 또는 " 등으로 포맷을 맞추는 설정 값입니다.
 
-  ![image-20210304151148416](/assets/images/posts/image-20210304151148416.png)
+  ![image-20210304151148416](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304151148416.png)
 
   prettier Sile Quote 체크 설정.
 
-  ![image-20210305110457627](/assets/images/posts/image-20210305110457627.png)
+  ![image-20210305110457627](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305110457627.png)
 
   이렇게  Settings에서 검색하여 설정하는 방법도 있지만 Settings.json에서 한번에 설정할 수도 있습니다.
 
-  ![image-20210304151326566](/assets/images/posts/image-20210304151326566.png)
+  ![image-20210304151326566](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304151326566.png)
 
   ```json
   {
@@ -85,27 +85,27 @@ Prettier은 javascript, html 등의 코드를 사용자가 정한 작성 규칙�
 
   HTML before
 
-  ![image-20210304152242020](/assets/images/posts/image-20210304152242020.png)
+  ![image-20210304152242020](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304152242020.png)
 
   HTML After
 
-  ![image-20210304152317610](/assets/images/posts/image-20210304152317610.png)
+  ![image-20210304152317610](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304152317610.png)
 
   
 
   Javascript(.js) Before
 
-  ![image-20210304152652261](/assets/images/posts/image-20210304152652261.png)
+  ![image-20210304152652261](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304152652261.png)
 
   Javascript(.js) After
 
-  ![image-20210304152734608](/assets/images/posts/image-20210304152734608.png)
+  ![image-20210304152734608](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304152734608.png)
 
 
 
 - Visual Studio Code 내의 Tab Size 조절
 
-  ![image-20210305131451173](/assets/images/posts/image-20210305131451173.png)
+  ![image-20210305131451173](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305131451173.png)
 
 
 
@@ -269,7 +269,7 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
 
   여기까지 진행이 완료 되었다면 workspace 경로에 다음 그림과 같은 파일들이 생성되어 있습니다.
 
-  ![image-20210304174248033](/assets/images/posts/image-20210304174248033.png)
+  ![image-20210304174248033](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304174248033.png)
 
   
 
@@ -338,19 +338,19 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
 
   아직 ESLint 승인이 되지 않았다고 나옵니다.  그러면 그 아래 파란색 전구를 클릭하고 ESLint: Manage Library Execution을 선택합니다.
 
-  ![image-20210304175455193](/assets/images/posts/image-20210304175455193.png)
+  ![image-20210304175455193](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304175455193.png)
 
   Allow Everywhere를 선택합니다.
 
-  ![image-20210304175628491](/assets/images/posts/image-20210304175628491.png)
+  ![image-20210304175628491](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210304175628491.png)
   
   이제 오류를 발생 시키고 terminal에서 npm run lint -s를 실행 해봅니다.
   
-  ![image-20210305113315687](/assets/images/posts/image-20210305113315687.png)
+  ![image-20210305113315687](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305113315687.png)
   
   오류를 수정하고 다시 실행 한 화면 입니다.
   
-  ![image-20210305113510911](/assets/images/posts/image-20210305113510911.png)
+  ![image-20210305113510911](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305113510911.png)
   
   
 
@@ -360,13 +360,13 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
 
 - install
 
-  ![image-20210305121223479](/assets/images/posts/image-20210305121223479.png)
+  ![image-20210305121223479](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305121223479.png)
 
 - Usage
 
   설치 하면 자동 적용 됩니다.
 
-  ![image-20210305121451122](/assets/images/posts/image-20210305121451122.png)
+  ![image-20210305121451122](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305121451122.png)
 
 
 
@@ -376,13 +376,13 @@ Javascript의 잠재적인 오류를 찾아거나 수정해주는 기능을 하�
 
 - install
 
-  ![image-20210305122756208](/assets/images/posts/image-20210305122756208.png)
+  ![image-20210305122756208](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305122756208.png)
 
 - Usage
 
   설치 하면 자동 적용 됩니다.
 
-  ![image-20210305123352346](/assets/images/posts/image-20210305123352346.png)
+  ![image-20210305123352346](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305123352346.png)
 
 
 
@@ -392,13 +392,13 @@ html tag를 자동으로 수정해줍니다.  예를들어 < h1 > Test < /h1> �
 
 - install
 
-  ![image-20210305125553398](/assets/images/posts/image-20210305125553398.png)
+  ![image-20210305125553398](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305125553398.png)
 
 - Usage
 
-  ![image-20210305125735753](/assets/images/posts/image-20210305125735753.png)
+  ![image-20210305125735753](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305125735753.png)
 
-  ![image-20210305125902239](/assets/images/posts/image-20210305125902239.png)
+  ![image-20210305125902239](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305125902239.png)
 
 
 
@@ -408,7 +408,7 @@ html에서 css를 검색할 수 있게 해줍니다.
 
 - install
 
-  ![image-20210305133747125](/assets/images/posts/image-20210305133747125.png)
+  ![image-20210305133747125](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305133747125.png)
 
 - Usage
 
@@ -420,13 +420,13 @@ html에서 css class명을 자동완성 기능을 지원해줍니다.
 
 - install
 
-  ![image-20210305134056027](/assets/images/posts/image-20210305134056027.png)
+  ![image-20210305134056027](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305134056027.png)
 
 - Usage
 
   타이핑 하면 자동완성 기능이 지원됩니다.
 
-  ![image-20210305134135532](/assets/images/posts/image-20210305134135532.png)
+  ![image-20210305134135532](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305134135532.png)
 
 
 
@@ -436,7 +436,7 @@ html 파일을 저장함과 동시에 html 화면이 실시간으로 보여지�
 
 - install
 
-  ![image-20210305134414914](/assets/images/posts/image-20210305134414914.png)
+  ![image-20210305134414914](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305134414914.png)
 
 - Usage
 
@@ -446,6 +446,6 @@ html 파일을 저장함과 동시에 html 화면이 실시간으로 보여지�
 
   그리고 html 파일을 수정하고 저장하면 그 브라우저에 실시간으로 보여집니다.
 
-  ![image-20210305134839091](/assets/images/posts/image-20210305134839091.png)
+  ![image-20210305134839091](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305134839091.png)
 
-  ![image-20210305134716798](/assets/images/posts/image-20210305134716798.png)
+  ![image-20210305134716798](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210305134716798.png)
