@@ -1,0 +1,22 @@
+--junit4, junit5, mokito, db unit, html unit
+--yml 설정
+
+
+//https://www.youtube.com/watch?v=wBXSUdT1jX0
+//https://blog.voidmainvoid.net/98
+- jira 연동
+- Git Flow integration
+-json
+- UPSOURCE
+
+
+
+- GitToolBox : 현재 branch 표시 및 blame 추적 기능(책임자 파악, 누가 고친건지)
+
+blame
+잘못된 코드가 어디서부터 시작되었는지 찾기 어렵습니다. 
+잘못된 내용을 찾으려면 모든 커밋 이력을 살펴보아야 하는데, 생각보다 시간이 오래 걸립니다. 
+깃은 이러한 코드를 쉽게 찾을 수 있게 파일의 수정 이력을 분석합니다. 
+그리고 blame 기능은 커밋의 메타 정보를 코드 라인별로 같이 결합하여 출력합니다. 
+코드를 수정한 사람이 누구인지, 언제 수정한지를 쉽게 판별할 수 있으며, 
+메타 정보를 바탕으로 문제를 좀 더 쉽게 파악할 수 있습니다.

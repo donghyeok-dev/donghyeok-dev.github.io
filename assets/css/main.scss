@@ -100,3 +100,15 @@ td > code {
   display: none;
   z-index: 999;
 }
+
+.pagination--pager {
+  color: rgb(73, 80, 87) !important;
+}
+
+.pagination--pager .fas{
+  color: #009e96 !important;
+}
+
+.pagination--pager:hover {
+  background-color: #d5d6d6 !important;
+}
