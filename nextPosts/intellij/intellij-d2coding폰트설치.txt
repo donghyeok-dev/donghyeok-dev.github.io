@@ -1,0 +1,5 @@
+https://github.com/naver/d2codingfont 폰트 다운로드 후 압축 품.
+D2CodingAll 폴더의 D2Coding-Ver1.3.2-20180524-all.ttc를 오른쪽 마우스 메뉴에서
+모든 사용자용 설치 클릭
+
+intellij 재시작 후 Setting Apperance에서 폰트 D2 Coding 선택

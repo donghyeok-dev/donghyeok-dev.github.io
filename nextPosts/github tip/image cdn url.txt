@@ -1,0 +1,2 @@
+/assets/images/posts/
+https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/

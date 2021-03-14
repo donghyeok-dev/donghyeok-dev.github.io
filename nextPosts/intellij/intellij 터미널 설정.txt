@@ -1,0 +1,8 @@
+C:\Windows\System32\bash.exe
+
+bash.exe ~ -c zsh
+
+cmd.exe /k ""C:\Users\mosic\cmder\vendor\init.bat""
+
+bash.exe /k ""C:\Users\mosic\cmder\vendor\init.bat""
+
