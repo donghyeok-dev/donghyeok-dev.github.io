@@ -1,0 +1,7 @@
+https://id.atlassian.com/manage-profile/security/api-tokens
+에서 토큰 발급
+
+
+연동후 alt+shift+n으로 이슈 검색
+
+이슈 클릭하면 branch 생성화면 보임.

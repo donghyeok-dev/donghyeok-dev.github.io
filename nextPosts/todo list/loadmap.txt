@@ -2,6 +2,8 @@
 --yml 설정
 
 
+--https://sdkman.io/install   모든 sdk를 검색&설치 쉽게 해주는 툴
+
 //https://www.youtube.com/watch?v=wBXSUdT1jX0
 //https://blog.voidmainvoid.net/98
 - jira 연동
