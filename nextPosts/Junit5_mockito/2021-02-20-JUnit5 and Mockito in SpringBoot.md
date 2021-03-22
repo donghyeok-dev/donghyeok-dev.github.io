@@ -30,7 +30,7 @@ Unit Test의 장점
 
 - JUnit5는 JUnit Platform + JUint Jupiter + JUnit Vintage의 Test Framework이다.
 
-  ![image-20210320235416135](C:\Users\mosic\github\assets\images\posts\image-20210320235416135.png)
+  ![image-20210320235416135](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320235416135.png)
 
 - JUnit4는 Vintage engine을 사용하며 spring boot 2.2.x 버전부터 기본 engine이 jupiter로 변경 됨.
 
@@ -38,23 +38,23 @@ Unit Test의 장점
 
   product Class에서 바로 Test Class를 생성하는 방법도 있다. Product Class에서 Alt+Ins, Test...을 선택하면 된다.
 
-  ![image-20210320235004914](C:\Users\mosic\github\assets\images\posts\image-20210320235004914.png)
+  ![image-20210320235004914](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320235004914.png)
 
-![image-20210320233827378](C:\Users\mosic\github\assets\images\posts\image-20210320233827378.png)
+![image-20210320233827378](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320233827378.png)
 
 이렇게 하면 gradle 파일에 junit 4버전이 추가된다.
 
-![image-20210320233217003](C:\Users\mosic\github\assets\images\posts\image-20210320233217003.png)
+![image-20210320233217003](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320233217003.png)
 
-![image-20210320232943586](C:\Users\mosic\github\assets\images\posts\image-20210320232943586.png)
+![image-20210320232943586](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320232943586.png)
 
 물론 이 상태에서 JUnit5도 테스트가 가능하다.
 
-![image-20210320233429807](C:\Users\mosic\github\assets\images\posts\image-20210320233429807.png)
+![image-20210320233429807](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320233429807.png)
 
 같은 패키지내에 JUnit 4와 JUnit 5를 동시에 구현해서 실행하면 Engine 명도 표시된다.
 
-![image-20210320234255320](C:\Users\mosic\github\assets\images\posts\image-20210320234255320.png)
+![image-20210320234255320](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210320234255320.png)
 
 - JUnit5의  life Cycle는 [상세 이미지](https://junit.org/junit5/docs/current/user-guide/images/extensions_DatabaseTestsDemo.png){:target="_blank"}를 참고하고, 간단하게 설명 하자면 아래와 같다.
 
@@ -87,9 +87,9 @@ Unit Test의 장점
   }
   ```
 
-  ![image-20210321174123909](C:\Users\mosic\github\assets\images\posts\image-20210321174123909.png)
+  ![image-20210321174123909](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321174123909.png)
 
-  `@RepeatedTest` 반복 테스트를 위한 테스트 템플릿 .
+  `@RepeatedTest` 반복 테스트를 위한 테스트 .
 
   ```java
   @RepeatedTest(3)
@@ -110,7 +110,7 @@ Unit Test의 장점
   }
   ```
 
-  `@TestFactory` 동적 테스트를 위한 테스트 팩토리.
+  `@TestFactory` 동적 테스트.
 
   ```java
   @SpringBootTest
@@ -142,17 +142,25 @@ Unit Test의 장점
 
   테스트 메서드에 @Order를 사용하려면 해당 클래스에 이 어노테이션을 정의해야 함.
 
-  `@TestInstance`
-
-  클래스에 대한 테스트 인스턴스 수명주기 를 구성하는 데 사용됩니다.
-
-  `@DisplayName`
-
-  테스트 클래스 또는 메서드에 대한 사용자 지정 표시 이름 을 선언합니다.
-
-  `@DisplayNameGeneration`
-
-  클래스에 대한 사용자 지정 표시 이름 생성기 를 선언합니다.
+  ```java
+  @SpringBootTest(classes = SampleTestMethodOrder.class)
+  @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+  public class SampleTestMethodOrder {
+      @Test
+      @Order(3)
+      @DisplayName("첫번째 메소드")
+      public void firstMethod() {
+          Assertions.assertEquals(1, 1);
+      }
+  
+      @Test
+      @Order(1)
+      @DisplayName("두번째 메소드")
+      public void secondMethod() {
+          Assertions.assertEquals(1, 1);
+      }
+  }
+  ```
 
   `@BeforeEach` (JUnit4 @Before)
 
@@ -170,9 +178,108 @@ Unit Test의 장점
 
   클래스내에서 마지막으로 실행되는 메서드
 
+  `@TestInstance`
+
+  클래스에 대한 테스트 인스턴스 수명주기 를 구성하는 데 사용됩니다.
+
+  PER_CLASS
+
+  - Test 클래스 당 하나의 인스턴스가 생성.
+  - @BeforeAll, @AfterAll 함수를 `static 없이 사용 가능함`.
+
+  PER_CLASS 
+
+  - Test 메서드 당 하나의 인스턴스가 생성.
+
+  ```java
+  @SpringBootTest(classes = SampleTestInstance.class)
+  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+  public class SampleTestInstance {
+      @BeforeAll
+      public void beforeAllTest() {
+          System.out.println(">>> beforeAllTest called");
+      }
+  
+      @BeforeEach
+      public void beforeEachTest() {
+          System.out.println(">>> beforeEachTest called");
+      }
+  
+      @Test
+      void test1() {
+          System.out.println(">>> test1 called");
+          Assertions.assertEquals(1, 1);
+      }
+  
+      @Test
+      void test2() {
+          System.out.println(">>> test2 called");
+          Assertions.assertEquals(1, 1);
+      }
+  
+      @AfterEach
+      public void afterEachTest() {
+          System.out.println(">>> afterEachTest called");
+      }
+  
+      @AfterAll
+      public void afterAllTest() {
+          System.out.println(">>> afterAllTest called");
+      }
+  }
+  ```
+
+  `@DisplayName`
+
+  테스트 클래스 또는 메서드에 대한 사용자 지정 표시 이름을 선언합니다.
+
+  ```java
+  @Test
+  @DisplayName("테스트 이름")
+  public void testMethod() {
+  	Assertions.assertEquals(1, 1);
+  }
+  ```
+
+  `@DisplayNameGeneration`
+
+  클래스에 대한 사용자 지정 표시 이름 생성기 를 선언합니다.
+
+  Class에 Annotation을 작성.
+
+   @DisplayName보다 우선순위가 낮음.
+
+  | Standard            | Matches the standard display name generation behavior in place since JUnit Jupiter 5.0 was released. |
+  | ------------------- | ------------------------------------------------------------ |
+  | Simple              | Removes trailing parentheses for methods with no parameters. |
+  | ReplaceUnderscores  | Replaces underscores with spaces.                            |
+  | IndicativeSentences | Generates complete sentences by concatenating the names of the test and the enclosing classes. |
+
+  ```java
+  @SpringBootTest(classes=SampleDisplayGeneration.class)
+  @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+  public class SampleDisplayGeneration {
+  
+      @Test
+      void test_if_equals() {
+          Assertions.assertEquals(1,1);
+      }
+  
+      @Test
+      @DisplayName("DisplayName 우선 적용")
+      void test_if_true() {
+          Assertions.assertTrue(true);
+      }
+  }
+  ```
+
+  ![image-20210322165405274](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210322165405274.png)
+
   `@Nested`
 
   주석이 달린 클래스가 정적이 아닌 중첩 테스트 클래스 임을 나타냅니다 . @BeforeAll및 @AfterAll방법은 직접 사용할 수 없습니다 @Nested은 "당 클래스"를 제외 테스트 클래스 테스트 인스턴스 라이프 사이클이 사용.
+
+  
 
   `@Tag` (JUnit @Categories)
 
@@ -239,17 +346,17 @@ Unit Test의 장점
 
   Test를 IntelliJ IDEA로 할 경우 Settings-Build...-Build Tools-Gradle에서 Run tests using을 IntelliJ IDEA로 선택하고 Run/Debug Configuration에서 Tags를 선택하고 [Expression](https://junit.org/junit5/docs/current/user-guide/#running-tests-tag-expressions)을 입력한다.
 
-  ![image-20210321164718225](C:\Users\mosic\github\assets\images\posts\image-20210321164718225.png)
+  ![image-20210321164718225](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321164718225.png)
 
-  ![image-20210321165223878](C:\Users\mosic\github\assets\images\posts\image-20210321165223878.png)
+  ![image-20210321165223878](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321165223878.png)
 
-  ![image-20210321165908669](C:\Users\mosic\github\assets\images\posts\image-20210321165908669.png)
+  ![image-20210321165908669](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321165908669.png)
 
   한 가지 주의할 점은 IntelliJ 단축키 `Ctrl`+`Shift`+`F10`으로 실행할 경우 설정한 Tags가 실행되는게 아니라 해당 클래스가 Test Run되기 때문에 우측 상단에 설정한 Tags인지 확인 해야 한다. 그래서 설정한 Tags로 계속 테스트할 때는 `Shift`+`F10` 단축키로 실행해야 한다.
 
-  ![image-20210321170152274](C:\Users\mosic\github\assets\images\posts\image-20210321170152274.png)
+  ![image-20210321170152274](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321170152274.png)
 
-  ![image-20210321170232396](C:\Users\mosic\github\assets\images\posts\image-20210321170232396.png)
+  ![image-20210321170232396](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321170232396.png)
 
   
 
@@ -268,9 +375,9 @@ Unit Test의 장점
 
   그리고 Run Configurations에서 Gradle을 추가하고 설정 정보를 넣은 다음 실행하면 된다.
 
-  ![image-20210321170916528](C:\Users\mosic\github\assets\images\posts\image-20210321170916528.png)
+  ![image-20210321170916528](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321170916528.png)
 
-  ![image-20210321171028397](C:\Users\mosic\github\assets\images\posts\image-20210321171028397.png)
+  ![image-20210321171028397](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210321171028397.png)
 
   개인적으로 IntelliJ IDEA를 선호하는데 그 이유는 결과 창에 상세 항목 정보가 안나오고 실행된 수만 나오기 때문이다. (대신 위 그림에서 보라색 Gradle Icon을 클릭하면 웹에서 상세 정보를 볼 수는 있다.)
 
