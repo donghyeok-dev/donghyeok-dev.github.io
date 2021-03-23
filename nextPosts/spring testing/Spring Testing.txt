@@ -1,9 +1,9 @@
-*단위 테스트(Unit Testing)
+1. 단위 테스트(Unit Testing)
 
 영속(영구) 데이터를 액세스하지 않고 테스트를 하려면
 서비스 레이어 객체를 스텁하거나 Dao 또는 레파지토리 인터페이스를 mocking하여 테스트할 수 있습니다.
 
-*Mock 객체
+1.1 Mock 객체
 
 -Environment
 	org.springframework.mock.env 패키지에는 Environment과 PropertySource 추상화의 모의 구현이 포함되어 있습니다.
@@ -35,7 +35,7 @@
   클라이언트는 실행 중인 서버의 종단 간 테스트에도 사용할 수 있습니다.
 
 
-*단위 테스트 지원 클래스
+1.2 단위 테스트 지원 클래스
 - 일반 테스트 유틸리티
   org.springframework.test.util 패키지에는 단위 및 통합 테스트에 사용하기 위한 몇 가지 범용 유틸리티가 포함되어 있습니다.
   
@@ -67,16 +67,289 @@
 
 
 
-Integration Testing(통합 테스트)
+2. Integration Testing(통합 테스트)
 
 애플리케이션 서버를 구축하거나 다른 엔터프라이즈 인프라에 연결하지 않고도 일부 통합테스트를 수행할 수 있어야 합니다.
 - 스프링 IoC 컨테이너 컨텍스트를 올바르게 wiring합니다.
 - JDBC 또는 ORM 툴를 사용하여 데이터를 엑세스 합니다. 여기에는 sql문 hibernate 쿼리, JPA 엔티티 매핑 등이 포함될 수 있습니다.
 
+와이어링(wiring)이란 객체간의 관계 형성 작업으로 DI 개념의 핵심입니다. 예를들어 스프링 컨테이너에 등록된 A,B,C 객체가 있다고 가정하고,
+D객체가 B와 C객체를 참조하려할때 D객체에서 @Autowired Annotation을 사용하여 B, C 객체를 Inject 받을 수 있습니다.
+와이어링 하는 방법은 여러가지 방법이 있는데 자세한건 검색 해보시길 바랍니다.
+
 org.springframework.test 패키지에는 스프링 컨테이너와 통합 테스트를 위한 유용한 클래스들이 포함되어 있습니다. 
 이 테스트는 애플리케이션 서버 또는 다른 배포환경에 의존하지 않기 때문에 
 애플리케이션 서버에 의존하는 동등한 Selenium 테스트 또는 원격 테스트 보다 훨씬 빠릅니다.
-
 단위 및 통합 테스트 스프링 테스트 프레임워크의 Annotation 위주로 지원됩니다.
-
 테스트 컨텍스트 프레임워크는 사용 중인 실제 테스트 프레임워크와는 무관하며 이를 통해 JUnit, TestNG 등 다양한 환경에서 테스트를 할 수 있습니다.
+
+2.1 통합 테스트 목표
+- 테스트 간 Spring Ioc 컨테이너 캐싱을 관리합니다.
+   Spring Test Context Framework는 Spring ApplicationContext와 WebApplicationContext의 일관된 로드를 제공하고 이러한 컨텍스트의 캐싱을 제공합니다.
+   시작 시간이 문제가 될 수 있기 때문에 로드된 컨텍스트를 캐쉬하는 지원이 중요합니다. 이는 스프링 자체의 오버헤드가 아니라 스프링 컨테이너에 의해 생성된 객체를 인스턴스화 하는데 시간이 걸리기 때문입니다.
+   기본적으로 로드가 되면 구성된 ApplicationContext가 각 테스트에 재사용됩니다. 따라서 처음 한번 이후 테스트 실행 속도는 빨라집니다.
+- 테스트 픽스처 DI(Test Fixtures Dependency Injection)
+  테스트 컨텍스트 프레임워크는 응용 프로그램 컨텍스트를 로드할 때 종속성 주입을 사용하여 테스트 클래스의 인스턴스를 선택적으로 구성할 수 있고, 
+  응용프로그램 컨텍스트에 미리 구성된 빈(스프링 관리 개체 그래프, 트랜잭션 프록시, 데이터 소스 인스턴스 등)에서 
+  컨텍스트를 재사용할 수 있기 때문에 개별 테스트에 대해 복잡한 복제를 할 필요가 없습니다.
+- 통합테스트에 적합한 트랜잭션 관리를 제공합니다.
+  테스트에서 트랜잭션 프록시 개체를 호출하면 테스트 컨텍스트 프레임워크는 각 테스트에 대한 트랜잭션을 만들고 
+  구성된 트랜잭션 의미에 따라 올바르게 동작하도록 합니다.
+  또한 테스트에 대해 관리되는 트랜잭션 내에서 실행되는 동안 선택한 테이블의 내용을 삭제하면 
+  기본적으로 트랜잭션이 롤백되고 테스트 실행 전에 데이터베이스가 해당 상태로 돌아갑니다.
+  트랜잭션 지원은 테스트의 애플리케이션 컨텍스트에 정의된 PlatformTransaction Manager를 사용하여 테스트에 제공됩니다.
+  
+  만약 트랜잭션이 커밋되길 원한다면 @Commit Annotation을 사용하여 동작하도록 할 수 있습니다.
+  
+- 통합 테스트 작성 시 개발자를 지원하는 Spring 별 기본 클래스를 제공합니다.
+ApplicationContext는 명시적 검색을 수행하거나 전체 컨텍스트의 상태를 테스트 하기 위한 것입니다.
+JdbcTemplate는 SQL문을 용프로그램과 동일한 트랜잭션 범위에서 실행하고 실행 전, 후에 모든 데이터베이스 상태를 확인할 수 있습니다.
+
+2.2 JDBC Testing Support
+org.springframework.test.jdbc 패키지에는 표준 데이터베이스 테스트 시나리오를 단순화 하기 위한 JDBC 관련 유틸리티 메서드를 제공하는 JdbcTestUtils가 포함되어 있습니다.
+countRowsInTable : 지정된 테이블의 행 수를 카운트합니다.
+countRowsInTableWhere : 지정된 표에서 모든 행을 삭제합니다.
+deleteFromTables : 지정된 표에서 모든 행을 삭제합니다.
+deleteFromTableWhere : 지정된 WHERE 절을 사용하여 지정된 테이블에서 행을 삭제합니다.
+dropTables : 지정된 테이블을 삭제 합니다.
+spring-jdbc 모듈은 내장형 데이터베이스 지원 및 내장형 데이터베이스에서 데이터 액세스 로직 테스트를 지원합니다.
+
+
+2.3 Annotations
+
+- 스프링 테스트 Annotation
+@BootstrapWith : 클래스 Annotation이고, 컨텍스트 프레임워크의 부트스트랩 방법을 구성하는 데 사용. 
+
+@ContextConfiguration : ApplicationContext를 로드 및 구성하는 방법을 결정하는 데 사용되는 클래스 수준 메타데이터를 정의. 
+						일반적으로 @Configuration 클래스 이외에도 @Component, @Service, xml, groovy 등도 될 수 있습니다.
+
+@WebAppConfiguration: WebApplicationContext 임을 선언. src/main/webapp의 기본값을 사용하여 테스트를 위한 WebApplication Context가 로드되고,
+					  리소스 기본 경로는 씬(scene) 뒤에서 테스트의 웹 응용 프로그램 컨텍스트에 대한 서블릿 컨텍스트 역할을 하는 MockServlet Context를 만드는 데 사용됩니다.
+@ContextHierarchy: 클래스 Annotation이고, 하나 이상의 @ContextConfiguration인스턴스 목록으로 선언되어야하며, 각 인스턴스는 컨텍스트 계층 구조의 수준을 정의합니다. 
+
+@ActiveProfiles : 활성화되어야하는 Bean 정의 프로파일을 선언.
+
+@TestPropertySource : 클래스 Annotation이고, 속성의 파일 또는 인라인 속성의 위치를 구성하는 데 사용.
+
+@DynamicPropertySource : 메소드 Annotation이고, 동적 속성 세트에 추가하는데 사용. 동적 속성은 속성 값을 미리 알지 못하는 경우에 유용
+
+@DirtiesContext : 클래스, 메소드 Annotation이고, 애플리케이션 컨텍스트가 더티로 표시되면 테스트 프레임 워크의 캐시에서 제거되고 닫힙니다. 
+                  결과적으로 기본 Spring 컨테이너는 동일한 구성 메타 데이터를 가진 컨텍스트가 필요한 후속 테스트를 위해 다시 빌드됩니다.
+
+@TestExecutionListeners : 클래스 Annotation이고, TestExecutionListener등록해야하는 구현 을 구성하기위한 메타 데이터를 정의.
+
+@RecordApplicationEvents : 클래스 Annotation이고, 단일 테스트를 실행 하는 동안 게시 된 모든 애플리케이션 이벤트를 기록 하도록 Spring TestContext Framework 에 지시하는 데 사용.
+
+@Commit : 트랜잭션 테스트 메서드에 대한 트랜잭션이 테스트 메서드가 완료된 후 커밋되어야 함을 나타냄.( == @Rollback(false) )
+
+@Rollback : 테스트 메서드가 완료된 후 트랜잭션 테스트 메서드에 대한 트랜잭션을 롤백해야하는지 여부.(true트랜잭션이 롤백, false면 커밋)
+
+@BeforeTransaction: 메소드가 트랜잭션이 시작되기 전에 실행되어야 함을 나타냄.
+
+@AfterTransaction: 메소드가 트랜잭션 종료 후 실행되어야 함을 나타냄.
+
+@Sql: 통합 테스트 중에 주어진 데이터베이스에 대해 실행될 SQL 스크립트를 구성하기 위해 테스트 클래스 또는 테스트 메소드에 Annotation 추가하는 데 사용
+
+@Test
+@Sql({"/test-schema.sql", "/test-user-data.sql"}) 
+void userTest() {
+    // run code that relies on the test schema and test data
+}
+
+@SqlConfig : @Sql Annotation으로 구성된 SQL 스크립트를 구문 분석하고 실행하는 방법을 결정하는 데 사용되는 메타 데이터를 정의.
+
+@Test
+@Sql(
+    scripts = "/test-user-data.sql",
+    config = @SqlConfig(commentPrefix = "`", separator = "@@") 
+)
+void userTest() {
+    // run code that relies on the test data
+}
+
+
+@SqlMergeMode: 테스트 클래스 또는 테스트 메서드에 Annotation을 달아 메서드 수준 @Sql선언이 클래스 수준 선언과 병합 되는지 여부를 구성하는 데 사용.
+ @Sql. @SqlMergeMode테스트 클래스 또는 테스트 메서드에서이 선언되지 않은 경우 OVERRIDE병합 모드가 기본적으로 사용됩니다. 
+ OVERRIDE모드를 사용하면 메서드 수준 @Sql선언이 클래스 수준 선언을 효과적으로 재정의 @Sql합니다.
+ 
+@SpringJUnitConfig(TestConfig.class)
+@Sql("/test-schema.sql")
+@SqlMergeMode(MERGE) 
+class UserTests {
+
+    @Test
+    @Sql("/user-test-data-001.sql")
+    void standardUserProfile() {
+        // run code that relies on test data set 001
+    }
+}
+
+@SqlGroup : @SqlAnnotation 을 집계하는 컨테이너 Annotation.
+			여러 중첩 된 @Sql주석 을 선언 하거나 Java 8의 반복 가능한 Annotation 지원과 함께 사용할 @Sql수 있습니다
+
+@Test
+@SqlGroup({ 
+    @Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`")),
+    @Sql("/test-user-data.sql")
+)}
+void userTest() {
+    // run code that uses the test schema and test data
+}
+
+
+- 표준 Annotation 지원
+@Autowired
+
+@Qualifier
+
+@Value
+
+@Resource (javax.annotation) JSR-250이있는 경우
+
+@ManagedBean (javax.annotation) JSR-250이있는 경우
+
+@Inject (javax.inject) JSR-330이있는 경우
+
+@Named (javax.inject) JSR-330이있는 경우
+
+@PersistenceContext (javax.persistence) JPA가있는 경우
+
+@PersistenceUnit (javax.persistence) JPA가있는 경우
+
+@Required
+
+@Transactional(org.springframework.transaction.annotation) 와 제한된 속성 지원
+
+
+- Spring Junit5 테스트 Annotation
+
+@SpringJUnitConfig : @ExtendWith(SpringExtension.class) JUnit5와 @ContextConfigurationSpring TestContext Framework의 합성 Annotation.
+				     구성 요소 클래스가의 value속성을 사용하여 선언 될 수 있음.
+					 
+@SpringJUnitConfig(TestConfig.class) 
+class ConfigurationClassJUnitJupiterSpringTests {
+    // class body...
+}					 
+
+@SpringJUnitWebConfig       @ExtendWith(SpringExtension.class), @ContextConfiguration, @WebAppConfiguration 합성 Annotation
+
+@SpringJUnitWebConfig(TestConfig.class) 
+class ConfigurationClassJUnitJupiterSpringWebTests {
+    // class body...
+}
+
+@TestConstructor : 테스트 클래스 생성자의 매개 변수가 테스트의 구성 요소에서 자동 연결되는 방식을 구성하는 데 사용.
+				   @Autowired생성자에 대한 로컬 선언이 @TestConstructor및 기본 모드 보다 우선.
+				   기본 테스트 생성자 자동 연결 모드 는 spring.test.constructor.autowire.modeJVM 시스템 속성을 로 설정하여 변경할 수 있음.
+				   
+
+@NestedTestConfiguration : 내부 테스트 클래스를위한 엔 클로징 클래스 계층 구조 내에서 Spring 테스트 구성 어노테이션이 처리되는 방식을 구성하는 데 사용.
+							기본 포함 구성 상속 모드 는 INHERIT이지만 spring.test.enclosing.configurationJVM 시스템 속성을 로 설정하여 변경할 수 있음.
+							@NestedTestConfiguration일반적으로 @NestedJUnit Jupiter의 테스트 클래스 와 함께 사용하는 경우에만 의미가 있습니다.
+@EnabledIf : 테스트 클래스 또는 테스트 메서드가 활성화되었음을 알리는 데 사용되고, String과 같 거나 같으면 true (대소 문자 무시) 테스트가 활성화됩니다.
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@EnabledIf(
+    expression = "#{systemProperties['os.name'].toLowerCase().contains('mac')}",
+    reason = "Enabled on Mac OS"
+)
+public @interface EnabledOnMac {}
+
+
+@DisabledIf : 테스트 클래스 또는 테스트 메서드가 비활성화되었음을 알리는 데 사용
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@DisabledIf(
+    expression = "#{systemProperties['os.name'].toLowerCase().contains('mac')}",
+    reason = "Disabled on Mac OS"
+)
+public @interface DisabledOnMac {}
+
+- Meta-Annotation 지원
+ 대부분의 테스트 관련 주석을 메타 주석 으로 사용하여 사용자 지정 작성된 주석을 만들고 테스트 스위트에서 구성 중복을 줄일 수 있습니다.
+ 메타 주석은 다른 주석에 적용 할 수있는 주석
+
+
+2.4 Spring TestContext 프레임 워크
+
+
+Spring TestContext 프레임 워크는 사용중인 테스트 프레임워크에 관계없이 일반적인 Annotation 기반 단위,통합 테스트 지원을 제공합니다.
+일반적인 테스트 인프라 외에도 Junit4(vintage), Junit5(Jupiter) 및 TestNG에 대한 명시적인 지원을 제공합니다.
+Junit4와 TestNG의 경우 abstract 클래스를 제공하고, Junit4 용 Runner, Junit5 용 Rules 사용자 정의 Extension을 제공.
+POJO 테스트 클래스는 abstract지원 클래스와 같은 특정 클래스 계층을 확장하는 데 필요하지 않습니다.
+
+*TestContext 프레임 워크의 내부에 대한 개요
+주요 추상화
+프레임워크의 핵심은 TestContextManager 클래스와 TestContext, TestExecutionListener, SmartContextLoader 인터페이스로 구성.
+TestContextManager는 각 테스트 클래스에 대해 생성되고 테스트가 진행됨에 따라 테스트 컨텍스트의 상태를 업데이트하고, 
+종속성 주입, 트랜잭션 관리 등을 제공하여 실제 테스트 실행을 지시하는 TestExecutionListener 구현에 위임합니다.
+
+
+TestContext: 테스트가 실행되는 컨텍스트를 캡슐화하고 해당 컨텍스트를 담당하는 테스트 인스턴스에 대한 컨텍스트 관리 및 캐싱 지원을 제공.
+
+TestContextManager:  주요 진입 점 TestContext이며 TestExecutionListener 잘 정의 된 테스트 실행 지점에 등록 된 각 이벤트에 대한 단일 및 신호 이벤트를 관리
+                    before all, before each method, test instance, after all, after each method 등을 관리
+
+TestExecutionListener: TestContextManager에 의해 실행되는 테스트 실행에 반응하기 위해 API를 정의합니다.
+
+@ContextConfiguration
+@TestExecutionListeners({
+    MyCustomTestExecutionListener.class,
+    ServletTestExecutionListener.class,
+    DirtiesContextBeforeModesTestExecutionListener.class,
+    DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class,
+    SqlScriptsTestExecutionListener.class
+})
+class MyTest {
+    // class body...
+}
+
+ContextLoader: ApplicationContextSpring TestContext Framework에서 관리하는 통합 테스트를위한를 로드하기 위한 전략 인터페이스입니다.
+			  SmartContextLoader는 지정된 테스트 클래스에 대한 Application Context를 로드하는 역할
+			                      리소스 위치, component 클래스 또는 컨텍스트 이니셜라이저를 처리하도록 선택할 수 있습니다.
+ 
+
+
+
+Spring Framework 5.3.3 이후, 테스트 컨텍스트 프레임워크는 애플리케이션 컨텍스트에 게시된 애플리케이션 이벤트를 기록하기 위한 지원을 제공하여
+테스트 내에서 해당 이벤트에 대해 주장을 수행할 수 있도록 한다. 
+단일 테스트 실행 중에 게시된 모든 이벤트는 java.util.stream으로 처리할 수 있는 ApplicationEvents API를 통해 사용할 수 있습니다.
+
+@SpringJUnitConfig(/* ... */)
+@RecordApplicationEvents 
+class OrderServiceTests {
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    ApplicationEvents events; 
+
+    @Test
+    void submitOrder() {
+        // Invoke method in OrderService that publishes an event
+        orderService.submitOrder(new Order(/* ... */));
+        // Verify that an OrderSubmitted event was published
+        int numEvents = events.stream(OrderSubmitted.class).count(); 
+        assertThat(numEvents).isEqualTo(1);
+    }
+}
+
+
+
+테스트 실행 이벤트 
+Spring Framework 5.2에 도입된 Event Publishing Test Execution Listener는 사용자 정의 Test Execution Listener를 구현하기 위한 대체 접근 방식을 제공합니다.
+@BeforeTestClass - BeforeTestClassEvent        
+@PrepareTestInstance - PrepareTestInstanceEvent
+@BeforeTestMethod - BeforeTestMethodEvent
+@BeforeTestExecution - BeforeTestExecutionEvent
+@AfterTestExecution - AfterTestExecutionEvent
+@AfterTestMethod - AfterTestMethodEvent
+@AfterTestClass - AfterTestClassEvent
+
+
+3.5.6. 컨텍스트 관리
