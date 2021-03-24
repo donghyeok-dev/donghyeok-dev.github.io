@@ -351,5 +351,740 @@ Spring Framework 5.2에 도입된 Event Publishing Test Execution Listener는 �
 @AfterTestMethod - AfterTestMethodEvent
 @AfterTestClass - AfterTestClassEvent
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 3.5.6. 컨텍스트 관리
+테스트 인스턴스에 컨텍스트 관리 및 캐싱 지원을 제공합니다.
+- 애플리케이션 컨텍스트를 주입
+@SpringJUnitConfig
+class MyTest {
+
+    @Autowired 
+    ApplicationContext applicationContext;
+
+    // class body...
+}
+
+- 웹 애플리케이션 컨텍스트를 주입
+@SpringJUnitWebConfig 
+class MyWebAppTest {
+
+    @Autowired 
+    WebApplicationContext wac;
+
+    // class body...
+}
+
+DependencyInjectionTestExecutionListener에서 @Autowierd 사용으로 Dependency Injection(DI)하는 것을 제공한다.
+@ContextConfiguration 클래스 수준의 Annotation은 테스트 클래스가 응용 프로그램 컨텍스트 리소스 위치 또는
+ 구성 요소 클래스를 명시적으로 선언하지 않는 경우 구성된 ContextLoader 기본 위치 또는 기본 구성 클래스에서 
+ 컨텍스트를 로드하는 방법을 결정한다. 컨텍스트 리소스 위치 및 구성요소 클래스 외에도 
+ 애플리케이션 컨텍스트 이니셜라이저를 통해 애플리케이션 컨텍스트를 구성할 수 있다.
+
+테스트를 위해 애플리케이션 컨텍스트를 로드하는 방법으로는 xml Resource, component class, groovy script등이 있고,
+@ContextConfiguration에 해당 파일의 경로를 지정할때는 location 속성값은 생략될 수 있다. 
+
+@ExtendWith(SpringExtension.class)
+// ApplicationContext will be loaded from "/app-config.xml" and
+// "/test-config.xml" in the root of the classpath
+@ContextConfiguration(locations={"/app-config.xml", "/test-config.xml"}) 
+class MyTest {
+    // class body...
+}
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration({"/app-config.xml", "/test-config.xml"}) 
+class MyTest {
+    // class body...
+}
+
+만약 location값을 지정하지 않으면 TestContext 프레임워크는 기본 xml 리소스를 찾는다.
+@ExtendWith(SpringExtension.class)
+// ApplicationContext will be loaded from
+// "classpath:com/example/MyTest-context.xml"
+@ContextConfiguration 
+class MyTest {
+    // class body...
+}
+
+
+component class 지정방법
+
+
+@ExtendWith(SpringExtension.class)
+// ApplicationContext will be loaded from AppConfig and TestConfig
+@ContextConfiguration(classes = {AppConfig.class, TestConfig.class}) 
+class MyTest {
+    // class body...
+}
+
+component class는 다음과 같은 class를 적용할 수 있다.
+- @Configuration가 Annotated된 클래스.
+- @Component, @Service, @Repository 등의 stereotype Annotations가 Annotated된 클래스.
+- JSR-330 호환되는 @Inject, @Named 등의 javax.inject Annotation가 Annotated된 클래스.
+- @Bean 메서드를 포함하는 클래스.
+- Spring Annotation을 사용하지 않고 단일 생성자의 자동 로드(automatic autowiring)기능을 활용할 수 있는 Spring component로 등록하려는 클래스.
+
+@ContextConfiguration의 classes 값을 생략하면 TestContext 프레임워크는 기본 구성 클래스를 아래와 같은 방법으로 찾습니다.
+AnnotationConfigContextLoader and AnnotationConfigWebContextLoader는 @Configuration이 명시된 구성 클래스 구현 요구 사항을 충족하는 
+테스트 클래스의 모든 정적 중첩 클래스를 탐지합니다. 또한 테스트 클래스는  하나 이상의 정적 중첩 클래스를 포함할 수 있습니다.
+@SpringJUnitConfig 
+// ApplicationContext will be loaded from the
+// static nested Config class
+class OrderServiceTest {
+
+    @Configuration
+    static class Config {
+
+        // this bean will be injected into the OrderServiceTest class
+        @Bean
+        OrderService orderService() {
+            OrderService orderService = new OrderServiceImpl();
+            // set properties, etc.
+            return orderService;
+        }
+    }
+
+    @Autowired
+    OrderService orderService;
+
+    @Test
+    void testOrderService() {
+        // test the orderService
+    }
+
+}
+
+컨텍스트 이니셜라이저를 사용하여 테스트에 대한 애플리케이션 컨텍스트를 구성하려면 
+@ContextConfiguration Annotation을 추가하고 ApplicationContextInitializer를 구현하는 클래스에 대한
+참조를 포함하는 배열로 이니셜라이저 속성을 구성하세요.
+정의된 컨텍스트 이니셜라이저를 사용하여 테스트에 로드된 ConfigurableApplicationContext를 초기화 합니다.
+지원되는 애플리케이션 컨텍스트 유형은 SmartContextLoader에서 생성한 애플리케이션 컨텍스트 유형과 호환되어야 하고,
+초기화 순서는 @Order 또는 @Priority가 Annotated되는 것에 따라 달라집니다.
+
+@ExtendWith(SpringExtension.class)
+// ApplicationContext will be loaded from TestConfig
+// and initialized by TestAppCtxInitializer
+@ContextConfiguration(
+    classes = TestConfig.class,
+    initializers = TestAppCtxInitializer.class) 
+class MyTest {
+    // class body...
+}
+
+
+*환경 프로파일을 사용한 컨텍스트 구성
+통합 테스트는 다양한 테스트 시나리오에 대한 특정 bean definition profiles를 활성화하도록 구성할 수 있습니다.
+@ActiveProfiles Annotation을 테스트 클래스에 Annotated하고 
+테스트를 위한 Application Context를 로드할 때 활성화되어야 하는 프로필 목록을 제공합니다.
+
+SmartContextLoader SPI를 구현하는데 @ActiveProfiles를 사용할 수 있지만
+@ActiveProfiles는 이전 ContextLoader SPI를 구현하는 데 지원되지 않습니다.
+
+사용예
+
+
+@Configuration
+@Profile("dev")
+public class StandaloneDataConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.HSQL)
+            .addScript("classpath:com/bank/config/sql/schema.sql")
+            .addScript("classpath:com/bank/config/sql/test-data.sql")
+            .build();
+    }
+}
+
+@Configuration
+@Profile("production")
+public class JndiDataConfig {
+
+    @Bean(destroyMethod="")
+    public DataSource dataSource() throws Exception {
+        Context ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:comp/env/jdbc/datasource");
+    }
+}
+
+@Configuration
+@Profile("default")
+public class DefaultDataConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.HSQL)
+            .addScript("classpath:com/bank/config/sql/schema.sql")
+            .build();
+    }
+}
+
+@Configuration
+public class TransferServiceConfig {
+
+    @Autowired DataSource dataSource;
+
+    @Bean
+    public TransferService transferService() {
+        return new DefaultTransferService(accountRepository(), feePolicy());
+    }
+
+    @Bean
+    public AccountRepository accountRepository() {
+        return new JdbcAccountRepository(dataSource);
+    }
+
+    @Bean
+    public FeePolicy feePolicy() {
+        return new ZeroFeePolicy();
+    }
+}
+
+@SpringJUnitConfig({
+        TransferServiceConfig.class,
+        StandaloneDataConfig.class,
+        JndiDataConfig.class,
+        DefaultDataConfig.class})
+@ActiveProfiles("dev")
+class TransferServiceTest {
+
+    @Autowired
+    TransferService transferService;
+
+    @Test
+    void testTransferService() {
+        // test the transferService
+    }
+}
+
+TransferServiceTest 클래스에 @ActiveProfiles("dev")를 Annotated하면 Spring Test Context Framework에
+활성 프로파일이 dev로 설정된 ApplicationContext를 로드하도록 지시하면 Profile이 dev로 Annotated된
+클래스의 DataSource로 연결 됩니다. 이것은 통합 테스트를 할 때 유용하게 사용될 수 있습니다.
+ActiveProfiles된 프로파일이 없는 경우 DefaultDataConfig DataSource로 연결 됩니다.
+@ActiveProfiles 주석의 중복된 선언을 방지하기 위해 기본 클래스에 한 번 @ActiveProfiles를 선언할 수 있으며 
+하위 클래스는 자동으로 기본 클래스로부터 @ActiveProfiles 구성을 상속합니다.
+
+@SpringJUnitConfig({
+        TransferServiceConfig.class,
+        StandaloneDataConfig.class,
+        JndiDataConfig.class,
+        DefaultDataConfig.class})
+@ActiveProfiles("dev")
+abstract class AbstractIntegrationTest {
+}
+
+// "dev" profile inherited from superclass
+class TransferServiceTest extends AbstractIntegrationTest {
+
+    @Autowired
+    TransferService transferService;
+
+    @Test
+    void testTransferService() {
+        // test the transferService
+    }
+}
+
+
+@ActiveProfiles의 inheritProfiles 속성값은 활성 프로필의 상속을 비활성화하는 데 사용할 수 있습니다.
+
+// "dev" profile overridden with "production"
+@ActiveProfiles(profiles = "production", inheritProfiles = false)
+class ProductionTransferServiceTest extends AbstractIntegrationTest {
+    // test body
+}
+
+
+또한  Active profiles를 
+현재 운영체제 종류, 통합 빌드 서버에서 테스트가 실행 중인지, 특정 환경 변수에 따라서 달라져야 한다던지의 등의
+특정 조건에 따라 선택해야될 때는 프로그래밍 방식으로 이를 해결해야 합니다. 
+ActiveProfilesResolver를 implements한 클래스를 구현하고 @ActiveProfiles의 resolver 속성 값에 할당 합니다.
+(servlet 4.0부터 지원됩니다.)
+
+// "dev" profile overridden programmatically via a custom resolver
+@ActiveProfiles(
+        resolver = OperatingSystemActiveProfilesResolver.class,
+        inheritProfiles = false)
+class TransferServiceTest extends AbstractIntegrationTest {
+    // test body
+}
+
+public class OperatingSystemActiveProfilesResolver implements ActiveProfilesResolver {
+
+    @Override
+    public String[] resolve(Class<?> testClass) {
+        String profile = ...;
+        // determine the value of profile based on the operating system
+        return new String[] {profile};
+    }
+}
+
+
+
+*테스트 속성 소스를 사용한 컨텍스트 구성
+@TestPropertySource을 Annotated하여 테스트 속성 파일 또는 인라인 속성에 대한 리소스 위치를 선언할 수 있습니다. 
+이러한 테스트 속성 소스는 통합 테스트를 위해 로드된 Application Context에 대한 환경의 속성 소스 집합에 추가됩니다.
+SmartContextLoader SPI의 모든 구현과 함께 @TestPropertySource를 사용할 수 있지만 
+@TestPropertySource는 이전 ContextLoader SPI의 구현에서는 지원되지 않습니다.
+
+@TestPropertySource의 locations 속성 값으로 지정된 경로는 테스트 클래스가 정의된 패키지에 상대적인 클래스 경로 리소스로 처리됩니다.
+절대 경로를 설정(예: /org/example/test.properties)로 지정하거나 classpath:/com/example/test.properties 형태로 지정할 수 있습니다.
+하지만 리소스 위치 와일드카드(예: */.properties)는 허용되지 않습니다.
+
+@ContextConfiguration
+@TestPropertySource("/test.properties") 
+class MyIntegrationTests {
+    // class body...
+}
+
+@TestPropertySource의 속성값은 키-값 쌍 형식으로 인라인 속성을 구성됩니다. (혼용 사용 가능)
+key=value
+key:value
+key value
+
+@ContextConfiguration
+@TestPropertySource(properties = {"timezone = GMT", "port: 4242"}) 
+class MyIntegrationTests {
+    // class body...
+}
+
+Spring Framework 5.2부터는 단일 테스트 클래스 내에 여러개의 @TestPropertySource를 Annotated할 수 있으며,
+각 @TestPropertySource은 이전 @TestPropertySource보다 우선시 됩니다. 
+또한 @TestPropertySource는 메타 주석으로도 사용 가능합니다.
+
+@TestPropertySource의 속성값이 명시되지 않은 경우 기본 경로의 속성 파일을 찾으려고 합니다.
+예를들어 com.example.MyTest에서 Annotated된 경우 classpath:com/example/MyTest.properties파일을 찾습니다.
+만약 기본값을 검색할 수 없는 경우 InvaluateStateException이 발생합니다.
+
+테스트 속성은 @PropertySource를 사용하거나 프로그래밍 방식으로 응용 프로그램에 의해 선언적으로 추가된 운영 체제 환경, 
+Java 시스템 속성 또는 속성 소스에서 정의된 것보다 높은 우선 순위를 가집니다. 
+또한 @TestPropertySource 속성 내에 지정한 속성 파일보다 인라인 속성값의 우선순위가 높습니다.
+아래와 같은 예제에서 test.properties에 port가 8080으로 정의 되어 있고, 인라인 속성의 port가 4242이면 
+port는 4242로 재정의 됩니다.
+
+@ContextConfiguration
+@TestPropertySource(
+    locations = "/test.properties",
+    properties = {"timezone = GMT", "port: 4242"}
+)
+class MyIntegrationTests {
+    // class body...
+}
+
+상속 구조에서는 기본적으로 부모 클래스에 Annotated된 @TestPropertySource 설정을 상속 받고,
+하위 클래스에 별도로 @TestPropertySource를 구성할 경우 하위 클래스는 두 개의 설정 모두 적용됩니다.
+만약 부모 클래스의 설정값을 사용하지 않을려면 @TestPropertySource 속성 값 중 inheritLocations 또는 
+inheritProperties을 false로 설정하면 됩니다.
+
+@TestPropertySource("base.properties")
+@ContextConfiguration
+class BaseTest {
+    // ...
+}
+
+@TestPropertySource("extended.properties")
+@ContextConfiguration
+class ExtendedTest extends BaseTest {
+    // ...
+}
+
+
+*동적 속성 소스를 사용한 컨텍스트 구성
+Spring Framework 5.2.5를 기준으로 테스트 컨텍스트 프레임워크는 @DynamicPropertySource Annotation을 통해 동적 속성을 지원합니다.
+통합 테스트를 위해 로드된 Application Context에 대한 환경의 속성 소스 집합에 동적 값을 가진 속성을 추가해야 하는 통합 테스트에 사용할 수 있습니다.
+이 기능은 라이프사이클이 테스트의 애플리케이션 컨텍스트 외부에 유지되는 모든 형태의 외부 리소스에도 사용할 수 있습니다.
+
+@DynamicPropertySource는 단일 DynamicProperty Registry 인수를 허용하는 정적 메서드에 적용되어야 하며 @TestPropertySource나
+프로그래밍 방식으로 애플리케이션에 로드된 속성보다 우선 순위가 높습니다.
+
+
+스프링 응용 프로그램 컨텍스트 외부에서 Redis 컨테이너를 관리하기 위해 테스트 컨테이너 프로젝트를 사용하는
+다음 예제에서 볼 수 있듯이 값을 제공하는데 사용됩니다. 
+관리되는 Redis 컨테이너의 IP 주소와 포트는 Redis를 통해 테스트의 Application Context 내의 구성 요소에 사용할 수 있습니다.
+
+@SpringJUnitConfig(/* ... */)
+@Testcontainers
+class ExampleIntegrationTests {
+
+    @Container
+    static RedisContainer redis = new RedisContainer();
+
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+        registry.add("redis.host", redis::getContainerIpAddress);
+        registry.add("redis.port", redis::getMappedPort);
+    }
+
+    // tests ...
+
+}
+
+
+Loading a WebApplicationContext (웹 애플리케이션 컨텍스트 로드)
+
+해당 테스트 클래스에 @WebAppConfiguration를 Annotated하여 WebApplicationContext를 로드할 수 있습니다.
+@WebAppConfiguration이 Annotated되면 WAC(Web Application Context)를 로드해야 한다고 
+TCF(Test Context Framework)에 지시하고 TCF는 백그라운드에서 MockServlet 컨텍스트를 만들어 테스트 WAC에 제공합니다.
+기본적으로 MockServletContext의 기본 리소스 경로는 src/main/webapp으로 설정됩니다.
+웹 응용 프로그램의 디렉터리 구조를 잘 알고 있는 경우 src/main/webapp이 WAR 루트의 기본 위치임을 알 수 있습니다.
+이 기본값을 재정의해야 하는 경우 @WebAppConfiguration 주석("src/test/webapp")에 대한 대체 경로를 제공할 수 있습니다.
+
+WebApplicationContext를 사용하여 테스트할 때 @ContextConfiguration을 사용하여 
+XML 구성 파일, Groovy 스크립트 또는 @Configuration 클래스를 자유롭게 선언할 수 있습니다. 
+또한 @ActiveProfiles, @Test ExecutionListener, @Sql, @Rollback 등과 같은 다른 모든 테스트 주석을 자유롭게 사용할 수 있습니다.
+
+@ExtendWith(SpringExtension.class)
+
+// defaults to "file:src/main/webapp"
+@WebAppConfiguration
+
+// detects "WacTests-context.xml" in the same package
+// or static nested @Configuration classes
+@ContextConfiguration
+class WacTests {
+    //...
+}
+
+
+@WebAppConfiguration 리소스 경로는 파일 시스템 기반이고 @ContextConfiguration 리소스 위치는 classpath 기반입니다.
+
+@ExtendWith(SpringExtension.class)
+
+// file system resource
+@WebAppConfiguration("webapp")
+
+// classpath resource
+@ContextConfiguration("/spring/test-servlet-config.xml")
+class WacTests {
+    //...
+}
+
+스프링 리소스 접두사를 지정하여 두 Annotation에 대한 기본 리소스를 재정의할 수 있습니다.
+
+@ExtendWith(SpringExtension.class)
+
+// classpath resource
+@WebAppConfiguration("classpath:test-web-resources")
+
+// file system resource
+@ContextConfiguration("file:src/main/webapp/WEB-INF/servlet-config.xml")
+class WacTests {
+    //...
+}
+
+* WebMock 사용
+포괄적인 웹 테스트 지원을 제공하기 위해 테스트 컨텍스트 프레임워크에는 
+기본적으로 사용 가능한 ServletTestExecutionListener가 있습니다.
+ 
+ WebApplicationContext에 대해 테스트를 할 때, TestExecutionListener는 각 테스트 전에 
+ Spring Web의 RequestContextHolder를 사용하여 기본 스레드를 로컬 상태로 설정하고
+ @WebAppConfiguration로 구성된 기본 리소스 경로를 기반으로
+ MockHttpServletRequest, MockHttpServletResponse, ServletWebRequest를 생성합니다.
+ ServletTestExecutionListener은 MockHttpServletResponse와 ServletWebRequest가 테스트 객체에
+ 주입될수 있도록 하고 테스트가 완료되면 로컬상태의 스레드를 clean합니다.
+
+WebApplicationContext를 로드한 후에
+테스트 픽스처(fixtures)를 설정하거나 Web Component를 invoking한 다음 단정문(assertions)을 실행할 때는 
+web mock와 상호 작용해야 됩니다. 
+WebApplication Context와 MockServlet Context는 모두 테스트 제품군에 캐시되는 반면
+다른 mock들은 테스트 메서드 별로 ServletTestExecutionListener에 의해 관리 됩니다.
+
+픽스처: 테스트를 수행하는 데 필요한 정보나 오브젝트
+
+@SpringJUnitWebConfig
+class WacTests {
+
+    @Autowired
+    WebApplicationContext wac; // cached
+
+    @Autowired
+    MockServletContext servletContext; // cached
+
+    @Autowired
+    MockHttpSession session;
+
+    @Autowired
+    MockHttpServletRequest request;
+
+    @Autowired
+    MockHttpServletResponse response;
+
+    @Autowired
+    ServletWebRequest webRequest;
+
+    //...
+}
+
+TestContext 프레임워크는 다음 구성 매개 변수를 사용하여 컨텍스트 캐시 키를 구축합니다.
+
+locations (from @ContextConfiguration)
+
+classes (from @ContextConfiguration)
+
+contextInitializerClasses (from @ContextConfiguration)
+
+contextCustomizers (from ContextCustomizerFactory) – 
+(@DynamicPropertySource 뿐만 아니라 Spring Boot의 테스트 지원을 위한 @MockBean,  @SpyBean도 포함됩니다.)
+
+contextLoader (from @ContextConfiguration)
+
+parent (from @ContextHierarchy)
+
+activeProfiles (from @ActiveProfiles)
+
+propertySourceLocations (from @TestPropertySource)
+
+propertySourceProperties (from @TestPropertySource)
+
+resourceBasePath (from @WebAppConfiguration)
+
+예를들어 TestClassA와 TestClassB가 @ContextConfiguration({{"app-config.xml", "test-config.xml"}})를 동일하게 
+annotated 한다면 두 테스트 클래스 간  컨텍스트 캐시는 공유 됩니다.
+단 다른 ContextLoader, 다른 활성 프로필, 다른 컨텍스트 이니셜라이저, 
+다른 테스트 속성 소스 또는 다른 상위 컨텍스트를 정의하면 공유되지 않습니다.
+
+또한 스프링 테스트 컨텍스트 프레임워크는 응용 프로그램 컨텍스트를 정적 캐시에 저장합니다. 
+테스트가 별도의 프로세스에서 실행되는 경우 각 테스트 실행 간에 정적 캐시가 삭제되어 캐싱 메커니즘을 효과적으로 사용할 수 없게 됩니다.
+따라서 캐싱 메커니즘의 이점을 얻으려면 모든 테스트가 동일한 프로세스 또는 테스트 제품군 내에서 실행되어야 합니다. 
+이것은 IDE 내의 그룹으로 모든 테스트를 실행함으로써 달성될 수 있습니다. 
+마찬가지로, Ant, Maven 또는 Gradle과 같은 빌드 프레임워크로 테스트를 실행할 때
+빌드 프레임워크가 테스트 사이에 포크를 갖지 않도록 하는 것이 중요합니다.
+
+컨텍스트 캐시의 크기는 기본 최대 크기 32로 제한됩니다. 
+최대 크기에 도달할 때마다 가장 최근에 사용된(LRU) 제거 정책이 오래된 컨텍스트를 제거하고 닫는 데 사용됩니다.
+spring.test.context.cache.maxSize라는 JVM 시스템 속성을 설정하여 명령줄 또는 빌드 스크립트에서 최대 크기를 구성할 수 있습니다.
+대안으로 Spring Properties 메커니즘을 통해 동일한 속성을 설정할 수 있습니다.
+
+
+얼마나 많은 컨텍스트를 로드하고 캐시했는지 정확하게 알기 위해 기본 컨텍스트 캐시에 대한 통계를 보려면
+org.springframework.test.context.cache 로깅 범주에 대한 로그 수준을 DEBUG로 설정할 수 있습니다.
+
+애플리케이션 컨텍스트의 구성이나 상태를 테스트 내에서 변경하지 않는 것이 원칙이며 만약 특정 테스트 클래스에서
+애플리케이션 컨텍스트를 변경해야될 경우 @DirtiesContext를 Annotated하면 이 클래스에 대해서는
+애플리케이션 컨텍스트에 공유를 허용하지 않는다. 이는 테스트 중에 변경한 컨텍스트가 다른 테스트에 영향을 주지 않기 위해서다.
+
+Spring의 Annotation 기반 Injection 지원과의 일관성을 위해 Spring의 @Autowire 또는 필드 및 세터 주입에 
+JSR-330의 @Inject Annotation을 사용할 수도 있습니다.
+JUNIT 목성 이외의 테스트 프레임워크의 경우 테스트 컨텍스트 프레임워크는 테스트 클래스의 인스턴스화에 참여하지 않습니다. 
+따라서 생성자를 위해 @Autowire 또는 @Inject를 사용하는 것은 테스트 클래스에 영향을 미치지 않습니다.
+
+Production 코드에서는 필드 주입이 억제되지만 테스트 코드에서는 필드 주입이 실제로 매우 자연스럽습니다. 
+그 이유는 테스트 클래스를 직접 인스턴스화하지 않기 때문입니다. 
+따라서 테스트 클래스에서 공개 생성자 또는 설정자 메서드를 호출할 필요가 없습니다.
+
+@Autowierd는 빈의 Type 별로 AutoWiring하기 때문에 동일한 Type의 유형이 여러개가 있는 경우 @Qualifier를 사용해야 합니다.
+@Inject를 @Named와 함께 사용하도록 선택할 수도 있습니다.
+테스트 클래스가 ApplicationContext.getBean("titleRepository", TitleRepository.class)에 대한 호출을 사용하여 명시적 룩업을 수행할 수 있습니다.
+
+JUnit5에서 @Autowired로 필드 Injection 예
+
+@ExtendWith(SpringExtension.class)
+// specifies the Spring configuration to load for this test fixture
+@ContextConfiguration("repository-config.xml")
+class HibernateTitleRepositoryTests {
+
+    // this instance will be dependency injected by type
+    @Autowired
+    HibernateTitleRepository titleRepository;
+
+    @Test
+    void findById() {
+        Title title = titleRepository.findById(new Long(10));
+        assertNotNull(title);
+    }
+}
+
+
+setter Injection 예
+@ExtendWith(SpringExtension.class)
+// specifies the Spring configuration to load for this test fixture
+@ContextConfiguration("repository-config.xml")
+class HibernateTitleRepositoryTests {
+
+    // this instance will be dependency injected by type
+    HibernateTitleRepository titleRepository;
+
+    @Autowired
+    void setTitleRepository(HibernateTitleRepository titleRepository) {
+        this.titleRepository = titleRepository;
+    }
+
+    @Test
+    void findById() {
+        Title title = titleRepository.findById(new Long(10));
+        assertNotNull(title);
+    }
+}
+
+Injection시 동일 Type의 빈이 있는 경우 @Qualifier Annotation을 사용
+@Autowired
+@Override
+public void setDataSource(@Qualifier("myDataSource") DataSource dataSource) {
+    super.setDataSource(dataSource);
+}
+
+
+*Request-Scoped와 Session-Scoped 빈들을 테스트
+step-1. @WebAppConfiguration을 테스트 클래스에 Annotated해서 Web Appication Context가 로드 되는지 확인합니다.
+step-2. 테스트 객체 또는 테스트 픽스처(fixture)에 모의 요청(mock request) 또는 세션을 injection 합니다.
+step-3. 구성된 Web Application Context에서 DI된 Component를 호출합니다.
+step-4.  mocks에 대해 단정문(assertions)를 실행합니다.
+
+테스트에서는 테스트 컨텍스트 프레임워크에서 관리하는 모크를 통해 
+사용자 이름과 암호를 검색하는 SpEL 식을 사용하여 로그인 작업을 인스턴스화하는 요청 매개 변수를 구성합니다. 
+Request-scoped bean configuration
+<beans>
+    <bean id="userService" class="com.example.SimpleUserService"
+            c:loginAction-ref="loginAction"/>
+    <bean id="loginAction" class="com.example.LoginAction"
+            c:username="#{request.getParameter('user')}"
+            c:password="#{request.getParameter('pswd')}"
+            scope="request">
+        <aop:scoped-proxy/>
+    </bean>
+</beans>
+
+RequestScopedBeanTests에서는 UserService와 MockHttpServletRequest를 모두 테스트 인스턴스에 Injection(주입)합니다.
+requestScope() 테스트 메서드 내에서 MockHttpServletRequest에서 제공되는 request parameters로 테스트 픽스처(fixture)를 
+설정합니다.
+
+userService에서 loginUser() 메서드가 호출되면 user service가
+현재 MockHttpServletRequest의 request-scoped loginAction에 액세스 할 수 있습니다.
+그런 다음 사용자 이름과 암호 입력을 기반으로 결과에 대해 단정문(assertions)을 수행할 수 있습니다.
+
+@SpringJUnitWebConfig
+class RequestScopedBeanTests {
+
+    @Autowired UserService userService;
+    @Autowired MockHttpServletRequest request;
+
+    @Test
+    void requestScope() {
+        request.setParameter("user", "enigma");
+        request.setParameter("pswd", "$pr!ng");
+
+        LoginResults results = userService.loginUser();
+        // assert results
+    }
+}
+
+
+<beans>
+    <bean id="userService" class="com.example.SimpleUserService"
+            c:userPreferences-ref="userPreferences" />
+
+    <bean id="userPreferences" class="com.example.UserPreferences"
+            c:theme="#{session.getAttribute('theme')}"
+            scope="session">
+        <aop:scoped-proxy/>
+    </bean>
+</beans>
+
+@SpringJUnitWebConfig
+class SessionScopedBeanTests {
+
+    @Autowired UserService userService;
+    @Autowired MockHttpSession session;
+
+    @Test
+    void sessionScope() throws Exception {
+        session.setAttribute("theme", "blue");
+
+        Results results = userService.processUserPreferences();
+        // assert results
+    }
+}
+
+
+*트랜잭션 관리
+트랜잭션을 지원하려면 @ContextConfiguration semantics이 로드된 
+ApplicationContext에서 PlatformTransactionManager를 설정해야 합니다.
+또한 테스트 클래스에 @Transactional를 Annotated 해야 합니다.
+
+테스트 관리 트랜잭션은 TransactionalTestExecutionListener를 사용하여 관리되거나 
+TestTransaction을 사용하여 프로그래밍 방식으로 관리되는 트랜잭션입니다.
+
+트랜잭션을 Spring 관리 트랜잭션(테스트용으로 로드된 Application Context 내에서 Spring이 직접 관리하는 트랜잭션) 
+또는 애플리케이션 관리 트랜잭션(테스트에서 호출되는 애플리케이션 코드 내에서 프로그래밍 방식으로 관리되는 트랜잭션)과
+혼동해서는 안 됩니다.
+
+스프링 관리 트랜잭션과 애플리케이션 관리 트랜잭션은 일반적으로 테스트 관리 트랜잭션에 참여합니다. 
+그러나 스프링 관리 또는 애플리케이션 관리 트랜잭션이 필수 또는 지원 이외의 다른 전파 유형으로 구성된 경우에는 주의해야 합니다.
+
+스프링 테스트는 현재 테스트 메서드가 호출되기전에 현재 쓰래드(java.lang.ThreadLocal 변수)에 트랜잭션 상태를 바인딩 합니다.
+시간 제한을 지원하기 위해 테스트 프레임워크가 새 스레드에서 현재 테스트 방법을 호출하는 경우 
+현재 테스트 방법 내에서 수행되는 작업은 테스트 관리 트랜잭션 내에서 호출되지 않습니다. 
+따라서 그러한 조치의 결과는 테스트 관리 트랜잭션으로 롤백되지 않습니다. 
+반대로 테스트 관리 트랜잭션이 Spring에 의해 적절하게 롤백되더라도 이러한 작업은 관계형 데이터베이스와
+같은 영구 저장소로 커밋됩니다.
+다음과 같은 상황에 발생할 수 있고 이외에도 발생할 수 있습니다.
+JUnit 4’s @Test(timeout = …​) support and TimeOut rule
+JUnit Jupiter’s assertTimeoutPreemptively(…​) methods in the org.junit.jupiter.api.Assertions class
+TestNG’s @Test(timeOut = …​) support
+
+@Transaction을 사용하여 테스트 방법에 주석을 달면 기본적으로 테스트가 완료된 후 자동으로 롤백되는 트랜잭션 내에서 테스트가 실행됩니다.
+JUnit5(Jupiter)의 테스트 라이프사이클 메서드인 @BeforeAll, @BeforeEach 등으로 Annotated한 메서드들은 
+테스트 수명 주기 방법에서는 @Transaction이 지원되지 않습니다. 
+더욱이, @Transaction으로 주석이 달렸지만 전파 특성이 NOT_SUSPEED 또는 NEVER로 설정된 테스트는 트랜잭션 내에서 실행되지 않습니다.
+
+@Transactional attribute support Attribute
+
+value and transactionManager: yes
+
+propagation: only Propagation.NOT_SUPPORTED and Propagation.NEVER are supported
+
+isolation: no
+
+timeout: no
+
+readOnly: no
+
+rollbackFor and rollbackForClassName: no, use TestTransaction.flagForRollback() instead 
+
+noRollbackFor and noRollbackForClassName: no, use TestTransaction.flagForCommit() instead
+
+
+----------------
+@SpringJUnitConfig(TestConfig.class)
+@Transactional
+class HibernateUserRepositoryTests {
+
+    @Autowired
+    HibernateUserRepository repository;
+
+    @Autowired
+    SessionFactory sessionFactory;
+
+    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Test
+    void createUser() {
+        // track initial state in test database:
+        final int count = countRowsInTable("user");
+
+        User user = new User(...);
+        repository.save(user);
+
+        // Manual flush is required to avoid false positive in test
+        sessionFactory.getCurrentSession().flush();
+        assertNumUsers(count + 1);
+    }
+
+    private int countRowsInTable(String tableName) {
+        return JdbcTestUtils.countRowsInTable(this.jdbcTemplate, tableName);
+    }
+
+    private void assertNumUsers(int expected) {
+        assertEquals("Number of rows in the [user] table.", expected, countRowsInTable("user"));
+    }
+}
+-----------------------
