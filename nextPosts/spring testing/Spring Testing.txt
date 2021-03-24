@@ -1027,7 +1027,7 @@ JUnit Jupiter’s assertTimeoutPreemptively(…​) methods in the org.junit.jup
 TestNG’s @Test(timeOut = …​) support
 
 @Transaction을 사용하여 테스트 방법에 주석을 달면 기본적으로 테스트가 완료된 후 자동으로 롤백되는 트랜잭션 내에서 테스트가 실행됩니다.
-JUnit5(Jupiter)의 테스트 라이프사이클 메서드인 @BeforeAll, @BeforeEach 등으로 Annotated한 메서드들은 
+JUnit5(Jupiter)의 테스트 라이프사이클 메서드인 @BeforeAll, @AfterAll 등으로 Annotated한 메서드들은 
 테스트 수명 주기 방법에서는 @Transaction이 지원되지 않습니다. 
 더욱이, @Transaction으로 주석이 달렸지만 전파 특성이 NOT_SUSPEED 또는 NEVER로 설정된 테스트는 트랜잭션 내에서 실행되지 않습니다.
 
@@ -1088,3 +1088,435 @@ class HibernateUserRepositoryTests {
     }
 }
 -----------------------
+트랜잭션 롤백 및 커밋 동작
+기본적으로 테스트 트랜잭션은 테스트 완료 후 자동으로 롤백되지만 트랜잭션 커밋 및 롤백 동작은 @Commit 및 @Rollback 주석을 통해 선언적으로 구성할 수 있습니다. 
+TransactionalTestExecutionListener는 트랜잭션 동작을 확인하기 위한 @BeforeTransaction 및 @AfterTransaction Annotation을 지원합니다.
+테스트의 ApplicationContext 내에 PlatformTransactionManager 인스턴스가 여러 개 있는 경우 @Transaction(TransactionManager = "myTxMgr")을 사용하여
+한정자를 선언하거나, @Configuration 클래스에서 TransactionManagementConfiger를 구현할 수 있습니다.
+
+@SpringJUnitConfig
+@Transactional(transactionManager = "txMgr")
+@Commit
+class FictitiousTransactionalTest {
+
+    @BeforeTransaction
+    void verifyInitialDatabaseState() {
+        // logic to verify the initial state before a transaction is started
+    }
+
+    @BeforeEach
+    void setUpTestDataWithinTransaction() {
+        // set up test data within the transaction
+    }
+
+    @Test
+    // overrides the class-level @Commit setting
+    @Rollback
+    void modifyDatabaseWithinTransaction() {
+        // logic which uses the test data and modifies database state
+    }
+
+    @AfterEach
+    void tearDownWithinTransaction() {
+        // run "tear down" logic within the transaction
+    }
+
+    @AfterTransaction
+    void verifyFinalDatabaseState() {
+        // logic to verify the final state after transaction has rolled back
+    }
+
+}
+
+
+ORM 코드를 테스트할 때 세션 또는 JPA 영속성 컨텍스트의 상태를 조작하는 코드를 테스트할때 해당 메서드 내에서 기본 작업 단위를 flush해야 합니다.
+기본작업을 flush하지 않으면 false positives가 발생할 수 있습니다.
+- hibernate 방법
+// ...
+
+@Autowired
+SessionFactory sessionFactory;
+
+@Transactional
+@Test // no expected exception!
+public void falsePositive() {
+    updateEntityInHibernateSession();
+    // False positive: an exception will be thrown once the Hibernate
+    // Session is finally flushed (i.e., in production code)
+}
+
+@Transactional
+@Test(expected = ...)
+public void updateWithSessionFlush() {
+    updateEntityInHibernateSession();
+    // Manual flush is required to avoid false positive in test
+    sessionFactory.getCurrentSession().flush();
+}
+
+// ...
+
+
+- 다음은 JPA에 대한 방법 
+// ...
+
+@PersistenceContext
+EntityManager entityManager;
+
+@Transactional
+@Test // no expected exception!
+public void falsePositive() {
+    updateEntityInJpaPersistenceContext();
+    // False positive: an exception will be thrown once the JPA
+    // EntityManager is finally flushed (i.e., in production code)
+}
+
+@Transactional
+@Test(expected = ...)
+public void updateWithEntityManagerFlush() {
+    updateEntityInJpaPersistenceContext();
+    // Manual flush is required to avoid false positive in test
+    entityManager.flush();
+}
+
+// ...
+
+
+SQL 스크립트 실행
+관계형 데이터베이스에 대한 통합 테스트를 작성할 때 SQL 스크립트를 실행하여 데이터베이스 스키마를 수정하거나 테스트 데이터를 테이블에 삽입하는 것이 종종 유용합니다. 
+Spring-jdbc 모듈은 Spring Application Context가 로드될 때 SQL 스크립트를 실행하여 내장형 또는 기존 데이터베이스를 초기화할 수 있도록 지원합니다. 
+SQL 스크립트를 실행하는 데 다음과 같은 옵션을 제공합니다.
+
+org.springframework.jdbc.datasource.init.ScriptUtils
+SQL 스크립트 작업을 위한 정적 유틸리티 메소드의 모음을 제공하며 주로 프레임워크 내에서 내부 용도로 사용됩니다. 
+그러나 SQL 스크립트 구문 분석 및 실행 방법을 완전히 제어해야 하는 경우 ScriptUtils는 나중에 설명할 다른 대안보다 사용자의 요구에 더 적합할 수 있습니다.
+
+org.springframework.jdbc.datasource.init.ResourceDatabasePopulator
+외부 리소스에 정의된 SQL 스크립트를 사용하여 데이터베이스를 프로그래밍 방식으로 채우고 초기화하거나 정리하기 위한 객체 기반 API를 제공합니다. 
+ResourceDatabasePopulator는 스크립트를 구문 분석하고 실행할 때 사용되는 문자 인코딩, 문장 구분 기호, 주석 구분 기호 및 오류 처리 플래그를 구성하기 위한 옵션을 제공합니다.
+
+org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests
+org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests
+
+
+@Test
+void databaseTest() {
+    ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+    populator.addScripts(
+            new ClassPathResource("test-schema.sql"),
+            new ClassPathResource("test-data.sql"));
+    populator.setSeparator("@@");
+    populator.execute(this.dataSource);
+    // run code that uses the test schema and data
+}
+
+
+앞서 언급한 SQL 스크립트를 프로그래밍 방식으로 실행하기 위한 메커니즘 외에도 
+Spring TestContext Framework에서 SQL 스크립트를 선언적으로 구성할 수 있습니다. 
+특히, 개별 SQL 문을 구성하기 위해 테스트 클래스 또는 테스트 메서드에 @Sql 주석을 선언하거나 
+통합 테스트 메서드 이전 또는 이후에 지정된 데이터베이스에 대해 실행해야 하는 SQL 스크립트에 대한 리소스 경로를 구성할 수 있습니다.
+메서드 수준 @Sql 선언은 기본적으로 클래스 수준 선언을 재정의합니다. 
+그러나 Spring Framework 5.2부터는 @SqlMergeMode를 통해 테스트 클래스 또는 테스트 방법별로 이 동작을 구성할 수 있습니다. 
+
+@Sql Annotation의 Attribute value는 sql파일의 path이며 path는 절대경로(/org/example/schema.sql)이거나
+path 접두사(classpath:, file:, http:)로 구성된 URL일 수 있습니다. (기본 경로는 classpath:com/example/MyTest.sql 형식이다.)
+
+@SpringJUnitConfig
+@Sql("/test-schema.sql")
+class DatabaseTests {
+
+    @Test
+    void emptySchemaTest() {
+        // run code that uses the test schema without any test data
+    }
+
+    @Test
+    @Sql({"/test-schema.sql", "/test-user-data.sql"})
+    void userTest() {
+        // run code that uses the test schema and test data
+    }
+}
+
+Java 8에서 @Sql을 반복 가능한 주석으로 사용하는 방법
+
+@Test
+@Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`"))
+@Sql("/test-user-data.sql")
+void userTest() {
+    // run code that uses the test schema and test data
+}
+
+Java 8 이상에서는 @SqlGroup을 사용할 수 있지만 Kotlin과 같은 다른 JVM 언어와의 호환성을 위해 @SqlGroup을 사용해야 할 수도 있습니다.
+@Test
+@SqlGroup({
+    @Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`")),
+    @Sql("/test-user-data.sql")
+)}
+void userTest() {
+    // run code that uses the test schema and test data
+}
+
+
+기본적으로 SQL 스크립트는 해당 테스트 메서드보다 먼저 실행됩니다. 
+만약 테스트 방법 이후에 특정 스크립트 집합을 실행해야 하는 경우
+@Test
+@Sql(
+    scripts = "create-test-data.sql",
+    config = @SqlConfig(transactionMode = ISOLATED)
+)
+@Sql(
+    scripts = "delete-test-data.sql",
+    config = @SqlConfig(transactionMode = ISOLATED),
+    executionPhase = AFTER_TEST_METHOD
+)
+void userTest() {
+    // run code that needs the test data to be committed
+    // to the database outside of the test's transaction
+}
+
+ISOLATED와 AFTER_TEST_METHOD는 각각 Sql.TransactionMode와 Sql.ExecutionPhase에서 정적 imported 된다.
+
+
+@SqlConfig Annotation을 사용하여 스크립트 구문 분석 및 오류 처리를 구성할 수 있습니다. 
+통합 테스트 클래스에 annotated되면 @SqlConfig는 테스트 클래스 계층 구조 내의 모든 SQL 스크립트에 대한 전역 구성 역할을 합니다.
+
+@Sql에 대한 트랜잭션 관리
+기본적으로 SqlScriptsTest ExecutionListener는 @Sql을 사용하여 구성된 스크립트에 대해 원하는 트랜잭션 의미를 추론합니다. 
+SQL 스크립트는 트랜잭션 없이 기존 Spring 관리 트랜잭션(A) 내에서 실행되거나 
+격리된 트랜잭션 내에서 @SqlConfig의 설정된 transactionMode 속성 값과 
+테스트의 ApplicationContext에서 PlatformTransactionManager의 존재 여부에 따라 달라집니다.
+
+
+SQLScripts에서 알고리즘을 사용하는 경우 DataSource 및 PlatformTransactionManager를 감지하고 트랜잭션 의미론을 유추하기 위해 테스트 ExecutionListener를 테스트합니다. 
+@SqlConfig의 transactionMode 속성을 설정하여 트랜잭션 전파 동작을 제어할 수 있습니다(예: 분리된 트랜잭션에서 스크립트를 실행해야 하는지 여부)
+
+@SpringJUnitConfig(TestDatabaseConfig.class)
+@Transactional
+class TransactionalSqlScriptsTests {
+
+    final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    TransactionalSqlScriptsTests(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Test
+    @Sql("/test-data.sql")
+    void usersTest() {
+        // verify state in test database:
+        assertNumUsers(2);
+        // run code that uses the test data...
+    }
+
+    int countRowsInTable(String tableName) {
+        return JdbcTestUtils.countRowsInTable(this.jdbcTemplate, tableName);
+    }
+
+    void assertNumUsers(int expected) {
+        assertEquals(expected, countRowsInTable("user"),
+            "Number of rows in the [user] table.");
+    }
+}
+
+
+@SqlMergeMode와 구성 병합 및 재정의
+Spring Framework 5.2에서는 메서드 수준 @Sql 선언과 클래스 수준 선언을 병합할 수 있습니다. 
+예를 들어, 이를 통해 데이터베이스 스키마 또는 일부 공통 테스트 데이터에 대한 구성을
+테스트 클래스당 한 번씩 제공한 다음 테스트 방법당 사용 사례별 테스트 데이터를 추가로 제공할 수 있습니다. 
+@Sql 병합을 사용하려면 @SqlMergeMode(MERGE)를 사용하여 테스트 클래스 또는 테스트 메서드에 Annotation을 추가하십시오. 
+특정 테스트 방법(또는 특정 테스트 하위 클래스)에 대한 병합을 사용하지 않도록 설정하려면 
+@SqlMergeMode(OVERRIDE)를 통해 기본 모드로 다시 전환할 수 있습니다. 
+
+
+병렬 테스트 실행
+Spring Framework 5.0은 Spring Test Context Framework를 사용할 때 단일 JVM 내에서 병렬로 테스트를 실행하기 위한 기본 지원을 도입하였다.
+병렬 테스트 실행을 설정하는 방법에 대한 자세한 내용은 테스트 프레임워크, 빌드 도구 또는 IDE 설명서를 참조하십시오.
+
+다음과 같은 경우 테스트를 병렬로 실행하지 마십시오.
+
+-Spring Framework의 @DirtiesContext 지원을 사용.
+
+-Spring Boot의 @MockBean 또는 @SpyBean 지원을 사용.
+
+-JUNit 4의 @FixMethodOrder 지원 또는 테스트 방법이 특정 순서로 실행되도록 설계된 모든 테스트 프레임워크 기능을 사용합니다. 
+그러나 전체 테스트 클래스가 병렬로 실행되는 경우에는 적용되지 않습니다.
+
+-데이터베이스, 메시지 브로커, 파일 시스템 등과 같은 공유 서비스 또는 시스템의 상태를 변경합니다. 
+이는 임베디드 시스템과 외부 시스템 모두에 적용됩니다.
+
+
+
+Spring JUnit 4 Runner
+@RunWith(SpringRunner.class) 변형으로 개발자는 표준 JUNit 4 기반 유닛 및 통합 테스트를 구현할 수 있으며, 
+애플리케이션 컨텍스트 로딩, 테스트 인스턴스의 종속성 주입, 트랜잭션 테스트 방법 실행 및 같은 테스트 컨텍스트 프레임워크의 이점을 동시에 얻을 수 있다
+
+@RunWith(SpringRunner.class)
+@TestExecutionListeners({})
+public class SimpleTest {
+
+    @Test
+    public void testMethod() {
+        // test logic...
+    }
+}
+
+Spring JUnit 4 Rules
+JUNIT 테스트 규칙
+org.springframework.test.context.junit4.rules 패키지에 SpringClassRule, SpringMethodRule를 제공함.
+
+// Optionally specify a non-Spring Runner via @RunWith(...)
+@ContextConfiguration
+public class IntegrationTest {
+
+    @ClassRule
+    public static final SpringClassRule springClassRule = new SpringClassRule();
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
+
+    @Test
+    public void testMethod() {
+        // test logic...
+    }
+}
+
+
+* SpringExtension for JUnit Jupiter
+@ExtendWith(SpringExtension.class)로 테스트 클래스에 주석을 달면 표준 
+JUnit5 기반 장치 및 통합 테스트를 구현하고 애플리케이션 컨텍스트 로드 지원, 테스트 인스턴스의 종속성 주입, 
+트랜잭션 테스트 방법 실행 등과 같은 테스트 컨텍스트 프레임워크의 이점을 동시에 얻을 수 있습니다.
+JUnit 4 and TestNG도 지원함.
+
+// Instructs JUnit Jupiter to extend the test with Spring support.
+@ExtendWith(SpringExtension.class)
+// Instructs Spring to load an ApplicationContext from TestConfig.class
+@ContextConfiguration(classes = TestConfig.class)
+class SimpleTests {
+
+    @Test
+    void testMethod() {
+        // test logic...
+    }
+}
+
+JUnit5의 Annotation들은 메타 어노테이션으로 사용할 수 있고, 
+스프링은 ApplicationContext와 JUnit5 테스트를 심플하게 구성을 하는 @SpringJUnitConfig과 @SpringJUnitWebConfig를 제공합니다.
+
+// Instructs Spring to register the SpringExtension with JUnit
+// Jupiter and load an ApplicationContext from TestConfig.class
+@SpringJUnitConfig(TestConfig.class)
+class SimpleTests {
+
+    @Test
+    void testMethod() {
+        // test logic...
+    }
+}
+
+
+// Instructs Spring to register the SpringExtension with JUnit
+// Jupiter and load a WebApplicationContext from TestWebConfig.class
+@SpringJUnitWebConfig(TestWebConfig.class)
+class SimpleWebTests {
+
+    @Test
+    void testMethod() {
+        // test logic...
+    }
+}
+
+SpringExtension은 Junit5에서 Parameter Resolver 확장 API를 구현하여 
+Spring이 테스트 생성자, 테스트 방법 및 테스트 라이프사이클 콜백 방법에 대한 종속성 주입을 제공할 수 있도록 한다.
+@BeforeAll, @AfterAll, @BeforeEach, @Test, @Repeated가 Annotated된 테스트 생성자 및 메서드에 테스트의 
+ApplicationContext로부터 종속성을 주입할 수 있습니다.
+
+테스트 클래스에 대한 생성자의 특정 매개변수가 Application Context 유형(또는 그 하위 유형)이거나 
+@Autowire, @Qualifier 또는 @Value로 주석 또는 메타 주석이 달린 경우, 
+스프링은 해당 매개변수에 대한 값을 테스트의 Application Context 컨텍스트에서 해당 빈 또는 값으로 주입합니다.
+
+스프링은 또한 생성자가 자동 바람직하다고 간주되는 경우 테스트 클래스 생성자에 대한 모든 인수를 Auto-Wiring 하도록 구성할 수 있습니다.
+
+@TestConstructor(테스트 생성기)는 autowireMode 속성을 ALL로 설정한 상태로 테스트 클래스에 존재하거나 메타 존재합니다.
+기본 테스트 생성자의 autowire모드가 ALL로 변경되었습니다.
+
+테스트 클래스의 생성자 Injection에서 @TestInstance(PER_CLASS)를 사용하면 안됩니다.
+만약 @DirtiesContext를 사용하면 ApplicationContext의 before 또는 after 테스트 메서드들이 종료됩니다.
+
+@SpringJUnitConfig(TestConfig.class)
+class OrderServiceIntegrationTests {
+
+    private final OrderService orderService;
+
+    @Autowired
+    OrderServiceIntegrationTests(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    // tests that use the injected OrderService
+}
+
+@SpringJUnitConfig(TestConfig.class)
+class OrderServiceIntegrationTests {
+
+    private final OrderService orderService;
+
+    OrderServiceIntegrationTests(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    // tests that use the injected OrderService
+}
+
+@SpringJUnitConfig(TestConfig.class)
+class OrderServiceIntegrationTests {
+
+    @Test
+    void deleteOrder(@Autowired OrderService orderService) {
+        // use orderService from the test's ApplicationContext
+    }
+}
+
+@SpringJUnitConfig(TestConfig.class)
+class OrderServiceIntegrationTests {
+
+    @RepeatedTest(10)
+    void placeOrderRepeatedly(RepetitionInfo repetitionInfo,
+            @Autowired OrderService orderService) {
+
+        // use orderService from the test's ApplicationContext
+        // and repetitionInfo from JUnit Jupiter
+    }
+}
+
+@SpringJUnitConfig(TestConfig.class)
+class GreetingServiceTests {
+
+    @Nested
+    @ActiveProfiles("lang_en")
+    class EnglishGreetings {
+
+        @Test
+        void hello(@Autowired GreetingService service) {
+            assertThat(service.greetWorld()).isEqualTo("Hello World");
+        }
+    }
+
+    @Nested
+    @ActiveProfiles("lang_de")
+    class GermanGreetings {
+
+        @Test
+        void hello(@Autowired GreetingService service) {
+            assertThat(service.greetWorld()).isEqualTo("Hallo Welt");
+        }
+    }
+}
+
+
+*WebTestClient
+
+WebTest Client는 서버 응용 프로그램을 테스트하기 위해 설계된 HTTP 클라이언트입니다.
+모의 서버 요청 및 응답 객체를 통해 실행 중인 서버 없이 Spring MVC 및 Spring WebFlux 응용 프로그램을 테스트할 수 있습니다.
+
+
+
