@@ -1,0 +1,83 @@
+MockMvc
+
+Spring MVC Test Framework라고도 부르며 Spring MVC Application 테스트를 지원합니다.
+실행중인 서버 대신 모의 Request와 Reponse 객체들의 처리를 수행합니다.
+
+MockMvc는 자체적으로 요청을 수행하고 응답을 확인하는데 사용할 수 있습니다.
+또한 MockMvc는 서버로 연결되어 있는 WebTestClient API를 통해 요청을 처리할 수도 있습니다.
+WebTest Client의 장점은 원시 데이터 대신 상위 수준의 개체로 작업할 수 있는 옵션과 
+실시간 서버에 대한 전체 종단 간 HTTP 테스트로 전환하고 동일한 테스트 API를 사용할 수 있다는 점입니다.
+
+Controller를 인스턴스화하고 종속성을 주입한 후 해당 메서드를 호출하는 단위 테스트를 만들수 있습니다.
+하지만 이러한 테스트는 요청 매핑, 데이터 바인딩, 메시지 변환, Type변환, 유효성 검사를 하지 않으며 
+@InitBinder, @ModelAttribute, @ExceptionHandler 메서드를 지원하지 않습니다.
+
+
+DispacherServlet을 호출하고 실행 중인 서버 없이 
+완전한 Spring MVC 요청 처리를 복제하는 Spring-test 모듈에서 
+서블릿 API의 "mock" 구현을 전달함으로써 완벽한 테스트를 제공합니다.
+
+MockMvc를 직접 사용하여 요청을 수행하려면 아래 패키지들을 static import하여 사용합니다.
+MockMvcBuilders.*
+MockMvcRequestBuilders.*
+MockMvcResultMatchers.*
+MockMvcResultHandlers.*
+
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+
+
+MockMvc는 두 가지 설정 방법 중 하나로 설정할 수 있습니다.
+1. 테스트할 컨트롤러를 직접 가리키고 Spring MVC 인프라를 프로그래밍 방식으로 구성하는 것입니다.
+
+class DemoControllerTest {
+  
+  MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    this.mockMvc = MockBuilders.standaloneSetup(new DemoContoller()).build();
+  }
+
+  //...
+}
+
+standaloneSetup은 단위 테스트에 약간 더 가깝습니다. 
+한 번에 하나의 컨트롤러를 테스트합니다. 
+컨트롤러에 모의 종속성을 수동으로 주입할 수 있으며 스프링 구성을 로드하지 않습니다. 
+어떤 컨트롤러를 시험하고 있는지, 작동을 위해 특정한 스프링 MVC 구성이 필요한지 등을 더 쉽게 확인할 수 있도록 합니다.
+특정 동작을 확인하거나 문제를 디버깅하기 위한 임시 테스트를 작성하는 매우 편리한 방법입니다.
+하지만 Spring MVC 구성을 확인하려면 추가 webAppContextSetup 테스트가 필요합니다.
+
+2. Spring MVC와 컨트롤러 인프라가 포함된 Spring 구성을 가리킵니다.
+
+@SpringJUnitWebConfig
+class DemoContollerTest {
+
+  MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp(WebApplicationContext wac) {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+  }
+
+  //...
+
+}
+
+WebAppContextSetup은 실제 Spring MVC 구성을 로드하여 통합 테스트를 보다 완벽하게 수행합니다.
+TestContext 프레임워크는 로드된 Spring 구성을 캐시하므로 테스트 제품군에 더 많은 테스트를 
+도입하더라도 테스트를 계속 빠르게 실행할 수 있습니다.
+또한 웹 계층 테스트에 집중하기 위해 Spring 구성을 통해 컨트롤러에 모의 서비스를 주입할 수 있습니다.
+모든 테스트를 webAppContextSetup으로 작성하여 항상 실제 Spring MVC 구성에 따라 테스트할 수 있습니다.
+
+
+
+MockMvcBuilder 구현은 MockMvc builder를 사용하는데 있어 공통적이고 매우 유용한 기능을 제공합니다.
+
+
+
+
