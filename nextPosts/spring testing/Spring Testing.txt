@@ -1516,7 +1516,123 @@ class GreetingServiceTests {
 *WebTestClient
 
 WebTest Client는 서버 응용 프로그램을 테스트하기 위해 설계된 HTTP 클라이언트입니다.
-모의 서버 요청 및 응답 객체를 통해 실행 중인 서버 없이 Spring MVC 및 Spring WebFlux 응용 프로그램을 테스트할 수 있습니다.
+종단간 HTTP 테스트를 할 수 있고 모의 서버 요청 및 응답 객체를 통해 실행 중인 서버 없이 
+Spring MVC 및 Spring WebFlux 응용 프로그램을 테스트할 수 있습니다.
+
+setup
+바인딩할 서버 설정을 선택해야 합니다. 
+이것은 여러 모의 서버 설정 중 하나이거나 실시간 서버에 대한 연결일 수 있습니다.
+
+컨트롤러에 바인딩
+이 설정을 사용하면 실행 중인 서버 없이 모의 요청 및 응답 개체를 통해 특정 컨트롤러를 테스트할 수 있습니다.
+
+WebFlux 애플리케이션의 경우 WebFlux Java 구성과 동일한 인프라를 로드하고, 
+지정된 컨트롤러를 등록하고, 요청을 처리할 WebHandler 체인을 생성하는 다음을 사용합니다.
+WebTestClient client =
+        WebTestClient.bindToController(new TestController()).build();
+		
+Spring MVC의 경우 WebMvc Java 구성과 동일한 인프라를 로드하고, 
+지정된 컨트롤러를 등록하고, 요청을 처리하기 위해 MockMvc 인스턴스를 생성하는 독립 실행형MockMvcBuilder로 위임하는 다음을 사용합니다.
+
+WebTestClient client =
+        MockMvcWebTestClient.bindToController(new TestController()).build();
+
+응용 프로그램 컨텍스트에 바인딩
+이 설정을 사용하면 Spring MVC 또는 Spring WebFlux 인프라 및 컨트롤러 선언을 사용하여 실행 중인 서버 없이 모의 요청 및 응답 개체를 통해 요청을 처리할 수 있습니다.
+
+WebFlux의 경우, Spring Application Context가 WebHttpHandlerBuilder로 전달되어 요청을 처리할 WebHandler 체인을 작성합니다.
+
+@SpringJUnitConfig(WebConfig.class) 
+class MyTests {
+
+    WebTestClient client;
+
+    @BeforeEach
+    void setUp(ApplicationContext context) {  
+        client = WebTestClient.bindToApplicationContext(context).build(); 
+    }
+}
+
+Spring Application Context가 MockMvcBuilder에게 전달될 경우 다음을 사용합니다.
+WebAppContextSetup을 사용하여 요청을 처리할 MockMvc 인스턴스를 생성합니다.
+
+@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") 
+@ContextHierarchy({
+    @ContextConfiguration(classes = RootConfig.class),
+    @ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+    @Autowired
+    WebApplicationContext wac; 
+
+    WebTestClient client;
+
+    @BeforeEach
+    void setUp() {
+        client = MockMvcWebTestClient.bindToApplicationContext(this.wac).build(); 
+    }
+}
 
 
 
+
+
+================================
+MockMvc
+MockMvc는 두 가지 방법 중 하나로 설정할 수 있습니다. 
+하나는 테스트할 컨트롤러를 직접 가리키고 Spring MVC 인프라를 프로그래밍 방식으로 구성하는 것입니다. 
+두 번째는 Spring MVC와 컨트롤러 인프라가 포함된 Spring 구성을 가리킵니다.
+
+public class DemoControllerTest {
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new DemoController()).build();
+    }
+
+    @DisplayName("1")
+    @Test
+    void name() {
+        Assertions.assertEquals(1, 1);
+}
+
+
+
+
+@SpringJUnitWebConfig
+public class DemoControllerTest {
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setup(WebApplicationContext wac) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @DisplayName("1")
+    @Test
+    void name() {
+        Assertions.assertEquals(1, 1);
+}
+
+
+@ExtendWith(SpringExtension.class)
+@WebAppConfiguration
+public class DemoControllerTest {
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setup(WebApplicationContext wac) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @DisplayName("1")
+    @Test
+    void name() {
+        Assertions.assertEquals(1, 1);
+}
