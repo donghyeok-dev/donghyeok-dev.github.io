@@ -34,7 +34,11 @@ public @interface SpringJUnitWebConfig {
 
 
 
+@AutoConfigureMockMvc
 
+**@SpringBootTest**
+
+@MvcWebTest
 
 
 
