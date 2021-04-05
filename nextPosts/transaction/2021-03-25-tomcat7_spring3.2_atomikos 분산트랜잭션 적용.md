@@ -231,5 +231,39 @@ jdbc.xml
 
 
 
+log4j.xml 설정 (src/main/java/log4j.xml)
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- Appenders -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="%-5p: %c - %m%n" />-->
+            <param name="ConversionPattern" value="[%d] %-5p: %c - %m%n" />
+        </layout>
+    </appender>
+
+
+    <logger name="jdbc.sqlonly">
+        <level value="debug" />
+    </logger>
+
+    <logger name="jdbc.audit">
+        <level value="debug" />
+    </logger>
+
+    <logger name="com.atomikos">
+         <level value="debug" />
+      </logger>
+
+    <!-- Root Logger -->
+    <root>
+        <priority value="fatal" />
+        <appender-ref ref="console" />
+    </root>
+</log4j:configuration>
+```
 
