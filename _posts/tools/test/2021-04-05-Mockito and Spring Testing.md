@@ -10,6 +10,18 @@ categories:
 
 Mock이란 진짜 객체와 비슷한 동작을 하지만 개발자가 직접 행동을 관리하는 객체를 말하며, Mockito는 이러한 Mock 객체를 쉽게 만들고 관리하고 검증할 수 있는 방법을 제공하는 테스트 프레임워크입니다. Mockito 이외에도 JMock, EasyMock 등이 있습니다.
 
+
+
+## Mockito를 왜 쓰죠?
+
+데이터베이스 또는 외부 API 등의 **의존성을 배제한 단위 테스트**를 하고자 할 때 사용합니다. 
+
+예를들어 Product 코드의 Contoller 특정 메서드 내에서 Service나 Repository의 특정 메서드를 포함하고 있을 때, Controller의 특정 메서드를 테스트 하려면 내부에 포함되어 있는 Service나 Repository를 구현한 다음 테스트를 진행 해야 됩니다.  Product에 구현되어 있는 것과 별개로 테스트 코드에서는 Controller가 의존하고 있는 객체들을 Mocking하므로서 의존성을 배제할 수 있습니다. 뿐만 아니라 Mocking된 객체들의 메서드를 호출할 때 특정 조건(예: parameter가 3일 때)과 리턴 값(예: return 10을 해라)을 내 임의로 설정 한다던지, 특정 메소드의 호출 여부 등을 검사할 수도 있습니다. 이처럼 Controller나 Service, Repository 등의 **단위 테스트를 할 때 사용할 수 있는 유용한 Java용 오픈 소스 테스트 프레임워크입니다.**
+
+
+
+## Mockito를 어떻게 쓰죠?
+
 spring boot는 기본적으로  Mockito 및 테스트 관련 dependencies가 포함되어 있는 spring-boot-starter-test를 제공합니다. 단, spring boot 2.2 이후로  JUnit5, AssertJ 등이 포함되었기 때문에 현재 사용하고 계신 버전을 확인 하시고 해당 라이브러리가 없다면 직접 추가해서 사용해야 됩니다.
 
 ```
@@ -26,15 +38,7 @@ testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 
 
-## Mockito를 왜 쓰죠?
-
-데이터베이스 또는 외부 API 등의 **의존성을 배제한 단위 테스트**를 하고자 할 때 사용합니다. 
-
-예를들어 Product 코드의 Contoller 특정 메서드 내에서 Service나 Repository의 특정 메서드를 포함하고 있을 때, Controller의 특정 메서드를 테스트 하려면 내부에 포함되어 있는 Service나 Repository를 구현한 다음 테스트를 진행 해야 됩니다.  Product에 구현되어 있는 것과 별개로 테스트 코드에서는 Controller가 의존하고 있는 객체들을 Mocking하므로서 의존성을 배제할 수 있습니다. 뿐만 아니라 Mocking된 객체들의 메서드를 호출할 때 특정 조건(예: parameter가 3일 때)과 리턴 값(예: return 10을 해라)을 내 임의로 설정 한다던지, 특정 메소드의 호출 여부 등을 검사할 수도 있습니다. 이처럼 Controller나 Service, Repository 등의 **단위 테스트를 할 때 사용할 수 있는 유용한 Java용 오픈 소스 테스트 프레임워크입니다.**
-
-
-
-## Mockito를 어떻게 쓰죠?
+라이브러리를 추가 했다면 아래와 같은 순으로 테스트 파일을 작성합니다.
 
 - Mockito.mock()로 Mock을 직접 생성하거나 Mocking할 클래스에 @Mock, @Spy 등을 Annotated 합니다.
 - Mocking할 클래스에 생성자 등으로 의존성 주입을 하고 있다면 @InjectMocks로 Annotated하고 DI 대상 클래스는 @Mock 또는 @Spy로 Annotated합니다.
