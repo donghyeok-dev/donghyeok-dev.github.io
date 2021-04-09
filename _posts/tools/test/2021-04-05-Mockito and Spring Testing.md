@@ -698,11 +698,29 @@ ApplicationContext에 있는 Bean을 실제 객체를 사용하는 것 입니다
 
 
 
+## InOrder 예제
+
+메서드 호출 순서를 검증합니다.
+
+```java
+@Test
+@DisplayName("InOrder 테스트")
+void testInOrder() {
+    this.testService.multiply(3);
+    this.testService.multiply(4);
+    this.testService.multiply(5);
+
+    //순서대로 호출 되는지 검증
+    InOrder inOrder =  inOrder(this.testService);
+    inOrder.verify(this.testService).multiply(3);
+    inOrder.verify(this.testService).multiply(4);
+    inOrder.verify(this.testService).multiply(5);
+}
+```
 
 
 
-
-## Exception 예제
+## doThrow 예제
 
 ```java
 @Spy
@@ -767,7 +785,7 @@ void testDoNothing() throws Exception {
 
 
 
-## Answer 예제
+## doAnswer 예제
 
 ```java
 @Spy
