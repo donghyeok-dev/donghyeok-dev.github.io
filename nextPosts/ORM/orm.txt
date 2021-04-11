@@ -1,0 +1,7 @@
+https://mangkyu.tistory.com/101
+
+만약 ORM을 사용하고 있는 경우라면, hashCode와 equals를 오버라이드 하는 메소드 내부에서 Getter를 사용하기를 권장한다. 
+그 이유는 ORM에 의해 fields가 Lazy Loaded되어, getter를 부르기 전에는 사용이 불가능할 수 있기 때문이다.
+예를 들어 만약 Employee 클래스의 정보가 Lazy loaded 되었다면, 
+id에 0이 할당되어 *e1.id == e2.id*가 0==0으로 처리될 수 있기 때문이다. 
+하지만 이것을 e1.getId() == e2.getId()로 수정한다면 ORM에 의해 id에 값이 할당된 후에 getId()가 호출가능하므로, 오작동을 멈출 수 있다.
