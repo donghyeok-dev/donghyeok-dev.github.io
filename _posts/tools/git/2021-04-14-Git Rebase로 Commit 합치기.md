@@ -19,7 +19,7 @@ feature 브랜치를 작업한 후 commit을 정리한 다음 push 또는 merge 
 - commit이 합쳐질 범위의 마지막 커밋을 확인하고 다음과 같은 명령을 실행합니다.
 
   ```
-  git log --oneline --graph --all
+  git rebase -i 08c3c05^
   ```
 
 - git edit설정에 따라 vim이나 지정된 edit에 rebase할 커밋 리스트가 나옵니다.
@@ -43,3 +43,22 @@ feature 브랜치를 작업한 후 commit을 정리한 다음 push 또는 merge 
 - 마지막으로 로그를 확인합니다.
 
   <img src="https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210414164910842.png" alt="image-20210414164910842" style="zoom:150%;" />
+
+
+
+- 기타 사항
+
+  - rebase 도중 작업을 취소하고 싶을 때
+
+    ```
+    git rebase --abort
+    ```
+
+  - rebase 작업이 완료되고 난 후 원복하고 싶을 때
+
+    ```
+    git reflog  //원복하고 싶은 커밋 hash값을 확인 후
+    git reset --hard 7ff69aa
+    ```
+
+    
