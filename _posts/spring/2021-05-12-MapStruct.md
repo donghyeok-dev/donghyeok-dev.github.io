@@ -27,56 +27,52 @@ categories:
   
 
 - CDI(Context Denpency Injection)와 같은 종속성 주입 프레임워크(Spring framework 등)로 작업 주인 경우 DI를 통해 개체를 가져오는 것이 좋습니다. @Mapper 애노테이션의 componentModel 속성값을 사용할 수 있습니다.
-
-  componentModel은 아래와 같은 String 값들을 지정할 수 있습니다.
-
   - default
 
-    ```java
-    @Mapper
-    public interface PostalMapper {
-    	PostalMapper INSTANCE = Mappers.getMapper(PostalMapper.class);
-        
-        D toDto(E e);
-    }
-    
-    PostalMapper.INSTANCE.toDto(e);
-    ```
+  ```java
+  @Mapper
+  public interface PostalMapper {
+  	PostalMapper INSTANCE = Mappers.getMapper(PostalMapper.class);
+      
+      D toDto(E e);
+  }
+  
+  PostalMapper.INSTANCE.toDto(e);
+  ```
 
   - cdi
 
-    ```java
-    @Mapper(componentModel = "cdi")
-    public interface PostalMapper {
-    	//...
-    }
-    
-    @Inject
-    ```
+  ```java
+  @Mapper(componentModel = "cdi")
+  public interface PostalMapper {
+  	//...
+  }
+  
+  @Inject
+  ```
 
   - spring
 
-    ```java
-    @Mapper(componentModel = "spring")
-    public interface PostalMapper {
-    	//...
-    }
-    
-    @Autowired
-    ```
+  ```java
+  @Mapper(componentModel = "spring")
+  public interface PostalMapper {
+  	//...
+  }
+  
+  @Autowired
+  ```
 
   - jsr330
 
-    ```java
-    @Mapper(componentModel = "jsr330")
-    public interface PostalMapper {
-    	//...
-    }
-    
-    @Singleton
-    ```
+  ```java
+  @Mapper(componentModel = "jsr330")
+  public interface PostalMapper {
+  	//...
+  }
+  
+  @Singleton
+  ```
 
-    
 
 
 
@@ -89,11 +85,13 @@ categories:
       D toDto(E entity);
   
       /**
-       * toEntity 메서드를 default로 구현하지 않으면 Mapper의 구현체가 자동으로 생성될 때
-       * Entity의 기본 생성자를 new하는데 @NoArgsConstructor(access = AccessLevel.PROTECTED)를 설정하게 되면
-       * 자식 클레스에서만 생성이 가능하므로 오류가 발생된다. 따라서 {@code dto -> entity}로 변환하려고 할때는
-       * entity 클래스에 @Builder를 작성하거나 해당 Mapper에서 toEntity 메서드를 오버라이드하여
-       * 커스텀으로 객체를 생성하여 리턴하도록 해야한다.
+       * toEntity 메서드를 default로 정의한 이유는 Mapper의 구현체가 자동으로 생성될 때
+       * toEntity가 추상 메서드일 경우 Entity의 기본 생성자를 통해 new하도록 되어있습니다. 
+       * 만약 Entity에서 @NoArgsConstructor(access = AccessLevel.PROTECTED)를 사용하게 되면
+       * MapperImpl은 Entity와 상속관계도 같은 패키지도 아니므로 오류가 발생합니다. 
+       * 따라서 Entity의 생성자를 Protected로 설정하고 {@code dto -> entity}로 변환하려고 할 때는
+       * entity 클래스에 @Builder를 작성하거나 해당 Mapper에서 toEntity 메서드를 오버라이드하고
+       * Entity Factory 메서드를 통해 객체를 리턴하도록 해야 합니다.
        * @param dto dto 객체
        * @return 기본값은 null이며, 각 Mapper에서 Override하여 객체를 리턴함.
        */
@@ -104,7 +102,7 @@ categories:
   ```
 
   PostalMaper.java
-
+  
   ```java
   @Mapper(componentModel = "spring"
           , injectionStrategy = InjectionStrategy.CONSTRUCTOR
@@ -115,7 +113,7 @@ categories:
   ```
 
   Service.java
-
+  
   ```java
   	@Transactional(readOnly = true)
       public Page<PostalDto> findAllPostalHistory(PostalSearchDto searchDto) {
@@ -126,5 +124,5 @@ categories:
                   .map(postalMapper::toDto);
       }
   ```
-
+  
   
