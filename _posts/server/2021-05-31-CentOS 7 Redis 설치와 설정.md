@@ -69,7 +69,7 @@ Redis는 프로세스가 장애로 인해 종료되더라도 이전의 상태를
 
 # 적용 확인
 
-#sudo sysctl -a | grep vm.overcommit   
+#sudo sysctl -a | grep vm.overcommit
 
 sysctl: reading key "net.ipv6.conf.all.stable_secret"
 sysctl: reading key "net.ipv6.conf.default.stable_secret"
@@ -1445,8 +1445,8 @@ tcp    ESTAB      0      0      211.240.xxx.xxx:6379               211.240.xxx.x
 tcp    ESTAB      0      0      211.240.xxx.xxx:6379               211.240.xxx.xxx:47594
 tcp    ESTAB      0      0      211.240.xxx.xxx:6379               211.240.xxx.xxx:55217
 tcp    ESTAB      0      0      211.240.xxx.xxx:60046              211.240.xxx.xxx:6379
-tcp    ESTAB      0      0      211.240.xxx.xxx:6379               222.122.82.214:50338
-tcp    ESTAB      0      0      211.240.xxx.xxx:6379               222.122.82.214:50339
+tcp    ESTAB      0      0      211.240.xxx.xxx:6379               222.xxx.xxx.214:50338
+tcp    ESTAB      0      0      211.240.xxx.xxx:6379               222.xxx.xxx.214:50339
 tcp    ESTAB      0      0      211.240.xxx.xxx:51756              211.240.xxx.xxx:6379
 tcp    ESTAB      0      0      211.240.xxx.xxx:47594              211.240.xxx.xxx:6379
 tcp    ESTAB      0      0      211.240.xxx.xxx:6379               211.240.xxx.xxx:42356
@@ -1483,28 +1483,28 @@ firewall-cmd --permanent --zone=public --remove-service=redis
 ---
 
 허용ip추가
-firewall-cmd --permanent --zone=public --add-source=106.242.168.0/24
+firewall-cmd --permanent --zone=public --add-source=106.xxx.xxx.0/24
 
 ---
 
 특정 port에 대한 ip 제한
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.242.168.0/24 port port="7000" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.xxx.xxx.0/24 port port="7000" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.122.82.0/24 port port="7000" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.xxx.xxx.0/24 port port="7000" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.6.0/24 port port="7000" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.xxx.xxx/24 port port="7000" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.242.168.0/24 port port="7001" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.xxx.xxx.0/24 port port="7001" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.122.82.0/24 port port="7001" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.xxx.xxx.0/24 port port="7001" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.6.0/24 port port="7001" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.xxx.xxx/24 port port="7001" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.242.168.0/24 port port="7002" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.xxx.xxx.0/24 port port="7002" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.122.82.0/24 port port="7002" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=222.xxx.xxx.0/24 port port="7002" protocol="tcp" accept'
 
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.6.0/24 port port="7002" protocol="tcp" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=211.240.xxx.xxx/24 port port="7002" protocol="tcp" accept'
 
 ---
 
