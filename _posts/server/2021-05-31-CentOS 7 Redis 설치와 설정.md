@@ -399,9 +399,9 @@ bind 0.0.0.0
 
 daemonize yes
 
-requirepass kdrco1234
+requirepass test1234
 
-masterauth kdrco1234
+masterauth test1234
 
 //로그 레벨
 
@@ -427,11 +427,11 @@ bind 0.0.0.0
 
 daemonize yes
 
-requirepass kdrco1234
+requirepass test1234
 
 replicaof 211.240.xxx.xxx 6379
 
-masterauth kdrco1234
+masterauth test1234
 
 repl-ping-slave-period 10 //서버 동기화 주기, 주석제거
 repl-timeout 60 주석제거
@@ -448,7 +448,7 @@ daemonize yes
 
 replicaof 211.240.xxx.xxx 6379
 
-masterauth kdrco1234
+masterauth test1234
 
 repl-ping-slave-period 10 //서버 동기화 주기, 주석제거
 repl-timeout 60 주석제거
@@ -473,7 +473,7 @@ CLIEXEC=/usr/local/bin/redis-cli
 PIDFILE=/var/run/redis_6381.pid
 CONF="/usr/local/src/redis/conf/6381.conf"
 REDISPORT="6381"
-REDISPW=kdrco1234 //추가
+REDISPW=test1234 //추가
 
 ...
 
@@ -577,7 +577,7 @@ root      8598  0.0  0.0 116972  1020 pts/1    S+   11:10   0:00 grep --color=au
 
 #redis-cli -p 6379
 
-127.0.0.1:6379> AUTH kdrco1234
+127.0.0.1:6379> AUTH test1234
 OK
 127.0.0.1:6379> info replication
 
@@ -602,7 +602,7 @@ repl_backlog_histlen:938
 
 
 #redis-cli -p 6380
-127.0.0.1:6380> AUTH kdrco1234
+127.0.0.1:6380> AUTH test1234
 OK
 127.0.0.1:6380> info replication
 
@@ -639,7 +639,7 @@ repl_backlog_histlen:11354
 
 접속후 AUTH 패스워드를 입력해도 되고, Redis 접속 시 -a 옵션으로 암호를 입력해도 됩니다.
 
-#redis-cli -p 6379 -a kdrco1234
+#redis-cli -p 6379 -a test1234
 
 Warning: Using a password with '-a' or '-u' option on the command line interface may not be safe.
 127.0.0.1:6379> set replica_test helloworld
@@ -649,7 +649,7 @@ OK
 
 127.0.0.1:6379> quit
 
-#redis-cli -p 6380 -a kdrco1234
+#redis-cli -p 6380 -a test1234
 Warning: Using a password with '-a' or '-u' option on the command line interface may not be safe.
 127.0.0.1:6380> get replica_test
 "helloworld"
@@ -824,7 +824,7 @@ sentinel failover-timeout mymaster 180000
 
 // 주석을 풀고 Master Redis 비밀번호를 입력합니다. Master Redis와 Slave Redis 비밀번호를 동일하게 맞춰줘야 합니다.
 
- sentinel auth-pass mymaster kdrco1234
+ sentinel auth-pass mymaster test1234
 
 ---
 
@@ -876,7 +876,7 @@ CLIEXEC=/usr/local/bin/redis-cli
 PIDFILE=/var/run/redis-sentinel_7000.pid
 CONF="/usr/local/src/redis/conf/sentinel_7000.conf"
 REDISPORT="7000"
-REDISPW=kdrco1234
+REDISPW=test1234
 
 ---
 
@@ -891,7 +891,7 @@ CLIEXEC=/usr/local/bin/redis-cli
 PIDFILE=/var/run/redis-sentinel_7001.pid
 CONF="/usr/local/src/redis/conf/sentinel_7001.conf"
 REDISPORT="7001"
-REDISPW=kdrco1234
+REDISPW=test1234
 
 ---
 
@@ -906,7 +906,7 @@ CLIEXEC=/usr/local/bin/redis-cli
 PIDFILE=/var/run/redis-sentinel_7002.pid
 CONF="/usr/local/src/redis/conf/sentinel_7002.conf"
 REDISPORT="7002"
-REDISPW=kdrco1234
+REDISPW=test1234
 
 ---
 
@@ -1542,7 +1542,7 @@ master0:name=mymaster,status=ok,address=211.240.xxx.xxx:6379,slaves=2,sentinels=
 
 C:\Program Files\Redis>redis-cli -h 211.240.xxx.xxx -p 6379
 
-211.240.xxx.xxx:6379> AUTH kdrco1234
+211.240.xxx.xxx:6379> AUTH test1234
 
 211.240.xxx.xxx:6379> keys *
 1) "spring:session:index:org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME:kdrco"
@@ -1791,7 +1791,7 @@ redis:
   host: 211.240.xxx.xxx
   port: 7000
   connect-timeout: 10s
-  password: kdrco1234
+  password: test1234
   sentinel:
     master: mymaster
     nodes:
