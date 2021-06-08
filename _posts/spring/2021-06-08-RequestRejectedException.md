@@ -1,6 +1,6 @@
 ---
 layout: customPost
-title:  "RequestRejectedException
+title:  "RequestRejectedException"
 categories: 
   - Spring
   - Exception
