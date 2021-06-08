@@ -544,7 +544,7 @@ curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={
 특정 Job이나 인스턴스의 시계열 데이터 삭제
 
 ```
-curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={job="kdrsolution_web_service"}'
+curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={job="jmx_service"}'
 
 curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="127.0.0.1:9100"}'
 ```
@@ -559,10 +559,6 @@ curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={
 
 ```
 curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/clean_tombstones'
-```
-
-```
-
 ```
 
 이 외에도 다음과 같이 사용할 수 도 있습니다.
@@ -587,9 +583,7 @@ curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]=A
 
 # Grafana
 
-Grafana는 비즈니스 및 IT 인프라에 대한 통합된 뷰를 제공하여 시계열 데이터를 더 잘 이해할 수 있도록 지원하는 다양한 시각화 옵션을 제공합니다. 이 제품은 고품질의 대화형 그래픽 및 시각화를 통해 인프라 및 애플리케이션 상태에 대한 심층적인 통찰력을 제공하는 데 널리 사용됩니다.
-
-PromQL을 이용해서 Prometheus에서 시각화할 metric을 선택적으로 request 하고 이를 시각화 합니다.
+Grafana는 비즈니스 및 IT 인프라에 대한 통합된 뷰를 제공하여 시계열 데이터를 더 잘 이해할 수 있도록 지원하는 다양한 시각화 옵션을 제공합니다. PromQL을 이용해서 Prometheus에서 시각화할 metric을 선택적으로 request 하고 이를 시각화 합니다.
 
 ### Grafana 설치
 
@@ -651,7 +645,7 @@ admin / admin 으로 접속
 
 ### Prometheus Dashboard 추가
 
-
+grafana 홈페이지에서 다양한 dashboard를  검색하고 쉽게 사용할 수 있습니다.
 
 ### node exporter full 
 
@@ -780,6 +774,209 @@ https://grafana.com/grafana/dashboards/4701
 
 
 
+# spring boot가 아닌 서비스 모니터링하기
+
+VisualVM으로 모니터링 하던 Window 기반의 예전 서비스를 prometheus와 grafana로 모니터링 해봅니다.
+
+![image-20210607134543558](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607134543558.png)
+
+
+
+https://github.com/prometheus/jmx_exporter를 참고하여 jar 파일을 다운 받고 설정파일을 작성합니다.
+
+jar 다운로드: https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.15.0/jmx_prometheus_javaagent-0.15.0.jar
+
+config폴더를 만들고 kdrmanager_8181_config.yaml 신규파일 작성
+
+```properties
+startDelaySeconds: 0
+hostPort: 127.0.0.1:8008
+ssl: false
+lowercaseOutputName: false
+lowercaseOutputLabelNames: false
+```
+
+opaymanager_8182_config.yaml 신규파일 작성
+
+```properties
+startDelaySeconds: 0
+hostPort: 127.0.0.1:8108
+ssl: false
+lowercaseOutputName: false
+lowercaseOutputLabelNames: false
+```
+
+tomcat service의 configure을 열고 Java Tab에서 Java Options에서 위쪽 또는 아래에 추가합니다.
+
+![image-20210607123036145](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607123036145.png)
+
+```properties
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=8008
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+-javaagent:C:\Java\jmx_exporter-parent-0.15.0\jmx_prometheus_javaagent-0.15.0.jar=8181:C:\Java\jmx_exporter-parent-0.15.0\config\kdrmanager_8181_config.yaml
+...
+```
+
+다른 서비스도 Java Options를 수정합니다.
+
+```properties
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=8108
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+-javaagent:C:\Java\jmx_exporter-parent-0.15.0\jmx_prometheus_javaagent-0.15.0.jar=8182:C:\Java\jmx_exporter-parent-0.15.0\config\opaymanager_8182_config.yaml
+```
+
+tomcat service 재시작
+
+브라우저에서 http://localhost:8181/metrics 데이터 확인
+
+![image-20210607124136097](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607124136097.png)
+
+
+
+방화벽 8181, 8182포트 추가.
+
+
+
+prometheus.yml 추가
+
+```yaml
+- job_name: 'kdrmanger_web_service'
+    static_configs:
+    - targets: ['211.xxx.xxx.xxx:8181']
+  - job_name: 'onetouchpaymanager_web_service'
+    static_configs:
+    - targets: ['211.xxx.xxx.xxx:8182']
+...
+```
+
+\# sudo systemctl restart prometheus
+
+
+
+Grafana
+
+https://grafana.com/grafana/dashboards/8563
+
+![image-20210607140105711](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607140105711.png)
+
+
+
+---
+
+# Custom Panel 구성하기
+
+내가 원하는 정보만 화면에 표시하도록 구성할 수 있습니다.
+
+![image-20210608104317625](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210608104317625.png)
+
+![image-20210607165828094](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607165828094.png)
+
+Metrics 쿼리를 지정합니다.
+
+```
+
+Metrics : up{job=~".*web_service"}     // web_service로 끝나는 job명을 조회
+Legend : {{job}} {{instance}}          // 위에 표시할 이름(job명 instance명)
+
+좌측 Panel에 Panel title을 입력하고, 플러그인 중 Stat을 선택합니다.
+
+Graph mode : None
+Text size Title: 20, Value: 30   //표시할 폰트 크기 지정.
+
+```
+
+![image-20210607165846328](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607165846328.png)
+
+![image-20210607170419608](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607170419608.png)
+
+Color mode를 Background로 사용해도 괜찮습니다.
+
+![image-20210607171901855](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607171901855.png)
+
+필드탭에서 아래와 같이 편집합니다.
+
+![image-20210607170719681](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607170719681.png)
+
+![image-20210607170736027](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607170736027.png)
+
+우측 상단에 Apply 버튼을 누르고 확인합니다.
+
+![image-20210607170953417](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607170953417.png)
+
+
+
+Heap 사용량 구하기
+
+```
+//adoptopenjdk 11(spring boot)
+sum(jvm_memory_used_bytes{area="heap"})by(job)*100/sum(jvm_memory_max_bytes{area="heap"})by(job)
+
+//oracle jdk 7(jmx exporter)
+sum(jvm_memory_bytes_used{area="heap"})by(job)*100/sum(jvm_memory_bytes_max{area="heap"})by(job)
+```
+
+![image-20210608093314992](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210608093314992.png)
+
+![image-20210608093342803](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210608093342803.png)
+
+
+
+CPU 사용량
+
+```
+// Windows
+100 - (avg by (instance) (irate(windows_cpu_time_total{mode="idle"}[2m])) * 100)
+
+#Average
+100 - (avg by (instance) (irate(windows_cpu_time_total{job=~"dev",mode="idle"}[2m])) * 100)
+#Minimum
+100 - (max by (instance) (irate(windows_cpu_time_total{job=~"dev",mode="idle"}[2m])) * 100)
+#Maximum
+100 - (min by (instance) (irate(windows_cpu_time_total{job=~"dev",mode="idle"}[2m])) * 100)
+
+// Linux
+(1 - avg(rate(node_cpu_seconds_total{mode="idle"}[2m])) by (instance)) * 100
+
+#Average
+100 - (avg by (instance) (irate(node_cpu_seconds_total{job="$job",mode="idle"}[5m])) * 100)
+#Minimum
+100 - (max by (instance) (irate(node_cpu_seconds_total{job="$job",mode="idle"}[5m])) * 100)
+#Maximum
+100 - (min by (instance) (irate(node_cpu_seconds_total{job="$job",mode="idle"}[5m])) * 100)
+```
+
+메모리 사용량
+
+```
+// Windows
+(1 - (windows_os_physical_memory_free_bytes / (windows_cs_physical_memory_bytes)))* 100
+
+#Average
+100.0 - 100 * avg_over_time(windows_os_physical_memory_free_bytes{job=~"prod"}[30d]) / avg_over_time(windows_cs_physical_memory_bytes{job=~"prod"}[30d])
+#Maximum
+100.0 - 100 * min_over_time(windows_os_physical_memory_free_bytes{job=~"prod"}[30d]) / min_over_time(windows_cs_physical_memory_bytes{job=~"prod"}[30d])
+#Minimum
+100.0 - 100 * max_over_time(windows_os_physical_memory_free_bytes{job=~"prod"}[30d]) / max_over_time(windows_cs_physical_memory_bytes{job=~"prod"}[30d])
+
+// Linux
+(1 - (node_memory_MemAvailable_bytes / (node_memory_MemTotal_bytes)))* 100
+
+#Avarege:
+100 * (1 - ((avg_over_time(node_memory_MemFree_bytes{job=~"prod"}[30d]) + avg_over_time(node_memory_Cached_bytes{job=~"prod"}[30d]) + avg_over_time(node_memory_Buffers_bytes{job=~"prod"}[30d])) / avg_over_time(node_memory_MemTotal_bytes{job=~"prod"}[30d])))
+
+#Maximum:
+100 * (1 - ((min_over_time(node_memory_MemFree_bytes{job=~"prod"}[30d]) + min_over_time(node_memory_Cached_bytes{job=~"prod"}[30d]) + min_over_time(node_memory_Buffers_bytes{job=~"prod"}[30d])) / min_over_time(node_memory_MemTotal_bytes{job=~"prod"}[30d])))
+
+#Minimum
+100 * (1 - ((max_over_time(node_memory_MemFree_bytes{job=~"prod"}[30d]) + max_over_time(node_memory_Cached_bytes{job=~"prod"}[30d]) + max_over_time(node_memory_Buffers_bytes{job=~"prod"}[30d])) / max_over_time(node_memory_MemTotal_bytes{job=~"prod"}[30d])))
+```
+
+
+
 ---
 
 
@@ -789,3 +986,5 @@ https://grafana.com/grafana/dashboards/4701
 https://prometheus.io/docs/introduction/overview/
 
 https://owlyr.tistory.com/24
+
+https://wiki.scn.sap.com/wiki/pages/viewpage.action?pageId=439649886
