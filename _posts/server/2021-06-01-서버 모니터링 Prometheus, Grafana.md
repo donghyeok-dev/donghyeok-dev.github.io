@@ -22,17 +22,13 @@ categories:
 
 - Apache 2 라이센스의 오픈소스 
 
-- http pull 방식으로 다양한 서버에서 CPU, Memory, Disk, Traffic, Process, JVM 등 정보를 수집하기 때문에 모니터링 시스템에 장애가 발생해도
+- http pull 방식으로 다양한 서버에서 CPU, Memory, Disk, Traffic, Process, JVM 등 정보를 수집하기 때문에 모니터링 시스템에 장애가 발생해도 실제 사용중인 서비스에 영향이 없다는 장점.
 
-  실제 사용중인 서비스에 영향이 없다는 장점.
-
-- 다양한 exporter를 제공하고 내부에서 제공하는 web ui 뿐만 아니라 grafana와 같은 시각화 툴을 이용하여 볼 수 있다는 점.
+- 다양한 exporter를 제공하고 내부에서 제공하는 Web UI 뿐만 아니라 Grafana와 같은 시각화 툴을 이용하여 볼 수 있다는 점.
 
 - kubernetes의 docker 환경에서 서비스의 메트릭을 수집하고 분석하는데 많이 사용됨.
 
 - 대중적이고 커뮤니티 활성화
-
-- 분산 스토리지에 의존하지 않음
 
 - 자동 알림을 제공
 
