@@ -55,6 +55,14 @@ sqlmap -u "http://localhost:8080/testInjection" --data="mbrName=%EA%B8%10" --coo
 
 
 
+### sqlmap 로그 위치
+
+```
+C:\Users\사용자\AppData\Local\sqlmap\output
+```
+
+
+
 ### Mybatis 취약 사례
 
 ```sql
