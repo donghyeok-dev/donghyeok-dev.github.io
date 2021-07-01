@@ -69,7 +69,7 @@ Arguments -server -jar 파일명.jar   (추가로 jvm 옵션도 줄 수 있습�
 
 ![image-20210524144120479](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210524144120479.png)
 
-IO탭
+IO탭 (logback 설정시 안하셔도 됩니다.)
 
 Output :  위에서 만든 logs 폴더 경로를 기입합니다.
 

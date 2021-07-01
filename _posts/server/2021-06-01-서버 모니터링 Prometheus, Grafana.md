@@ -295,6 +295,16 @@ window exporter 설치방법: https://github.com/prometheus-community/windows_ex
 
 window exporter 설치 후 확인: http://localhost:9182/metrics
 
+### window exporter 설치 후 서비스 재시작 설정 변경
+
+1~3분정도 지연 시작을 해줘야 재부팅 후 정상적으로 로드 됩니다.
+
+![image-20210701135035623](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210701135035623.png)
+
+![image-20210701135204154](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210701135204154.png)
+
+
+
 prometheus 서버에서 확인: curl -X GET http://222.xxx.xxx.xxx:9182/metrics
 
 

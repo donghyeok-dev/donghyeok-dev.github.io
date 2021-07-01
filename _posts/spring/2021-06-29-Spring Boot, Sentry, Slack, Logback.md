@@ -443,7 +443,7 @@ public class AspectConfig {
     <!-- Slack incoming webhook uri. Uncomment the lines below to use incoming webhook uri instead of API token. -->
     <webhookUri>${SLACK_WEBHOOK_URI}</webhookUri>
     <!-- Channel that you want to post - default is #general -->
-    <channel>#${SLACK_CHANNEL}</channel>
+    <channel>${SLACK_CHANNEL}</channel>
     <!-- Formatting (you can use Slack formatting - URL links, code formatting, etc.) -->
     <layout class="ch.qos.logback.classic.PatternLayout">
       <pattern>${LOG_ERROR_PATTERN}</pattern>
