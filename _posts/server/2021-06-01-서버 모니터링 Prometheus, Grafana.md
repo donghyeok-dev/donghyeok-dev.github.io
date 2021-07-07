@@ -843,7 +843,7 @@ tomcat service 재시작
 
 
 
-방화벽 8181, 8182포트 추가.
+해당 서버의 방화벽 인바운드 규칙 8181, 8182포트 추가.
 
 
 
@@ -1039,7 +1039,7 @@ slack 템플릿 신규 파일 작성
 
 \# vim slack-template.tmpl 
 
-```yaml
+```go
 {{ define "__alert_severity_prefix_title" -}}
     {{ if eq .Status "firing" -}}
         {{- if eq .CommonLabels.severity "critical" -}}
