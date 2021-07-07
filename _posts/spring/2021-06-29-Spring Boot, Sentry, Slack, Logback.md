@@ -26,7 +26,9 @@ https://sentry.io/signup/ 에서 회원가입을 하여 로그인 합니다.
 
 
 
-프로젝트를 생성합니다. 여기서는 SpringBoot 프로젝트로 생성합니다.
+### SpringBoot Sentry 설정 방법
+
+ springframework 프로젝트 설정 방법은 아래쪽에서 설명합니다.
 
 ![image-20210614150327879](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210614150327879.png)
 
@@ -60,9 +62,11 @@ Maven
 
 
 
-### yml 파일에 DSN을 추가합니다.  
+### SpringBoot - sentry 설정
 
-dsn 값은 프로젝트 최초 생성시 가이드에 나옵니다. 또한 Settings > Project > Client Keys에서도 확인할 수 있습니다.
+application.yml 파일에 DSN을 추가합니다.  
+
+DSN(Client Key)은 프로젝트 최초 생성 시 안내 화면 또는  Settings > Project > Client Keys에서도 확인할 수 있습니다.
 
 ```yaml
 sentry:
@@ -78,11 +82,11 @@ send-default-pii: sentry issue 상세페이지에서 사용자 정보 표시여�
 
 
 
-### logback-spring.xml 설정
+### SpringBoot - logback 설정
 
 https://docs.sentry.io/platforms/java/guides/spring-boot/logging-frameworks/
 
-기존에 log4j에 logback을 설정해둔 상태였는데 SentryAppender를 지정하지 않아도 정상 동작함...
+logback-spring.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -111,7 +115,7 @@ https://docs.sentry.io/platforms/java/guides/spring-boot/logging-frameworks/
 
 
 
-### 테스트 해보기
+### SpringBoot - Sentry 테스트
 
 ```java
 @Controller
@@ -135,13 +139,6 @@ public class CommonExceptionHandler {
         model.addAttribute(CommonUtil.ERROR_MSSAGE_CODE, ExceptionType.FAIL_RESPONSE_API);
         return ERROR_PAGE;
     }
-
-    @ExceptionHandler(NotFoundDataException.class)
-    public String handleDataNotFoundException(NotFoundDataException e, Model model) {
-        log.error(e.getMessage(), e);
-        model.addAttribute(CommonUtil.ERROR_MSSAGE_CODE, ExceptionType.NOT_FOUND_DATA);
-        return ERROR_PAGE;
-    }
 //    ...
 ```
 
@@ -159,9 +156,168 @@ public class CommonExceptionHandler {
 
 
 
+### Springframework Sentry 설정 방법
+
+프로젝트 생성하기 - 플랫폼 선택화면에서 Java를 선택하면 되고,  java 1.8 이상 추천하며
+
+상세 설명은 https://docs.sentry.io/platforms/java/ 를 참조하세요.
+
+java 1.7버전은 설정관련 정보는  https://docs.sentry.io/platforms/java/legacy/ 를 참조할 수 있습니다.
+
+![image-20210702101137375](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210702101137375.png)
 
 
-## Slack 시작하기
+
+### Springframework - sentry 설정
+
+maven에 dependency를 추가합니다.
+
+```xml
+<dependency>
+    <groupId>io.sentry</groupId>
+    <artifactId>sentry-spring</artifactId>
+    <version>1.7.30</version>
+</dependency>
+<dependency>
+    <groupId>io.sentry</groupId>
+    <artifactId>sentry-logback</artifactId>
+    <version>1.7.30</version>
+</dependency>
+```
+
+
+
+/src/main/resources/sentry.properties 파일을 생성하고 DSN코드 넣고 저장합니다.
+
+DSN(Client Key)은 프로젝트 최초 생성 시 안내 화면 또는  Settings > Project > Client Keys에서도 확인할 수 있습니다.
+
+```properties
+dsn=https://abcf6dadf9934942855bdbcc7ec6b5ff@o846771.ingest.sentry.io/5842019
+```
+
+
+
+Config 클래스를 생성합니다.
+
+```java
+package kdr.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import io.sentry.spring.SentryExceptionResolver;
+
+@Configuration
+public class SentryConfig {
+    @Bean
+    public HandlerExceptionResolver sentryExceptionResolver() {
+        return new SentryExceptionResolver();
+    }
+}
+```
+
+
+
+### Springframework - logback 설정
+
+/src/main/resources/logback.xml를 생성하고 설정 정보를 저장합니다.
+
+```xml
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Sentry" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+           <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+	<logger name="jdbc" level="OFF"/>
+    <logger name="jdbc.sqlonly" level="OFF"/>
+    <logger name="jdbc.sqltiming" level="INFO"/>
+    <logger name="jdbc.audit" level="OFF"/>
+    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.resultsettable" level="INFO"/>
+    <logger name="jdbc.connection" level="OFF"/>
+
+    <root level="INFO">
+        <appender-ref ref="Console" />
+        <appender-ref ref="Sentry" />
+    </root>
+</configuration>
+```
+
+
+
+### Springframework - Sentry 테스트
+
+테스트로 오류코드를 실행합니다.
+
+```java
+@RequestMapping(value="/sentryTest.do")
+@ResponseBody
+public String sentryTest() {
+    log.error("logback Test");
+    return "test";
+}
+```
+
+
+
+sentry issue에서 확인합니다.
+
+![image-20210702104224552](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210702104224552.png)
+
+
+
+### 테스트 시에 아래와 같은 오류가 발생한다면?
+
+```properties
+io.sentry.connection.ConnectionException: An exception occurred while submitting the event to the Sentry server.
+....
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed
+```
+
+java 1.7 또는 java 1.8(8u202 and earlier) 버전의 경우 sentry 인증서를 처리 못하여 발생하는 오류입니다.
+
+이를 해결하기 위해서는 아래와 같은 순서로 작업하면 됩니다.
+
+1. chrome에서 sentry의 DSN 주소로 접속한 다음 인증서 내보내기.
+
+   ![image-20210702111437657](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210702111437657.png)
+
+   ![image-20210702111603866](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210702111603866.png)
+
+   ![image-20210702111632176](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210702111632176.png)
+
+2. java bin경로에 인증서를 copy하고 cmd관리자모드에서 아래 명령 실행. 
+
+   jre\lib\security\cacerts 파일은 백업해두고 실행하는 것이 안전합니다.
+
+   ```commonlisp
+   bin> keytool -import -alias sentry -keystore  "C:\Program Files\Java\jdk1.7.0_80\jre\lib\security\cacerts" -file sentry.cer
+   키 저장소 비밀번호 입력: changeit
+   소유자: CN=*.ingest.sentry.io
+   발행자: CN=R3, O=Let's Encrypt, C=US
+   ...
+   이 인증서를 신뢰합니까? [아니오]:  예
+   인증서가 키 저장소에 추가되었습니다.
+   ```
+
+3. 재시도(동일 오류 발생 시 재부팅 후 재시도.)
+
+참고: https://stackoverflow.com/a/36427118
+
+
+
+# Slack 시작하기
 
 https://slack.com/intl/ko-kr/help/categories/360000049043
 
@@ -518,3 +674,24 @@ public class AspectConfig {
 ![image-20210629173826895](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210629173826895.png)
 
 ![image-20210629173924749](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210629173924749.png)
+
+
+
+### Java 1.7에서 Slack 메시지 전송 시  다음과 같은 오류가 발생할 수 있습니다
+
+```properties
+javax.net.ssl.SSLException: Received fatal alert: protocol_version
+```
+
+
+
+Runtime 시 다음 옵션 추가.
+
+```java
+-Dhttps.protocols=TLSv1.2
+```
+
+eclipse 내 tomcat 테스트 시에는 Run - Run Configurations - Arguments탭 - VM arguments에 추가.
+
+intellij의 경우에는 Help -> Edit Custom VM Options
+

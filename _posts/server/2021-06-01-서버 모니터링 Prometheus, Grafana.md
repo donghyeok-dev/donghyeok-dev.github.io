@@ -983,6 +983,286 @@ CPU 사용량
 
 
 
+# Grafana Alert로 Slack 전송
+
+Prometheus에서 alertmanager를 설정해도 되지만, grafana에서 간단하게 alert를 할 수 있는 방법이 있습니다.
+
+좌측 메뉴에서 알람 버튼을 클릭하고 Notification channels - New channel을 클릭합니다.
+
+![image-20210705173430083](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210705173430083.png)
+
+Slack에 메시지를 보내는 예제입니다. (최초 생성시 Url 부분에 Slack Webhook url을 입력합니다.)
+
+![image-20210705173600690](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210705173600690.png)
+
+
+
+alert용 패널을 하나 추가하고 구성합니다.
+
+단, 단일 상태 패널에는 경고를 추가할 수 없으므로 그래프 패널을 사용하여 경고를 추가해야 합니다.
+
+![image-20210705173105402](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210705173105402.png)
+
+
+
+alert 조건을 입력합니다.
+
+![image-20210705173926528](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210705173926528.png)
+
+
+
+alert 조건이 만족되면 slack으로 메시지가 옵니다. (복구 시에도 알람이 옵니다.)
+
+![image-20210705174447528](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210705174447528.png)
+
+참고: https://medium.com/trendyol-tech/alert-and-monitoring-with-grafana-b659c433bb51
+
+
+
+# Prometheus alertmanager로 Slack 전송
+
+https://prometheus.io/download/#alertmanager 에서 os에 맞는 버전을 다운받습니다.
+
+\# cd /usr/local/src
+
+\# wget https://github.com/prometheus/alertmanager/releases/download/v0.22.2/alertmanager-0.22.2.linux-amd64.tar.gz
+
+\#  tar -xvf alertmanager-0.22.2.linux-amd64.tar.gz
+
+\# cd alertmanager-0.22.2.linux-amd64/
+
+\# ls
+
+   LICENSE  NOTICE  alertmanager  alertmanager.yml  amtool
+
+slack 템플릿 신규 파일 작성
+
+\# vim slack-template.tmpl 
+
+```yaml
+{{ define "__alert_severity_prefix_title" -}}
+    {{ if eq .Status "firing" -}}
+        {{- if eq .CommonLabels.severity "critical" -}}
+        :alert:
+        {{- else -}}
+        :warning:
+        {{- end }}
+    {{- else -}}
+    :green_heart:
+    {{- end }}
+{{- end }}
+
+{{ define "slack.title" -}}
+    {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }} {{ .Status }}
+{{- end }}
+
+{{ define "slack.icon_emoji" }}:prometheus:{{ end }}
+
+{{ define "slack.text" -}}
+    {{ range .Alerts }}
+        {{- if .Annotations.message }}
+            {{ .Annotations.message }}
+        {{- end }}
+        {{- if .Annotations.description }}
+            {{ .Annotations.description }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
+```
+
+\# vim alertmanager.yml 수정
+
+```yaml
+global:
+  resolve_timeout: 1m
+  slack_api_url: 'https://hooks.slack.com/services/T025A3C7J73/B0253LZJD7W/...'
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 1h
+  receiver: 'slack-notification'
+receivers:
+  - name: 'slack-notification'
+    slack_configs:
+    - channel: '#error'
+      send_resolved: true
+      title: '{{ template "slack.title" . }}'
+      icon_emoji: '{{ template "slack.icon_emoji" . }}'
+      text: '{{ template "slack.text" . }}'
+templates:
+  - '/usr/local/src/alertmanager-0.22.2.linux-amd64/slack-template.tmpl'
+```
+
+\# vim /usr/local/src/prometheus-2.27.1.linux-amd64/prometheus.yml  수정
+
+```yaml
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: ['211.xxx.xxx.xxx:9093']
+      # - alertmanager:9093
+
+rule_files:
+  - "rules.yml"
+```
+
+\# vim /usr/local/src/prometheus-2.27.1.linux-amd64/rules.yml  신규파일 작성
+
+```yaml
+groups:
+- name: Server
+  rules:
+  - alert: Server Down
+    expr: up == 0
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Value={{ $value }}'
+    labels:
+      severity: 'critical'
+
+  - alert: Server CPU Warnning
+    expr: 100 - (avg by (instance) (irate(windows_cpu_time_total{mode="idle"}[1m])) * 100) > 70 or (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (instance)) * 100 > 70
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'warning'
+
+  - alert: Server CPU Critical
+    expr: 100 - (avg by (instance) (irate(windows_cpu_time_total{mode="idle"}[1m])) * 100) > 90 or (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (instance)) * 100 > 90
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'critical'
+
+  - alert: Server Memory Warnning
+    expr: (1 - (node_memory_MemAvailable_bytes / (node_memory_MemTotal_bytes))) * 100 > 70 or (1 - (windows_os_physical_memory_free_bytes / (windows_cs_physical_memory_bytes))) * 100 > 70
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'warning'
+
+  - alert: Server Memory Critical
+    expr: (1 - (node_memory_MemAvailable_bytes / (node_memory_MemTotal_bytes))) * 100 > 90 or (1 - (windows_os_physical_memory_free_bytes / (windows_cs_physical_memory_bytes))) * 100 > 90
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'critical'
+
+  - alert: Heap Used Warnning
+    expr: sum(jvm_memory_used_bytes{area="heap"})by(job)*100/sum(jvm_memory_max_bytes{area="heap"})by(job) > 70 or sum(jvm_memory_bytes_used{area="heap"})by(job)*100/sum(jvm_memory_bytes_max{area="heap"})by(job) > 70
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'warning'
+
+  - alert: Heap Used Critical
+    expr: sum(jvm_memory_used_bytes{area="heap"})by(job)*100/sum(jvm_memory_max_bytes{area="heap"})by(job) > 90 or sum(jvm_memory_bytes_used{area="heap"})by(job)*100/sum(jvm_memory_bytes_max{area="heap"})by(job) > 90
+    for: 30s
+    annotations:
+      message: 'Instance {{ $labels.instance }} '
+      description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
+    labels:
+      severity: 'critical'
+```
+
+
+
+alertmanager 서비스 등록하기
+
+\# vim /etc/systemd/system/alertmanager.service
+
+```properties
+[Unit]
+Description=Alertmanager
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/usr/local/src/alertmanager-0.22.2.linux-amd64/alertmanager --config.file=/usr/local/src/alertmanager-0.22.2.linux-amd64/alertmanager.yml --cluster.advertise-address=0.0.0.0:9093
+
+[Install]
+WantedBy=multi-user.target
+```
+
+\# sudo systemctl daemon-reload
+
+\# sudo systemctl start alertmanager
+
+\# sudo systemctl status alertmanager
+
+\# sudo systemctl enable alertmanager
+
+
+
+\# sudo systemctl restart prometheus
+
+\# sudo systemctl status prometheus
+
+
+
+**# See all systemd logs**
+
+journalctl
+
+**# Tail logs**
+
+journalctl -f
+
+**# Show logs for specific service**
+
+journalctl -u prometheus
+
+journalctl -u alertmanager
+
+sudo journalctl -o verbose --unit=prometheus.service
+
+
+
+**방화벽 설정 **
+
+\# sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=106.xxx.xxx.0/24 port port="9093" protocol="tcp" accept'
+
+\# firewall-cmd --reload
+
+\# firewall-cmd --list-all
+
+
+
+**alertmanager web ui 접속 확인**
+
+http://211.xxx.xxx.xxx:9093/
+
+
+
+rule 조건에 맞으면 slack으로 메시지가 옵니다.
+
+![image-20210707122437271](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210707122437271.png)
+
+
+
+참고: https://prometheus.io/docs/alerting/latest/configuration/
+
+​          https://github.com/prometheus/alertmanager
+
+​          https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/
+
 ---
 
 
