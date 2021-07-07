@@ -1045,7 +1045,7 @@ slack 템플릿 신규 파일 작성
 
 \# vim slack-template.tmpl 
 
-```go
+```typescript
 {{ define "__alert_severity_prefix_title" -}}
     {{ if eq .Status "firing" -}}
         {{- if eq .CommonLabels.severity "critical" -}}
@@ -1074,7 +1074,6 @@ slack 템플릿 신규 파일 작성
         {{- end }}
     {{- end }}
 {{- end }}
-
 ```
 
 \# vim alertmanager.yml 수정
