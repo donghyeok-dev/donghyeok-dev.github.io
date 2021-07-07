@@ -1073,7 +1073,7 @@ slack 템플릿 신규 파일 작성
 
 \# vim alertmanager.yml 수정
 
-```yaml
+```go
 global:
   resolve_timeout: 1m
   slack_api_url: 'https://hooks.slack.com/services/T025A3C7J73/B0253LZJD7W/...'
@@ -1112,7 +1112,7 @@ rule_files:
 
 \# vim /usr/local/src/prometheus-2.27.1.linux-amd64/rules.yml  신규파일 작성
 
-```yaml
+```go
 groups:
 - name: Server
   rules:
