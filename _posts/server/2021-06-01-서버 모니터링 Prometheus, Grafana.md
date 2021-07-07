@@ -705,7 +705,13 @@ Memory Usage 부분이 안보이는데... 이건 확인을 좀 해봐야될 것 
 
 
 
----
+# Nginx Exporter
+
+[prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/)에서 nginx  메트릭 수집 exporter의 경우 nginx에 추가적인 설정이 필요하고 해당 exporter가 더 이상 유지보수가 되지 않기 때문에 nginx에서 제공하는 [nginx-prometheus-exporter](https://github.com/nginxinc/nginx-prometheus-exporter)를 이용하는 것을 추천합니다.
+
+참고: https://gurumee92.tistory.com/231
+
+
 
 # spring boot exporter 
 
