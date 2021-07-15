@@ -5,8 +5,6 @@ categories:
   - Spring
   - MapStruct
 ---
-## MapStruct
-
 - dto -> entity 또는 entity -> dto로 변환할 때 쓰이는 라이브러리.
 - Mapper Interface를 구현하고 @Mapper를 Annotated하면 빌드시점에서 자동으로 implementation Class를 생성해줍니다. (intellij 기준으로 src/main/generated 아래 interface와 동일한 구조로 생성됨)
 

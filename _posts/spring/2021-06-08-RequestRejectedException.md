@@ -5,8 +5,6 @@ categories:
   - Spring
   - Exception
 ---
-## RequestRejectedException
-
 ```java
 20210608 13:30:19.656 [http-nio-8080-exec-4] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception 
 org.springframework.security.web.firewall.RequestRejectedException: The request was rejected because the URL contained a potentially malicious String ";"

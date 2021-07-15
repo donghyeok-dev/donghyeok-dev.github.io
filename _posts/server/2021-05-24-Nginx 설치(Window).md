@@ -5,11 +5,7 @@ categories:
   - Nginx
   - Server
 ---
-## Nginx WebServer Window 설치 및 설정
-
-### 다운로드
-
- http://nginx.org/en/download.html
+ http://nginx.org/en/download.html 에서 nginx를 다운로드 받습니다.
 
 ![image-20210524145840346](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210524145840346.png)
 
@@ -17,7 +13,7 @@ categories:
 
 ### 서비스 등록
 
-콘솔창에서 nssm 명령어로 서비스를 등록합니다.
+콘솔창에서 nssm 명령어로 서비스를 등록합니다. ([https://nssm.cc/download)](https://nssm.cc/download))
 
 ```
 //등록

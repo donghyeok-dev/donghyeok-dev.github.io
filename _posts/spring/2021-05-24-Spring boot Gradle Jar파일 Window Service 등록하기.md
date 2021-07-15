@@ -5,8 +5,6 @@ categories:
   - deploy
   - Spring
 ---
-## Spring boot Gradle Jar파일 Window Service 등록하기
-
 Gradle - build - bootJar을 실행합니다.
 
 ![image-20210524101516040](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210524101516040.png)

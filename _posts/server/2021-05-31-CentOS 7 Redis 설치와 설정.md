@@ -6,27 +6,17 @@ categories:
   - Server
 ---
 
-## CentOS 7 Redis 설치와 설정
-
----
-
 # Redis 구성
 
 
 
 <img src="https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210528165507979.png" alt="image-20210528165507979" style="zoom:150%;" />
 
----
-
 ## Redis 사전 작업
-
----
 
 ### 1. 시스템 업데이트
 
 \# sudo yum -y update
-
----
 
 ### 2. 패키지 설치
 
@@ -35,8 +25,6 @@ categories:
 \# sudo yum install wget
 
 \# sudo yum install tcl tk
-
----
 
 ### 3. 메모리 설정
 
@@ -57,17 +45,13 @@ Redis는 프로세스가 장애로 인해 종료되더라도 이전의 상태를
 1 : 항상 Overcommit을 허용
 2 : 제한적 Overcommit 허용
 
----
-
-# 적용
+### 적용
 
 \# sudo sysctl vm.overcommit_memory=1
 
 \# sudo echo "vm.overcommit_memory=1" >> /etc/sysctl.conf 
 
----
-
-# 적용 확인
+### 적용 확인
 
 \# sudo sysctl -a | grep vm.overcommit
 
