@@ -890,7 +890,7 @@ https://grafana.com/grafana/dashboards/8563
 Metrics 쿼리를 지정합니다.
 
 ```
-
+{% raw %}
 Metrics : up{job=~".*web_service"}     // web_service로 끝나는 job명을 조회
 Legend : {{job}} {{instance}}          // 위에 표시할 이름(job명 instance명)
 
@@ -898,7 +898,7 @@ Legend : {{job}} {{instance}}          // 위에 표시할 이름(job명 instanc
 
 Graph mode : None
 Text size Title: 20, Value: 30   //표시할 폰트 크기 지정.
-
+{% endraw %}
 ```
 
 ![image-20210607165846328](https://cdn.jsdelivr.net/gh/donghyeok-dev/donghyeok-dev.github.io@master/assets/images/posts/image-20210607165846328.png)
@@ -1045,7 +1045,8 @@ slack 템플릿 신규 파일 작성
 
 \# vim slack-template.tmpl 
 
-```
+```go
+{% raw %}
 {{ define "__alert_severity_prefix_title" -}}
     {{ if eq .Status "firing" -}}
         {{- if eq .CommonLabels.severity "critical" -}}
@@ -1074,11 +1075,13 @@ slack 템플릿 신규 파일 작성
         {{- end }}
     {{- end }}
 {{- end }}
+{% endraw %}
 ```
 
 \# vim alertmanager.yml 수정
 
 ```go
+{% raw %}
 global:
   resolve_timeout: 1m
   slack_api_url: 'https://hooks.slack.com/services/T025A3C7J73/B0253LZJD7W/...'
@@ -1099,6 +1102,7 @@ receivers:
       text: '{{ template "slack.text" . }}'
 templates:
   - '/usr/local/src/alertmanager-0.22.2.linux-amd64/slack-template.tmpl'
+{% endraw %}
 ```
 
 \# vim /usr/local/src/prometheus-2.27.1.linux-amd64/prometheus.yml  수정
@@ -1118,6 +1122,7 @@ rule_files:
 \# vim /usr/local/src/prometheus-2.27.1.linux-amd64/rules.yml  신규파일 작성
 
 ```go
+{% raw %}
 groups:
 - name: Server
   rules:
@@ -1183,6 +1188,7 @@ groups:
       description: 'labels={{ $labels }} Current Used={{ $value | printf "%.2f" }}%'
     labels:
       severity: 'critical'
+{% endraw %}
 ```
 
 
